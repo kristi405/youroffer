@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bf189e94-81ad-4deb-9d3b-3de10662db11"
+      }
+    },
+    "owner": "kristina_gyk"
   }
 }
