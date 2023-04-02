@@ -3,7 +3,6 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWit
 import {Keyboard} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 import SwitchSelector from "react-native-switch-selector";
 
 export const CreateUserScreen = ({navigation}) => {
@@ -20,6 +19,7 @@ export const CreateUserScreen = ({navigation}) => {
 
     const pressHandler = () => {
         setName('')
+        navigation.navigate('CouponScreen')
     }
 
       return (
@@ -120,11 +120,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: '#57A167',
         opacity: 0.3,
-        textAlign: 'center'
+        alignItems: 'center'
     },
     buttonText: {
         fontSize: 20,
-        color: '#fff',
-        paddingHorizontal: 50
+        color: '#fff'
     },
 })

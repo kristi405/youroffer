@@ -1,9 +1,8 @@
 import React from "react";
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import {Keyboard} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 import { Code } from "../Networking/LoginService/logineService";
 import {AsyncStorage} from 'react-native';
 
@@ -12,9 +11,9 @@ export const CodeScreen = ({navigation}) => {
     const [number, setNumbet] = React.useState('');
 
     const pressHandler = async () => {
-        const phone = await AsyncStorage.getItem('phone').toString()
-        console.log('222', phone)
-        Code(phone, number)
+        // const phone = await AsyncStorage.getItem('phone').toString()
+        // console.log('222', phone)
+        // Code(phone, number)
         setNumbet('')
         navigation.navigate('CreateUserScreen')
     }
@@ -82,11 +81,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: '#57A167',
         opacity: 0.3,
-        textAlign: 'center'
+        alignItems: 'center'
     },
     buttonText: {
         fontSize: 20,
-        color: '#fff',
-        paddingHorizontal: 50
+        color: '#fff'
     },
 })

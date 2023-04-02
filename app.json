@@ -21,6 +21,12 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.offer.youoffer",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDe_-maQXTeKOnHEKilBL5lcjKweuGYE-I"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -34,6 +40,10 @@
         "projectId": "bf189e94-81ad-4deb-9d3b-3de10662db11"
       }
     },
+    "permissions": [
+      "ACCESS_COARSE_LOCATION",
+      "ACCESS_FINE_LOCATION"
+    ],
     "owner": "kristina_gyk"
   }
 }

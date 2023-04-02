@@ -1,15 +1,15 @@
 import React from "react";
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert} from 'react-native';
-import {Keyboard} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, SafeAreaView, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Login } from "../Networking/LoginService/logineService";
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
+import { StatusBar } from 'react-native';
 
-export const LoginScreen = ({navigation}) => {
-  const [error, setError] = React.useState(false);
-  const [number, setNumbet] = React.useState('');
+export const LoginScreen = ({ navigation }) => {
+    const [error, setError] = React.useState(false);
+    const [number, setNumbet] = React.useState('');
 
     const pressHandler = () => {
         // sAsyncStorage.setItem('phone', number)
@@ -21,36 +21,36 @@ export const LoginScreen = ({navigation}) => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style = {styles.container}>
-            <Image source={require('../assets/logo.png')} style = {styles.imageStyle}/>
-            <Text style = {styles.textStyle}>Регистрация</Text>
-            <View style ={styles.phoneBlock}>
-            <TextInput style = {styles.codeTextInputStyle} 
-                        placeholder = '+375' 
-                        placeholderTextColor={'white'} 
-                        editable = {false}/> 
-            <TextInput style = {styles.phoneTextInputStyle} 
-                        onChangeText= {setNumbet} 
+            <SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'never' }}>
+                <Image source={require('../assets/logo.png')} style={styles.imageStyle} />
+                <Text style={styles.textStyle}>Регистрация</Text>
+                <View style={styles.phoneBlock}>
+                    <TextInput style={styles.codeTextInputStyle}
+                        placeholder='+375'
+                        placeholderTextColor={'white'}
+                        editable={false} />
+                    <TextInput style={styles.phoneTextInputStyle}
+                        onChangeText={setNumbet}
                         value={number}
-                        keyboardType= 'numeric'
-                        placeholder = "Номер телефона" 
+                        keyboardType='numeric'
+                        placeholder="Номер телефона"
                         maxLength={9}
-                        placeholderTextColor={'grey'}/> 
-        </View>
-        <TouchableOpacity style = {[styles.buttonStyle, {opacity: number.length == 9 ? 1 : 0.3}]} 
-                                    disabled = { number.length == 9 ? false : true }
-                                    onPress = {pressHandler}>
-            <Text style = {styles.buttonText}>Вход</Text>
-        </TouchableOpacity>
-        </View>
+                        placeholderTextColor={'grey'} />
+                </View>
+                <TouchableOpacity style={[styles.buttonStyle, { opacity: number.length == 9 ? 1 : 0.3 }]}
+                    disabled={number.length == 9 ? false : true}
+                    onPress={pressHandler}>
+                    <Text style={styles.buttonText}>Вход</Text>
+                </TouchableOpacity>
+            </SafeAreaView>
         </TouchableWithoutFeedback>
     )
-    }
+}
 
 const styles = StyleSheet.create({
     imageStyle: {
-       width: 120,
-       height: 120,
+        width: 120,
+        height: 120,
     },
     container: {
         flex: 1,
@@ -60,10 +60,10 @@ const styles = StyleSheet.create({
         paddingTop: 80
     },
     textStyle: {
-      color: 'white',
-      fontSize: 30,
-      paddingBottom: 10,
-      paddingTop: 30
+        color: 'white',
+        fontSize: 30,
+        paddingBottom: 10,
+        paddingTop: 30
     },
     phoneBlock: {
         flexDirection: 'row',
@@ -95,11 +95,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: '#57A167',
         opacity: 0.3,
-        textAlign: 'center'
+        alignItems: 'center'
     },
     buttonText: {
         fontSize: 20,
-        color: '#fff',
-        paddingHorizontal: 50
+        color: '#fff'
     },
 })

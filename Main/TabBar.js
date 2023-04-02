@@ -1,44 +1,62 @@
 import React from "react";
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert} from 'react-native';
-import {Keyboard} from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Coupon } from "./Coupon";
+import { CouponScreen } from "./Coupons/CouponScreen";
+import { CompanyScreen } from "./CompanyScreen";
+import { Map } from "../Map/Map";
 
-export const Coupon = ({navigation}) => {
-    return (
-        <NavigationContainer>
-          <Tab.Navigator screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
+const Tab = createBottomTabNavigator();
 
-            if (route.name === 'Coupon') {
-              iconName = focused
-                ? 'ios-information-circle'
-                : 'ios-information-circle-outline';
-            } else if (route.name === 'Coupon') {
-              iconName = focused ? 'ios-list' : 'ios-list-outline';
-            }
-
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: 'tomato',
-          tabBarInactiveTintColor: 'gray',
-        })}>
-             <Tab.Screen name="Coupon" component={Coupon} />
-             {/* <Tab.Screen name="Coupon" component={Coupon} /> */}
-          </Tab.Navigator>
-        </NavigationContainer>
-    )
-}  
+export const TabBar = ({ navigation }) => {
+  return (
+    <Tab.Navigator screenOptions = {{tabBarStyle: styles.tabBar, tabBarActiveTintColor: '#0EA47A'}}>
+      <Tab.Screen name="Акции" component={CouponScreen} options={{
+        tabBarIcon: ({focused}) => {
+          return (
+            <View>
+              <Image
+                source= {focused ? require('../assets/couponIconSelected.png') : require('../assets/couponIcon.png')}
+                resizeMode="contain"
+                style={{ width: 25 }}
+              /> 
+            </View>
+          );
+        },
+      headerShown: false}} />
+      <Tab.Screen name="Компании" component={CompanyScreen} options={{
+        tabBarIcon: ({ focused }) => {
+          return (
+            <View>
+              <Image
+                source={focused ? require('../assets/companyIconSelected.png') : require('../assets/companyIcon.png')}
+                resizeMode="contain"
+                style={{ width: 25 }}
+              />
+            </View>
+          );
+        },
+      headerShown: false}} />
+      <Tab.Screen name="Карта" component={Map} options={{
+        tabBarIcon: ({ focused }) => {
+          return (
+            <View>
+              <Image
+                source={focused ? require('../assets/mapIconSelected.png') : require('../assets/mapIcon.png')}
+                resizeMode="contain"
+                style={{ width: 25 }}
+              />
+            </View>
+          );
+        },
+      headerShown: false}} />
+    </Tab.Navigator>
+  )
+}
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        backgroundColor: 'red',
-        paddingTop: 80
-    }
+  tabBar: {
+    backgroundColor: 'black',
+    borderTopColor: '#434343',
+  }
 })
