@@ -15,6 +15,7 @@ import { Scan } from './Profile/Scan';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  console.log('11111111')
   return (
     <View style={{ flex: 1, paddingTop: 0, backgroundColor: 'black' }}>
       <StatusBar style={{ color: 'black' }} barStyle="dark-content" backgroundColor="black" />
