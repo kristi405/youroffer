@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import MapView, { Marker, MapStyle } from 'react-native-maps';
+import MapView from "react-native-map-clustering";
+import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import { useRef } from "react";
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,6 +10,25 @@ import * as Location from 'expo-location';
 import Modal from 'react-native-modal';
 
 export const Map = ({ navigation }) => {
+    const markers = [
+        { id: 0, coordinates: { latitude: 52.2503026, longitude: 20.9947617 } },
+        { id: 1, coordinates: { latitude: 52.2402027, longitude: 20.9847620 } },
+        { id: 2, coordinates: { latitude: 52.2835028, longitude: 20.9647620 } },
+        { id: 3, coordinates: { latitude: 52.2335028, longitude: 20.9647620 } },
+        { id: 4, coordinates: { latitude: 52.2135028, longitude: 20.9447620 } },
+        { id: 5, coordinates: { latitude: 52.2865028, longitude: 21.0047620 } },
+        { id: 6, coordinates: { latitude: 52.2815028, longitude: 21.0547620 } },
+        { id: 7, coordinates: { latitude: 52.2535028, longitude: 21.0747620 } },
+        { id: 8, coordinates: { latitude: 52.2235028, longitude: 21.0447620 } },
+        { id: 9, coordinates: { latitude: 52.2135028, longitude: 21.0347620 } },
+        { id: 10, coordinates: { latitude: 52.2035028, longitude: 21.0117620 } },
+        { id: 11, coordinates: { latitude: 52.2012028, longitude: 21.0297620 } },
+        { id: 12, coordinates: { latitude: 52.1735028, longitude: 21.0347620 } },
+        { id: 13, coordinates: { latitude: 52.1735028, longitude: 21.0207620 } },
+        { id: 14, coordinates: { latitude: 52.1635028, longitude: 21.0507620 } },
+        { id: 15, coordinates: { latitude: 52.1635028, longitude: 20.9997620 } },
+    ];
+
     const [location, setLocation] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -41,20 +61,30 @@ export const Map = ({ navigation }) => {
     return (
         <View style={styles.container}>
             {location ? (
-                <MapView style={styles.map} region={
+                <MapView style={styles.map} provider={PROVIDER_GOOGLE} region={
                     location
                         ? {
                             latitude: location.latitude,
                             longitude: location.longitude,
                             latitudeDelta: 0.03,
                             longitudeDelta: 0.03
-                        } : undefined}>
-                    <Marker onPress={() => setIsModalVisible(true)} pinColor="blue" title='Home' description='Hi andrey' coordinate={{ latitude: 52.2403025, longitude: 20.9947616 }}>
+                        } : undefined}
+                    clusterColor='red'
+                    cluster={true}
+                    clusterRadius={80}
+                    minimumClusterSize={10}>
+                    <Marker pinColor="blue" coordinate={location}>
                         <Image source={require('../assets/pin.png')} style={styles.imageContainer} />
                     </Marker>
-                    <Marker pinColor="blue" title='Home' description='Hi andrey' coordinate={{ latitude: 53.2403026, longitude: 20.9947617 }}>
-                        <Image source={require('../assets/pin.png')} style={styles.imageContainer} />
-                    </Marker>
+                    {markers.map((marker, index) => (
+                        <Marker
+                            key={index}
+                            coordinate={marker.coordinates}
+                            pinColor='red'
+                            onPress={(e) => setIsModalVisible(true)}
+                            tracksViewChanges={false}
+                        />
+                    ))}
                 </MapView>
             ) : (
                 <Text>{errorMsg || 'Waiting for location...'}</Text>
@@ -64,7 +94,7 @@ export const Map = ({ navigation }) => {
                     <View style={styles.modalContainer}>
                         <View style={styles.stackWithButton}>
                             <View style={styles.modalStack}>
-                                <Image source={require('../assets/444.jpg')} style={styles.image} />
+                                <Image source={require('../assets/333.webp')} style={styles.image} />
                                 <View style={styles.vetricalStack}>
                                     <Text style={styles.name}>My company</Text>
                                     <View style={styles.stack}>
@@ -87,9 +117,7 @@ export const Map = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        ...StyleSheet.absoluteFillObject,
     },
     modalStack: {
         width: '100%',
@@ -105,8 +133,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     map: {
-        width: '100%',
-        height: '100%',
+        ...StyleSheet.absoluteFillObject,
     },
     name: {
         color: 'white',
@@ -127,9 +154,9 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     imageContainer: {
-        width: 40,
-        height: 50,
-        tintColor: 'red',
+        width: 20,
+        height: 20,
+        tintColor: 'blue',
     },
     image: {
         width: 80,
@@ -181,9 +208,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 })
-  
-  
-  
-  
-  
-  
+
+
+
+
+

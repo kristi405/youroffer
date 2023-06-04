@@ -2,8 +2,9 @@ import React from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { PromotionView } from "./PromotionView";
 
-export const CouponDetailScreen = ({navigation, route}) => {
+export const CouponDetailScreen = ({ navigation, route }) => {
     const openQr = props => {
         navigation.navigate('QrCodeScreen')
     }
@@ -25,7 +26,11 @@ export const CouponDetailScreen = ({navigation, route}) => {
                 </View>
                 <Text style={styles.titleText}>{item.title}</Text>
                 <Text style={styles.descriptionText}>Описание акции:</Text>
+
                 <Text style={styles.contentText}>{item.description}</Text>
+                <View style={styles.circle}>
+                    <PromotionView />
+                </View>
             </View>
             <TouchableOpacity style={styles.buttonStyle} onPress={openQr}>
                 <Text style={styles.showPromotionText}>Сгенерировать QR код</Text>
@@ -40,13 +45,17 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: 'black',
-        paddingHorizontal: 20,
-        paddingBottom: 40
+        paddingHorizontal: 15,
+        paddingBottom: 40,
+        paddingTop: 5
     },
     descriptionContainer: {
         flex: 1,
         flexDirection: 'column',
         gap: 10,
+    },
+    circle: {
+        flexDirection: 'row'
     },
     imageContainer: {
         width: '100%',
@@ -98,7 +107,6 @@ const styles = StyleSheet.create({
     contentText: {
         fontSize: 12,
         color: '#fff',
-        paddingBottom: 40,
         opacity: 0.6
     },
     showPromotionText: {

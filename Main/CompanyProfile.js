@@ -5,6 +5,45 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 export const CompanyProfile = ({ navigation, route }) => {
+    const itemData = [
+        {
+          id: 0,
+          name: (<Text style={styles.headerStyle}>Progresso</Text>),
+          avatar: <Image source={require('../assets/avatar.png')} style={styles.avatar} />,
+          image: (<Image source={require('../assets/pizza.png')} style={styles.imageContainer} />),
+          title: (<Text style={styles.headerStyle}>Каждый 10 кофе в подарок</Text>),
+          favorite: false,
+          description: <Text style={styles.contentText}></Text>
+        },
+        {
+          id: 1,
+          name: (<Text style={styles.headerStyle}>BeautyFirm</Text>),
+          avatar: <Image source={require('../assets/avatar.png')} style={styles.avatar} />,
+          image: (<Image source={require('../assets/111.jpeg')} style={styles.imageContainer} />),
+          title: (<Text style={styles.headerStyle}>Приведи подругу и получи маникюр со скидкой 50: </Text>),
+          favorite: false,
+          description: <Text style={styles.contentText}>Получи скидку при покупке 3 роллов в четверг и пятницу. Акция действует только при предьявлении данного купона и распространяется на все виды роллов</Text>
+        },
+        {
+          id: 2,
+          name: (<Text style={styles.headerStyle}>АЛМИ</Text>),
+          avatar: <Image source={require('../assets/avatar.png')} style={styles.avatar} />,
+          image: (<Image source={require('../assets/333.webp')} style={styles.imageContainer} />),
+          title: (<Text style={styles.headerStyle}>При покупке от 100 рублей скидка 5%</Text>),
+          favorite: false,
+          description: <Text style={styles.contentText}>Получи скидку при покупке 3 роллов в четверг и пятницу. Акция действует только при предьявлении данного купона и распространяется на все виды роллов</Text>
+        },
+        {
+          id: 3,
+          name: (<Text style={styles.headerStyle}>Ташкент</Text>),
+          avatar: <Image source={require('../assets/avatar.png')} style={styles.avatar} />,
+          image: (<Image source={require('../assets/333.webp')} style={styles.imageContainer} />),
+          title: (<Text style={styles.headerStyle}>Каждую пятницу скидка 10% на все меню</Text>),
+          favorite: false,
+          description: <Text style={styles.contentText}>Получи скидку при покупке 3 роллов в четверг и пятницу. Акция действует только при предьявлении данного купона и распространяется на все виды роллов</Text>
+        }
+    ]
+
     const item = route?.params?.data
 
     const openDetail = item => {
@@ -28,7 +67,7 @@ export const CompanyProfile = ({ navigation, route }) => {
                     <Text style={styles.description}>Мы специализируемся на французской кухне, у нам большая винная карта. Также по выходным мы проводим закрытые мероприятия. Тел. +375(29)1234567 </Text>
                 </View>
             </View>
-            <Coupon openDetail={openDetail}/>
+            <Coupon openDetail={openDetail} itemData={itemData} />
         </View>
     )
 }
@@ -36,11 +75,13 @@ export const CompanyProfile = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        height: '100%',
         paddingHorizontal: 10,
         paddingTop: 5,
         alignItems: 'flex-start',
         backgroundColor: 'black',
-        gap: 15
+        gap: 15,
+        paddingBottom: 150
     },
     profile: {
         width: '100%',
@@ -81,6 +122,17 @@ const styles = StyleSheet.create({
         width: 14,
         height: 14,
     },
+    headerStyle: {
+        color: 'white',
+        paddingHorizontal: 10,
+        paddingTop: 10,
+      },
+      imageContainer: {
+        width: '100%',
+        height: 120,
+        borderRadius: 10,
+        opacity: 0.8
+      },
 })
 
 const newStyles = StyleSheet.create({

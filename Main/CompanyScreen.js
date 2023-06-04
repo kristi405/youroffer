@@ -49,9 +49,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: 40,
+        paddingTop: 44,
         backgroundColor: 'black',
-        paddingHorizontal: 10,
     },
     flatList: {
         width: '100%',
@@ -143,7 +142,7 @@ const itemData = [
     {
         id: 3,
         name: (<Text style={styles.nameStyle}>Ташкент</Text>),
-        image: (<Image source={require('../assets/444.jpg')} style={styles.imageContainer} />),
+        image: (<Image source={require('../assets/333.webp')} style={styles.imageContainer} />),
         time: (<Text style={styles.time}>14:00 - 02.00</Text>),
         rating: (<Text style={styles.mapText}>4.8</Text>),
         distance: (<Text style={styles.mapText}>1,2 км</Text>),

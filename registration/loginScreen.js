@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Login } from "../Networking/LoginService/logineService";
 import { AsyncStorage } from 'react-native';
 import { StatusBar } from 'react-native';
+import AuthStore from '../store/Auth'
 
 export const LoginScreen = ({ navigation }) => {
     const [error, setError] = React.useState(false);
@@ -14,14 +15,15 @@ export const LoginScreen = ({ navigation }) => {
     const pressHandler = () => {
         // sAsyncStorage.setItem('phone', number)
         console.log('1111', number)
-        Login(number)
+        // Login(number)
+        AuthStore.getPin(number)
         setNumbet('')
         navigation.navigate('CodeScreen')
     }
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'never' }}>
+            <View style={styles.container}>
                 <Image source={require('../assets/logo.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Регистрация</Text>
                 <View style={styles.phoneBlock}>
@@ -42,7 +44,7 @@ export const LoginScreen = ({ navigation }) => {
                     onPress={pressHandler}>
                     <Text style={styles.buttonText}>Вход</Text>
                 </TouchableOpacity>
-            </SafeAreaView>
+            </View>
         </TouchableWithoutFeedback>
     )
 }

@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { Code } from "../Networking/LoginService/logineService";
 import {AsyncStorage} from 'react-native';
-
+import AuthStore from '../store/Auth'
 
 export const CodeScreen = ({navigation}) => {
     const [number, setNumbet] = React.useState('');
@@ -14,6 +14,7 @@ export const CodeScreen = ({navigation}) => {
         // const phone = await AsyncStorage.getItem('phone').toString()
         // console.log('222', phone)
         // Code(phone, number)
+        AuthStore.setPin(number)
         setNumbet('')
         navigation.navigate('CreateUserScreen')
     }
