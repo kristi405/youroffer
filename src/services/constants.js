@@ -4,15 +4,15 @@ export const REQUEST_STATUS = {
 }
 
 export const SEX_TO_STIRNG = {
-    1: 'male',
-    2: 'female',
-    3: 'not_specified'
+    0: 'male',
+    1: 'female',
+    // 3: 'not_specified'
 }
 
 export const SEX_TO_NUMBER = {
-    'male': 1,
-    'female': 2,
-    'not_specified': 3
+    'male': 0,
+    'female': 1,
+    // 'not_specified': 3
 }
 
 

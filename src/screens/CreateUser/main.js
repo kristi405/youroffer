@@ -1,34 +1,35 @@
 import React from "react";
 import { useEffect, useState } from 'react';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert} from 'react-native';
-import {Keyboard} from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
+import { Keyboard } from 'react-native';
 import SwitchSelector from "react-native-switch-selector";
 import AuthStore from '../../stores/auth'
 import { getUser } from '../../services/auth'
-import {  REQUEST_STATUS, SEX_TO_NUMBER, SEX_TO_STIRNG } from '../../services/constants'
+import { REQUEST_STATUS, SEX_TO_NUMBER, SEX_TO_STIRNG } from '../../services/constants'
+import { MaskedTextInput } from "react-native-mask-text";
 
 const SEX_OPTIONS = [
     { label: "Мужской", value: 1 },
     { label: "Женский", value: 2 }
 ];
 
-export const CreateUserScreen = ({navigation}) => {
+export const CreateUserScreen = ({ navigation }) => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
-    const [birsday, setBirsday] = useState('');
+    const [bdate, setBirsday] = useState('');
     const [email, setEmail] = useState('');
-    const [gender, setGender] = useState(1);
+    const [sex, setSex] = useState(1);
 
     const pressHandler = async () => {
-        console.log('aaaaaaa', gender, SEX_TO_STIRNG[gender])
         const status = await AuthStore.updateUser({
             name,
             surname,
+            bdate,
             email,
-            gender: SEX_TO_STIRNG[gender]
+            sex: SEX_TO_STIRNG[sex]
         })
 
-        if (status ===  REQUEST_STATUS.success) {
+        if (status === REQUEST_STATUS.success) {
             navigation.navigate('CouponScreen')
         }
     }
@@ -39,63 +40,67 @@ export const CreateUserScreen = ({navigation}) => {
             setSurname(user.surname)
             setEmail(user.email)
             setBirsday(user.bdate)
-            setGender(SEX_TO_NUMBER[user.sex] ? SEX_TO_NUMBER[user.sex] : 1 )
+            setSex(SEX_TO_NUMBER[user.sex] ? SEX_TO_NUMBER[user.sex] : 1)
         })
     }, []);
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style = {styles.container}>
-            <Text style = {styles.textStyle}>Заполните ваши данные</Text>
-            <View style ={styles.createUserBlock}>
-            <TextInput style = {styles.codeInputStyle}
-                        onChangeText= {setName}
+            <View style={styles.container}>
+                <Text style={styles.textStyle}>Заполните ваши данные</Text>
+                <View style={styles.createUserBlock}>
+                    <TextInput style={styles.codeInputStyle}
+                        onChangeText={setName}
                         value={name}
-                        keyboardType= 'default'
-                        placeholder = "Имя"
+                        keyboardType='default'
+                        placeholder="Имя"
                         maxLength={20}
-                        placeholderTextColor={'grey'}/>
-            <TextInput style = {styles.codeInputStyle}
-                        onChangeText= {setSurname}
+                        placeholderTextColor={'grey'} />
+                    <TextInput style={styles.codeInputStyle}
+                        onChangeText={setSurname}
                         value={surname}
-                        keyboardType= 'default'
-                        placeholder = "Фамилия"
+                        keyboardType='default'
+                        placeholder="Фамилия"
                         maxLength={30}
-                        placeholderTextColor={'grey'}/>
-            <SwitchSelector style = {styles.switcherStyle}
+                        placeholderTextColor={'grey'} />
+                    <SwitchSelector style={styles.switcherStyle}
                         initial={0}
-                        onPress={(e) => {setGender(e)}}
-                        value={gender}
-                        backgroundColor= 'black'
-                        textColor= 'gray'
-                        selectedColor= 'black'
-                        buttonColor= 'gray'
-                        borderColor= 'gray'
-                        borderRadius = {8}
+                        onPress={(value) => { setSex(value) }}
+                        backgroundColor='black'
+                        textColor='gray'
+                        selectedColor='black'
+                        buttonColor='gray'
+                        borderColor='gray'
+                        borderRadius={8}
                         hasPadding
-                        options={SEX_OPTIONS}/>
-            <TextInput style = {styles.codeInputStyle}
+                        options={SEX_OPTIONS} />
+                    <MaskedTextInput style={styles.codeInputStyle}
+                        mask="99.99.9999"
+                        type="date"
+                        options={{
+                            dateFormat: 'DD.MM.YYYY',
+                        }}
                         onChangeText={setBirsday}
-                        value={birsday}
-                        keyboardType= 'number-pad'
-                        placeholder = "Дата Рождения"
-                        maxLength={20}
-                        placeholderTextColor={'grey'}/>
-            <TextInput style = {styles.codeInputStyle}
+                        value={bdate}
+                        keyboardType='number-pad'
+                        placeholder="Дата Рождения (дд.мм.гггг)"
+                        placeholderTextColor={'grey'} />
+                    <TextInput style={styles.codeInputStyle}
                         onChangeText={setEmail}
                         value={email}
-                        keyboardType= 'email-address'
-                        placeholder = "e-mail"
+                        keyboardType='email-address'
+                        placeholder="e-mail"
                         maxLength={30}
-                        placeholderTextColor={'grey'}/>
+                        placeholderTextColor={'grey'} />
                 </View>
-            <TouchableOpacity
-                style = {[styles.buttonStyle]}
-                onPress = {pressHandler}
-            >
-                <Text style = {styles.buttonText}>Вход</Text>
-            </TouchableOpacity>
-        </View>
+                <TouchableOpacity
+                    style={[styles.buttonStyle, {opacity: name != null && surname != null && email != null && bdate != null  ? 1 : 0.3}]}
+                    disabled={name != null && surname != null && email != null && bdate != null ? false : true}
+                    onPress={pressHandler}
+                >
+                    <Text style={styles.buttonText}>Вход</Text>
+                </TouchableOpacity>
+            </View>
         </TouchableWithoutFeedback>
     )
 }
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingBottom: 20,
         paddingTop: 30
-      },
+    },
     createUserBlock: {
         width: '90%',
         flexDirection: 'column',

@@ -3,6 +3,7 @@ import api from '../services/api'
 import { REQUEST_STATUS, SEX } from '../services/constants'
 import MainStore from './main'
 import { setSession, setUser, getUser } from '../services/auth'
+import { isSearchBarAvailableForCurrentPlatform } from 'react-native-screens'
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -47,6 +48,7 @@ class AuthStore {
         let status =  REQUEST_STATUS.success
         try {
             const userToUpdate = await userToApi(user)
+            console.log('eeeeee', userToUpdate)
             const resp = await api.patch('/api/v1/user/update', userToUpdate)
             await setUser(resp.data)
         } catch (e) {
@@ -61,8 +63,7 @@ async function userToApi(user) {
     const id = (await getUser()).id
     return {
         ...user,
-        id,
-        sex: SEX[user.sex]
+        id
     }
 }
 

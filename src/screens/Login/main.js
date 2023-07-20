@@ -10,6 +10,7 @@ export const LoginScreen = ({ navigation }) => {
 
     const setNumber = async() => {
         const status = await AuthStore.getPin(number)
+        console.log(number)
         if (status ===  REQUEST_STATUS.success) {
             navigation.navigate('CodeScreen')
         }
