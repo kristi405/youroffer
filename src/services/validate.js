@@ -19,6 +19,7 @@ export const validate = (validateData, validateConfig) => {
   let isValid = true;
   for (const key in validateConfig) {
     if (validateConfig[key].rules.includes(VALIDATE_RULES.required)) {
+      console.log('key')
       if (!validateData[key]) {
         validateConfig[key].isValid = false
         isValid = false
@@ -48,6 +49,12 @@ export const validate = (validateData, validateConfig) => {
 
 export const resetValidation = (validateConfig) => {
   for (const key in validateConfig) {
+    validateConfig[key].isValid = true
+  }
+}
+
+export const resetValidationByKey = (validateConfig, key) => {
+  if (validateConfig[key]) {
     validateConfig[key].isValid = true
   }
 }

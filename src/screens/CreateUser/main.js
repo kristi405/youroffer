@@ -40,7 +40,8 @@ export const CreateUserScreen = ({ navigation }) => {
     const [bdate, setBirsday] = useState('');
     const [email, setEmail] = useState('');
     const [sex, setSex] = useState(1);
-
+    const [isValid, setIsValid] = useState(true);
+    const [inputBorderStyle, setInputBorderStyle] = useState(styles.validInput);
 
     const pressHandler = async () => {
         const data =  {
@@ -50,8 +51,12 @@ export const CreateUserScreen = ({ navigation }) => {
             email,
             sex: SEX_TO_STIRNG[sex]
         }
-        const test = validateStroe.validate(data)
-
+        console.log('Name', validateStroe.name)
+        const test = validateStroe.validate(data, validateStroe)
+        setIsValid(validateStroe.schema.name.isValid)
+        console.log('test', validateStroe.schema.name.isValid)
+        // changeBorder(validateStroe.schema.name.isValid)
+        setInputBorderStyle(styles.invalidInput)
         console.log('CreateUserScreen', test, validateStroe.schema)
 
 
@@ -72,19 +77,25 @@ export const CreateUserScreen = ({ navigation }) => {
         })
     }, []);
 
+    function changeBorder(isValid, e) {
+        console.log('11111111', validateStroe.schema.name.isValid);
+        console.log('11111111', e, isValid);
+        return isValid ? styles.validInput : styles.invalidInput;
+    }
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
                 <Text style={styles.textStyle}>Заполните ваши данные</Text>
                 <View style={styles.createUserBlock}>
-                    <TextInput style={styles.codeInputStyle}
-                        onChangeText={setName}
+                    <TextInput style={[styles.codeInputStyle, changeBorder(validateStroe.schema.name.isValid, 'eeeeeeee')]}
+                        onChangeText={(v) => {setName(v); validateStroe.resetValidationByKey('name')}}
                         value={name}
                         keyboardType='default'
                         placeholder="Имя"
                         maxLength={20}
                         placeholderTextColor={'grey'} />
-                    <TextInput style={styles.codeInputStyle}
+                    <TextInput style={[styles.codeInputStyle,]}// changeBorder(validateStroe.schema.surname.isValid)]}
                         onChangeText={setSurname}
                         value={surname}
                         keyboardType='default'
@@ -102,7 +113,7 @@ export const CreateUserScreen = ({ navigation }) => {
                         borderRadius={8}
                         hasPadding
                         options={SEX_OPTIONS} />
-                    <MaskedTextInput style={styles.codeInputStyle}
+                    <MaskedTextInput style={[styles.codeInputStyle,]}// changeBorder(validateStroe.schema.bdate.isValid)]}
                         mask="99.99.9999"
                         type="date"
                         options={{
@@ -113,7 +124,7 @@ export const CreateUserScreen = ({ navigation }) => {
                         keyboardType='number-pad'
                         placeholder="Дата Рождения (дд.мм.гггг)"
                         placeholderTextColor={'grey'} />
-                    <TextInput style={styles.codeInputStyle}
+                    <TextInput style={[styles.codeInputStyle,]}// changeBorder(validateStroe.schema.email.isValid)]}
                         onChangeText={setEmail}
                         value={email}
                         keyboardType='email-address'
@@ -122,7 +133,7 @@ export const CreateUserScreen = ({ navigation }) => {
                         placeholderTextColor={'grey'} />
                 </View>
                 <TouchableOpacity
-                    style={[styles.buttonStyle, {opacity: name != null && surname != null && email != null && bdate != null  ? 1 : 0.3}]}
+                    style={[styles.buttonStyle, { opacity: name != null && surname != null && email != null && bdate != null ? 1 : 0.3 }]}
                     // disabled={name != null && surname != null && email != null && bdate != null ? false : true}
                     onPress={pressHandler}
                 >
@@ -182,5 +193,11 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 20,
         color: '#fff'
+    },
+    validInput: {
+        borderColor: 'gray',
+    },
+    invalidInput: {
+        borderColor: 'red'
     },
 })
