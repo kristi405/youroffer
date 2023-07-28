@@ -6,19 +6,23 @@ class ValidateStore {
 
   constructor(schema) {
     this.schema = schema;
-    makeAutoObservable(this, {}, { deep: true })
+    makeAutoObservable(this)
   }
 
   validate(data) {
-    return validate(data, this.schema)
+    const isValid = validate(data, this.schema)
+    this.schema = {...this.schema}
+    return isValid
   }
 
-  resetValidation() { 
+  resetValidation() {
     resetValidation(this.schema)
+    this.schema = {...this.schema}
   }
 
   resetValidationByKey(key) {
     resetValidationByKey(this.schema, key)
+    this.schema = {...this.schema}
   }
 }
 
