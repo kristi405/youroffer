@@ -3,7 +3,7 @@ import { getToken } from './auth'
 
 const api = axios.create({
   timeout: 100000,
-  baseURL: 'http://192.168.0.112:8888/',
+  baseURL: 'http://192.168.96.188:8888/',
   headers: {
     'Content-Type': 'application/json'
   },

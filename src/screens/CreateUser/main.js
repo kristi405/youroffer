@@ -1,12 +1,33 @@
-import React from "react";
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
-import { Keyboard } from 'react-native';
-import SwitchSelector from "react-native-switch-selector";
+import React from "react"
+import { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native'
+import { Keyboard } from 'react-native'
+import SwitchSelector from "react-native-switch-selector"
 import AuthStore from '../../stores/auth'
+import ValidateStore from '../../stores/validate'
 import { getUser } from '../../services/auth'
 import { REQUEST_STATUS, SEX_TO_NUMBER, SEX_TO_STIRNG } from '../../services/constants'
-import { MaskedTextInput } from "react-native-mask-text";
+import { MaskedTextInput } from "react-native-mask-text"
+import { validate, VALIDATE_RULES } from '../../services/validate'
+
+const validateStroe = new ValidateStore({
+    name: {
+      isValid: true,
+      rules: [VALIDATE_RULES.required]
+    },
+    surname: {
+        isValid: true,
+        rules: [VALIDATE_RULES.required]
+    },
+    bdate: {
+        isValid: true,
+        rules: [VALIDATE_RULES.required, VALIDATE_RULES.date]
+    },
+    email: {
+        isValid: true,
+        rules: [VALIDATE_RULES.email]
+    }
+})
 
 const SEX_OPTIONS = [
     { label: "Мужской", value: 1 },
@@ -20,18 +41,25 @@ export const CreateUserScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [sex, setSex] = useState(1);
 
+
     const pressHandler = async () => {
-        const status = await AuthStore.updateUser({
+        const data =  {
             name,
             surname,
             bdate,
             email,
             sex: SEX_TO_STIRNG[sex]
-        })
-
-        if (status === REQUEST_STATUS.success) {
-            navigation.navigate('CouponScreen')
         }
+        const test = validateStroe.validate(data)
+
+        console.log('CreateUserScreen', test, validateStroe.schema)
+
+
+        // const status = await AuthStore.updateUser(data)
+
+        // if (status === REQUEST_STATUS.success) {
+        //     navigation.navigate('CouponScreen')
+        // }
     }
 
     useEffect(() => {
@@ -95,7 +123,7 @@ export const CreateUserScreen = ({ navigation }) => {
                 </View>
                 <TouchableOpacity
                     style={[styles.buttonStyle, {opacity: name != null && surname != null && email != null && bdate != null  ? 1 : 0.3}]}
-                    disabled={name != null && surname != null && email != null && bdate != null ? false : true}
+                    // disabled={name != null && surname != null && email != null && bdate != null ? false : true}
                     onPress={pressHandler}
                 >
                     <Text style={styles.buttonText}>Вход</Text>
@@ -134,6 +162,9 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: 'gray',
         borderRadius: 8,
+    },
+    codeInputError: {
+        borderColor: 'red',
     },
     switcherStyle: {
         margin: 5,
