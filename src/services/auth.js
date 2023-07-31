@@ -1,11 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SEX_TO_NUMBER } from '../services/constants'
 
 const CAHCE = {}
 const keyPrefix = '$$MYOFFER$$:'
 
 export const setUser = async (user) => {
     try {
+        console.log('ffffffffff', user)
         const key = keyPrefix + 'USER'
+        user.sex = SEX_TO_NUMBER[user?.sex] ? SEX_TO_NUMBER[user?.sex] : 1
+        console.log('ffffffffff', user)
         CAHCE[key] = user
         await AsyncStorage.setItem(key, JSON.stringify(user));
     } catch (error) {
@@ -19,7 +23,6 @@ export const getUser = async () => {
         if (CAHCE[key]) return CAHCE[key];
         const user = await AsyncStorage.getItem(key);
         CAHCE[key] = JSON.parse(user)
-        console.log('33333333333333', user)
         return CAHCE[key]
     } catch (error) {
         console.log(error)

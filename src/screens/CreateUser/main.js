@@ -8,7 +8,9 @@ import ValidateStore from '../../stores/validate'
 import { getUser } from '../../services/auth'
 import { REQUEST_STATUS, SEX_TO_NUMBER, SEX_TO_STIRNG } from '../../services/constants'
 import { MaskedTextInput } from "react-native-mask-text"
-import { validate, VALIDATE_RULES } from '../../services/validate'
+import { VALIDATE_RULES } from '../../services/validate'
+import { observer } from "mobx-react-lite"
+import dayjs from 'dayjs'
 
 const validateStroe = new ValidateStore({
     name: {
@@ -34,14 +36,12 @@ const SEX_OPTIONS = [
     { label: "Женский", value: 2 }
 ];
 
-export const CreateUserScreen = ({ navigation }) => {
+export const CreateUserScreen = observer(({ navigation }) => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [bdate, setBirsday] = useState('');
     const [email, setEmail] = useState('');
     const [sex, setSex] = useState(1);
-    const [isValid, setIsValid] = useState(true);
-    const [inputBorderStyle, setInputBorderStyle] = useState(styles.validInput);
 
     const pressHandler = async () => {
         const data =  {
@@ -49,19 +49,14 @@ export const CreateUserScreen = ({ navigation }) => {
             surname,
             bdate,
             email,
-            sex: SEX_TO_STIRNG[sex]
+            sex
         }
-        console.log('Name', validateStroe.name)
-        const test = validateStroe.validate(data, validateStroe)
-        setIsValid(validateStroe.schema.name.isValid)
-        console.log('test', validateStroe.schema.name.isValid)
-        // changeBorder(validateStroe.schema.name.isValid)
-        setInputBorderStyle(styles.invalidInput)
-        console.log('CreateUserScreen', test, validateStroe.schema)
 
+        console.log(1111111, sex,  SEX_TO_STIRNG[sex])
 
-        // const status = await AuthStore.updateUser(data)
+        if (!validateStroe.validate(data)) return;
 
+        const status = await AuthStore.updateUser(data)
         // if (status === REQUEST_STATUS.success) {
         //     navigation.navigate('CouponScreen')
         // }
@@ -69,18 +64,20 @@ export const CreateUserScreen = ({ navigation }) => {
 
     useEffect(() => {
         getUser().then((user) => {
-            setName(user.name)
-            setSurname(user.surname)
-            setEmail(user.email)
-            setBirsday(user.bdate)
-            setSex(SEX_TO_NUMBER[user.sex] ? SEX_TO_NUMBER[user.sex] : 1)
+            setName(user?.name)
+            setSurname(user?.surname)
+            setEmail(user?.email)
+            setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY'): '')
+            setSex(user?.sex)
         })
     }, []);
 
-    function changeBorder(isValid, e) {
-        console.log('11111111', validateStroe.schema.name.isValid);
-        console.log('11111111', e, isValid);
-        return isValid ? styles.validInput : styles.invalidInput;
+    function changeBorder(key) {
+        return validateStroe.schema[key].isValid ? styles.validInput : styles.invalidInput;
+    }
+
+    function resetValidation(key) {
+        validateStroe.resetValidationByKey(key)
     }
 
     return (
@@ -88,15 +85,15 @@ export const CreateUserScreen = ({ navigation }) => {
             <View style={styles.container}>
                 <Text style={styles.textStyle}>Заполните ваши данные</Text>
                 <View style={styles.createUserBlock}>
-                    <TextInput style={[styles.codeInputStyle, changeBorder(validateStroe.schema.name.isValid, 'eeeeeeee')]}
-                        onChangeText={(v) => {setName(v); validateStroe.resetValidationByKey('name')}}
+                    <TextInput style={[styles.codeInputStyle, changeBorder('name')]}
+                        onChangeText={(v) => {setName(v); resetValidation('name')}}
                         value={name}
                         keyboardType='default'
                         placeholder="Имя"
                         maxLength={20}
                         placeholderTextColor={'grey'} />
-                    <TextInput style={[styles.codeInputStyle,]}// changeBorder(validateStroe.schema.surname.isValid)]}
-                        onChangeText={setSurname}
+                    <TextInput style={[styles.codeInputStyle, changeBorder('surname')]}
+                        onChangeText={(v) => {setSurname(v); resetValidation('surname')}}
                         value={surname}
                         keyboardType='default'
                         placeholder="Фамилия"
@@ -104,7 +101,7 @@ export const CreateUserScreen = ({ navigation }) => {
                         placeholderTextColor={'grey'} />
                     <SwitchSelector style={styles.switcherStyle}
                         initial={0}
-                        onPress={(value) => { setSex(value) }}
+                        onPress={(value) => { console.log('0000', value); setSex(value) }}
                         backgroundColor='black'
                         textColor='gray'
                         selectedColor='black'
@@ -113,19 +110,19 @@ export const CreateUserScreen = ({ navigation }) => {
                         borderRadius={8}
                         hasPadding
                         options={SEX_OPTIONS} />
-                    <MaskedTextInput style={[styles.codeInputStyle,]}// changeBorder(validateStroe.schema.bdate.isValid)]}
+                    <MaskedTextInput style={[styles.codeInputStyle, changeBorder('bdate')]}
                         mask="99.99.9999"
                         type="date"
                         options={{
                             dateFormat: 'DD.MM.YYYY',
                         }}
-                        onChangeText={setBirsday}
+                        onChangeText={(v) => {setBirsday(v); resetValidation('bdate')}}
                         value={bdate}
                         keyboardType='number-pad'
                         placeholder="Дата Рождения (дд.мм.гггг)"
                         placeholderTextColor={'grey'} />
-                    <TextInput style={[styles.codeInputStyle,]}// changeBorder(validateStroe.schema.email.isValid)]}
-                        onChangeText={setEmail}
+                    <TextInput style={[styles.codeInputStyle, changeBorder('email')]}
+                        onChangeText={(v) => {setEmail(v); resetValidation('email')}}
                         value={email}
                         keyboardType='email-address'
                         placeholder="e-mail"
@@ -133,8 +130,7 @@ export const CreateUserScreen = ({ navigation }) => {
                         placeholderTextColor={'grey'} />
                 </View>
                 <TouchableOpacity
-                    style={[styles.buttonStyle, { opacity: name != null && surname != null && email != null && bdate != null ? 1 : 0.3 }]}
-                    // disabled={name != null && surname != null && email != null && bdate != null ? false : true}
+                    style={[styles.buttonStyle]}
                     onPress={pressHandler}
                 >
                     <Text style={styles.buttonText}>Вход</Text>
@@ -142,7 +138,7 @@ export const CreateUserScreen = ({ navigation }) => {
             </View>
         </TouchableWithoutFeedback>
     )
-}
+})
 
 const styles = StyleSheet.create({
     container: {
@@ -187,7 +183,6 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 8,
         backgroundColor: '#57A167',
-        opacity: 0.3,
         alignItems: 'center'
     },
     buttonText: {

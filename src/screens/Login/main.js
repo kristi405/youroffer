@@ -9,11 +9,11 @@ export const LoginScreen = ({ navigation }) => {
     const [number, setNumbet] = React.useState('');
 
     const setNumber = async() => {
-        // const status = await AuthStore.getPin(number)
+        const status = await AuthStore.getPin(number)
         console.log(number)
-        // if (status ===  REQUEST_STATUS.success) {
+        if (status ===  REQUEST_STATUS.success) {
             navigation.navigate('CodeScreen')
-        // }
+        }
     }
 
     return (

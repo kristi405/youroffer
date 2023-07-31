@@ -15,11 +15,9 @@ export const VALIDATE_RULES = {
 }
 
 export const validate = (validateData, validateConfig) => {
-  console.log('validate', validateData, validateConfig)
   let isValid = true;
   for (const key in validateConfig) {
     if (validateConfig[key].rules.includes(VALIDATE_RULES.required)) {
-      console.log('key')
       if (!validateData[key]) {
         validateConfig[key].isValid = false
         isValid = false

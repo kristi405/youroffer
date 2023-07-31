@@ -10,19 +10,16 @@ class ValidateStore {
   }
 
   validate(data) {
-    const isValid = validate(data, this.schema)
-    this.schema = {...this.schema}
-    return isValid
+    return validate(data, this.schema)
   }
 
   resetValidation() {
     resetValidation(this.schema)
-    this.schema = {...this.schema}
+
   }
 
   resetValidationByKey(key) {
     resetValidationByKey(this.schema, key)
-    this.schema = {...this.schema}
   }
 }
 

@@ -1,9 +1,8 @@
 import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
-import { REQUEST_STATUS, SEX } from '../services/constants'
+import { REQUEST_STATUS, SEX, SEX_TO_STIRNG } from '../services/constants'
 import MainStore from './main'
 import { setSession, setUser, getUser } from '../services/auth'
-import { isSearchBarAvailableForCurrentPlatform } from 'react-native-screens'
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -39,7 +38,7 @@ class AuthStore {
             await setUser(resp.data.user)
         } catch (e) {
             status =  REQUEST_STATUS.error
-            console.log(e)
+            console.log(e.message)
         }
         return status
     }
@@ -48,12 +47,11 @@ class AuthStore {
         let status =  REQUEST_STATUS.success
         try {
             const userToUpdate = await userToApi(user)
-            console.log('eeeeee', userToUpdate)
             const resp = await api.patch('/api/v1/user/update', userToUpdate)
             await setUser(resp.data)
         } catch (e) {
             status =  REQUEST_STATUS.error
-            console.log(e)
+            console.log(e.message)
         }
         return status
     }
@@ -61,14 +59,23 @@ class AuthStore {
 
 async function userToApi(user) {
     const id = (await getUser()).id
+    const sex = SEX_TO_STIRNG[user.sex]
+    if (user.bdate) {
+        const [day, month, year] = user.bdate.split('.');
+        user.bdate = `${year}-${month}-${day}`
+    }
+
     return {
         ...user,
+        sex,
         id
     }
 }
 
 async function userFromApi(user) {
     const id = (await getUser()).id
+    const [day, month, year] = user.bdate.split('.');
+
     return {
         ...user,
         id,

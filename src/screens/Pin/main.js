@@ -9,10 +9,10 @@ export const CodeScreen = ({navigation}) => {
     const [number, setNumbet] = React.useState('');
 
     const pressHandler = async () => {
-        // const status = await AuthStore.setPin(number)
-        // if (status ===  REQUEST_STATUS.success) {
+        const status = await AuthStore.setPin(number)
+        if (status ===  REQUEST_STATUS.success) {
             navigation.navigate('CreateUserScreen')
-        // }
+        }
     }
 
       return (
