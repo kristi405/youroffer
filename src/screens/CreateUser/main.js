@@ -52,14 +52,12 @@ export const CreateUserScreen = observer(({ navigation }) => {
             sex
         }
 
-        console.log(1111111, sex,  SEX_TO_STIRNG[sex])
-
         if (!validateStroe.validate(data)) return;
 
         const status = await AuthStore.updateUser(data)
-        // if (status === REQUEST_STATUS.success) {
-        //     navigation.navigate('CouponScreen')
-        // }
+        if (status === REQUEST_STATUS.success) {
+            navigation.navigate('CouponScreen')
+        }
     }
 
     useEffect(() => {
@@ -100,7 +98,7 @@ export const CreateUserScreen = observer(({ navigation }) => {
                         maxLength={30}
                         placeholderTextColor={'grey'} />
                     <SwitchSelector style={styles.switcherStyle}
-                        initial={0}
+                        initial={sex}
                         onPress={(value) => { console.log('0000', value); setSex(value) }}
                         backgroundColor='black'
                         textColor='gray'

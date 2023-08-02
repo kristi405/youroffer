@@ -1,10 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS, SEX, SEX_TO_STIRNG } from '../services/constants'
-import MainStore from './main'
 import { setSession, setUser, getUser } from '../services/auth'
-
-const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 class AuthStore {
     phone = null
@@ -16,7 +13,6 @@ class AuthStore {
     }
 
     async getPin(phone) {
-        /// MainStore.loaderStart()
         let status =  REQUEST_STATUS.success
         try {
             this.phone = phone
@@ -26,7 +22,7 @@ class AuthStore {
             status =  REQUEST_STATUS.error
             console.log(e.message)
         }
-        /// MainStore.loaderStop()
+
         return status
     }
 

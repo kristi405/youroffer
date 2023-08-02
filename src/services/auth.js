@@ -6,10 +6,8 @@ const keyPrefix = '$$MYOFFER$$:'
 
 export const setUser = async (user) => {
     try {
-        console.log('ffffffffff', user)
         const key = keyPrefix + 'USER'
         user.sex = SEX_TO_NUMBER[user?.sex] ? SEX_TO_NUMBER[user?.sex] : 1
-        console.log('ffffffffff', user)
         CAHCE[key] = user
         await AsyncStorage.setItem(key, JSON.stringify(user));
     } catch (error) {

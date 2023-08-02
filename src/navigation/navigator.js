@@ -8,6 +8,7 @@ import { CouponDetailScreen } from '../screens/Promotion/main';
 import { QrCodeScreen } from '../screens/QrCode/main';
 import { CompanyProfile } from '../screens/BusinessPoint/main'
 import { EditScreen } from '../screens/EditUser/main';
+import { OnboardingScreen } from '../screens/Onboarding/main';
 import { Scan } from '../screens/QrCodeScan/main'
 
 const Stack = createNativeStackNavigator();
@@ -16,6 +17,11 @@ export const Navigator = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator>
+            <Stack.Screen
+                name="OnboardingScreen"
+                component={OnboardingScreen}
+                options={{ headerShown: false }}
+            />
             <Stack.Screen
                 name="LoginScreen"
                 component={LoginScreen}

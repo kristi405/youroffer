@@ -1,20 +1,28 @@
-import React from "react";
+import { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Keyboard } from 'react-native';
 import AuthStore from '../../stores/auth'
 import {  REQUEST_STATUS } from '../../services/constants'
+import { getSession } from '../../services/auth'
 
 export const LoginScreen = ({ navigation }) => {
 
-    const [number, setNumbet] = React.useState('');
+    const [number, setNumbet] = useState('');
 
     const setNumber = async() => {
         const status = await AuthStore.getPin(number)
-        console.log(number)
         if (status ===  REQUEST_STATUS.success) {
             navigation.navigate('CodeScreen')
         }
     }
+
+    useEffect(() => {
+        getSession().then((session) => {
+            if (session && session.token) {
+                navigation.navigate('CouponScreen')
+            }
+        })
+    }, []);
 
     return (
         <TouchableWithoutFeedback

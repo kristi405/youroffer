@@ -1,31 +1,31 @@
 import React from "react";
+import { useEffect, useState } from 'react'
 import { StyleSheet, View, SafeAreaView, Text, Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Category } from "./components/Category";
 import { Coupon } from "./components/Coupons";
 import { Segments } from "./components/Segments";
+import PromotionStore from "../../stores/promotion"
+import { observer } from "mobx-react-lite"
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      flexDirection: 'column',
-      alignItems: 'center',
-      backgroundColor: 'black',
-      paddingHorizontal: 10,
-      gap: 16
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    paddingHorizontal: 10,
+    gap: 16
   },
   headerStyle: {
-      color: 'white',
-      paddingHorizontal: 10,
-      paddingTop: 10,
-    },
-    imageContainer: {
-      width: '100%',
-      height: 120,
-      borderRadius: 10,
-      opacity: 0.8
-    },
+    color: 'white',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+  },
+  imageContainer: {
+    width: '100%',
+    height: 120,
+    borderRadius: 10,
+    opacity: 0.8
+  },
 })
 
 const itemData = [
@@ -101,18 +101,21 @@ const itemData = [
       favorite: false,
       description: <Text style={styles.contentText}>Получи скидку при покупке 3 роллов в четверг и пятницу. Акция действует только при предьявлении данного купона и распространяется на все виды роллов</Text>
     }
-  ]
+]
 
-export const CouponScreen = ({ navigation }) => {
+export const CouponScreen = observer(({ navigation }) => {
     const openDetail = item => {
         navigation.navigate('CouponDetailScreen', {data: item})
     }
 
+    useEffect(() => {
+      PromotionStore.getList()
+    }, []);
+
     return (
-        <SafeAreaView style={styles.container}>
-            {/* <Category style={styles.category} /> */}
-            <Segments/>
-            <Coupon openDetail={openDetail} itemData={itemData} />
-        </SafeAreaView>
+      <SafeAreaView style={styles.container}>
+          <Segments/>
+          <Coupon openDetail={openDetail} itemData={PromotionStore.list} />
+      </SafeAreaView>
     )
-}
+})
