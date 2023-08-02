@@ -12,10 +12,10 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <View style={styles.descriptionContainer}>
-                <Image source={item.image.props.source} style={styles.imageContainer} />
+                <Image source={item.img} style={styles.imageContainer} />
                 <View style={styles.headerContainerView}>
                     <View style={styles.headerView}>
-                        <Image source={item.avatar.props.source} style={styles.avatar} />
+                        <Image source={item.img} style={styles.avatar} />
                         <Text style={styles.headerText}>{item.name}</Text>
                     </View>
                     <View>

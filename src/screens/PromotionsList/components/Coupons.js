@@ -1,5 +1,6 @@
 import React, { useState }  from "react";
-import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, RefreshControl } from 'react-native';
+import PromotionStore from "../../../stores/promotion"
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
@@ -30,6 +31,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   icon: {
+    height: '60%',
+    width: '90%',
+  },
+  title: {
+    fontSize: 15,
+    color: '#fff',
+    paddingLeft: 10,
   },
   save: {
     alignItems: 'flex-end',
@@ -42,11 +50,24 @@ const styles = StyleSheet.create({
 
 export const Coupon = ({ openDetail, itemData }) => {
   const [items, setItems] = useState(itemData)
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const savePromotion = (id) => {
     const newItems = [...items]
     const index = newItems.findIndex(item => item.id === id)
     itemData[index].favorite = !itemData[index].favorite
     setItems(newItems)
+  }
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    fetchData()
+  }
+
+  const fetchData = () => {
+    setTimeout(() => {
+      PromotionStore.getList();
+      setIsRefreshing(false);
+    }, 2000);
   }
 
   return (
@@ -55,12 +76,21 @@ export const Coupon = ({ openDetail, itemData }) => {
         style={styles.flatList}
         data={itemData}
         numColumns={2}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            colors={['white']}
+            tintColor={'white'}
+            progressViewOffset={5}
+          />
+        }
         renderItem= {({item}) =>
         <TouchableWithoutFeedback onPress={() => { openDetail(item) }}>
         <View style={styles.coupon}>
           <View style={styles.item}>
-            {item.image}
-            {item.title}
+            <Image source={item.img} style={styles.icon} />
+            <Text style={styles.title}>{item.name}</Text>
           </View>
           <TouchableWithoutFeedback style={styles.icon} onPress={() => { savePromotion(item.id) }}>
             <View style={styles.save}>
@@ -70,7 +100,7 @@ export const Coupon = ({ openDetail, itemData }) => {
         </View>
       </TouchableWithoutFeedback>
          }
-      // keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.id}
       >
     </FlatList>
     </View >

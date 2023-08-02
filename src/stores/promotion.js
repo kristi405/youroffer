@@ -14,6 +14,7 @@ class PromotionStore {
         try {
             const resp = await api.get('/api/v1/offer/list')
             this.list = resp.data
+            console.log(resp.data)
         } catch (e) {
             status =  REQUEST_STATUS.error
             console.log(e.message)
