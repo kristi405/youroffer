@@ -1,12 +1,15 @@
 import React from "react";
 import { StyleSheet, View, Image, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import AuthStore from '../../stores/auth'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 export const Profile = ({ navigation }) => {
     const openSettings = item => {
         if (item.id == 0) {
-            navigation.navigate('EditScreen', { data: item })
+            navigation.navigate('LoginScreen');
+            AuthStore.clearUser()
+            
+            // navigation.navigate('EditScreen', { data: item })
         } else if (item.id == 3) {
             navigation.navigate('Scan', { data: item })
         }

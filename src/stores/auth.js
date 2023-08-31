@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS, SEX, SEX_TO_STIRNG } from '../services/constants'
-import { setSession, setUser, getUser } from '../services/auth'
+import { setSession, setUser, getUser, cleanAuthData } from '../services/auth'
 
 class AuthStore {
     phone = null
@@ -50,6 +50,14 @@ class AuthStore {
             console.log(e.message)
         }
         return status
+    }
+
+    async clearUser() {
+        try {
+            await cleanAuthData()
+        } catch (e) {
+            console.log(e.message)
+        }
     }
 }
 

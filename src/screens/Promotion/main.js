@@ -12,16 +12,11 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <View style={styles.descriptionContainer}>
-                <Image source={item.img} style={styles.imageContainer} />
+                <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
                 <View style={styles.headerContainerView}>
                     <View style={styles.headerView}>
-                        <Image source={item.img} style={styles.avatar} />
+                        <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.bp_img}.${item.img_ext}` }} style={styles.avatar} />
                         <Text style={styles.headerText}>{item.name}</Text>
-                    </View>
-                    <View>
-                        <TouchableOpacity style={styles.buttonPromotionStyle}>
-                            <Text style={styles.showPromotionText}>все акции</Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
                 <Text style={styles.titleText}>{item.title}</Text>
@@ -55,6 +50,7 @@ const styles = StyleSheet.create({
         gap: 10,
     },
     circle: {
+        paddingTop: 10,
         flexDirection: 'row'
     },
     imageContainer: {
@@ -73,15 +69,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
         justifyContent: 'flex-start',
-    },
-    buttonPromotionStyle: {
-        width: 80,
-        height: 25,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#0EA47A',
-        borderRadius: 4,
-        opacity: 0.8,
     },
     avatar: {
         width: 26,
@@ -108,11 +95,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#fff',
         opacity: 0.6
-    },
-    showPromotionText: {
-        fontSize: 13,
-        color: 'black',
-        fontWeight: '600'
     },
     buttonStyle: {
         height: 40,

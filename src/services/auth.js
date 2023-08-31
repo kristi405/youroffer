@@ -56,3 +56,12 @@ export const getToken = async () => {
         console.log(error)
     }
 }
+
+export const cleanAuthData = async () => {
+    try {
+        await AsyncStorage.clear();
+        console.log('Cache cleared successfully');
+     } catch (error) {
+         console.log(error)
+     }
+}

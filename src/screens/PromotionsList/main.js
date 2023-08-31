@@ -109,13 +109,13 @@ export const CouponScreen = observer(({ navigation }) => {
     }
 
     useEffect(() => {
-      PromotionStore.getList()
+      // PromotionStore.list
     }, []);
 
     return (
       <SafeAreaView style={styles.container}>
           <Segments/>
-          <Coupon openDetail={openDetail} itemData={PromotionStore.list} />
+          <Coupon openDetail={openDetail}/>
       </SafeAreaView>
     )
 })
