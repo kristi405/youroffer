@@ -83,12 +83,12 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 17,
         color: '#fff',
-        paddingTop: 10
+        paddingTop: 3
     },
     descriptionText: {
         fontSize: 15,
         color: '#fff',
-        paddingTop: 8,
+        paddingTop: 3,
         opacity: 0.6
     },
     contentText: {

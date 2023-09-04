@@ -47,19 +47,19 @@ const styles = StyleSheet.create({
 })
 
 
-export const Coupon = ({ openDetail }) => {
-  const [data, setData] = useState([]);
-  const [items, setItems] = useState(data)
+export const MyCoupon = ({ openDetail}) => {
+  const [favoriteData, setfavoriteData] = useState([]);
+  const [items, setItems] = useState(favoriteData)
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
   
-  const savePromotion = (id) => {
-    const newItems = [...data]
+  const deletePromotion = (id) => {
+    const newItems = [...favoriteData]
     const index = newItems.findIndex(item => item.id === id)
-    const favoriteItem = data[index]
-    data[index].favorite = !data[index].favorite
-    PromotionStore.addToFavorite(favoriteItem.id, favoriteItem.favorite)
+    const deletedItem = favoriteData[index]
+    favoriteData[index].favorite = !favoriteData[index].favorite
+    PromotionStore.addToFavorite(deletedItem.id, deletedItem.favorite)
     setItems(newItems)
   }
 
@@ -70,7 +70,7 @@ export const Coupon = ({ openDetail }) => {
 
   const fetchData = () => {
     setTimeout(() => {
-      PromotionStore.getList();
+      PromotionStore.getFavoriteList();
       setIsRefreshing(false);
     }, 1000);
   }
@@ -79,21 +79,22 @@ export const Coupon = ({ openDetail }) => {
     if (isLoading) {
       return
     } else {
-      setIsLoading(true);
+    setIsLoading(true);
+    
+    try {
+      PromotionStore.getFavoriteList();
+      setTimeout(() => {
+        const newData = PromotionStore.favoriteList;
+        setfavoriteData(prevData => [...prevData, ...newData]);
+        setIsPageLoading(false);
+      }, 700);
 
-      try {
-        PromotionStore.getList();
-        setTimeout(() => {
-          const newData = PromotionStore.list;
-          setData(prevData => [...prevData, ...newData]);
-          setIsPageLoading(false);
-        }, 1000);
-      } catch (error) {
-        // Handle error
-      } finally {
-        setIsLoading(false);
-      }
+    } catch (error) {
+      // Handle error
+    } finally {
+      setIsLoading(false);
     }
+  }
   }, []);
 
   useEffect(() => {
@@ -107,12 +108,12 @@ export const Coupon = ({ openDetail }) => {
 
   return (
     <View style={styles.app}>
-      {isPageLoading ? (
+        {isPageLoading ? (
       <ActivityIndicator style={{flex: 1}} size="large" color="white" />
         ) : (
       <FlatList
         style={styles.flatList}
-        data={data}
+        data={favoriteData}
         numColumns={2}
         refreshControl={
           <RefreshControl
@@ -130,7 +131,7 @@ export const Coupon = ({ openDetail }) => {
                 <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.icon} />
                 <Text style={styles.title}>{item.name}</Text>
               </View>
-              <TouchableWithoutFeedback style={styles.icon} onPress={() => { savePromotion(item.id) }}>
+              <TouchableWithoutFeedback style={styles.icon} onPress={() => { deletePromotion(item.id) }}>
                 <View style={styles.save}>
                   <Image source={item.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
                 </View>
@@ -144,7 +145,7 @@ export const Coupon = ({ openDetail }) => {
         ListFooterComponent={renderFooter}
       >
       </FlatList>
-      )}
+        )}
     </View >
   )
 }

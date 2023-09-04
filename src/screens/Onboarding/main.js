@@ -12,7 +12,7 @@ export const OnboardingScreen = ({navigation}) => {
       await sleep(1000)
       setInterval(() => {
         setVisible(!visible);
-      }, 2000);
+      }, 1000);
       if (session && session.token) {
         console.log('1111111')
         navigation.navigate('CouponScreen')
