@@ -11,6 +11,8 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": ["expo-apple-authentication"],
+    "webClientId": "com.example.myapp.AppleSignIn",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -19,9 +21,25 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "usesAppleSignIn": true,
+      "bundleIdentifier": "com.offer.youoffer",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": ["com.googleusercontent.apps.834107509512-4ml4fiue0sovdee82fuj67900vglpsdc"]
+          }
+        ]
+      },
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDe_-maQXTeKOnHEKilBL5lcjKweuGYE-I"
+        },
+        "appleSignIn": {
+          "clientId": "com.example.myapp.AppleSignIn",
+          "scope": ["email", "name"]
+        },
+        "googleSignIn": {
+          "expoClientId": "834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com"
         }
       }
     },
@@ -38,7 +56,10 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "googleSignIn": {
+        "expoClientId": "834107509512-jlm87hnbatouh2cl7oocv3unu3sfk2qo.apps.googleusercontent.com"
+      }
     },
     "extra": {
       "eas": {
