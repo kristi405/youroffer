@@ -8,19 +8,19 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import * as AuthSession from 'expo-auth-session';
+import { Platform } from 'react-native';
 
 WebBrowser.maybeCompleteAuthSession();
 
 export const LoginScreen = ({ navigation }) => {
-    const discovery = AuthSession.useAutoDiscovery('https://demo.identityserver.io');
     const [accessToken, setAccessToken] = useState(null)
     const [user, setUser] = useState(null);
     const [request, response, promptAsync] = Google.useAuthRequest({
-        clientId: "431628664212-giaeh0eb4u6ptkmc2nahsa0mpbcobpab.apps.googleusercontent.com", 
+        clientId: "431628664212-giaeh0eb4u6ptkmc2nahsa0mpbcobpab.apps.googleusercontent.com",
         redirectUri: "https://auth.expo.io/@kristina_gyk/youoffer",
         androidClientId: "431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com",
-        iosClientId: "834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com",  
-        scopes: ['profile', 'email'], discovery});
+        iosClientId: "834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com",
+        scopes: ['profile', 'email']});
 
     const openSettings = async () => {
         navigation.navigate('CreateUserScreen')
@@ -42,8 +42,7 @@ export const LoginScreen = ({ navigation }) => {
             }
         })
         const userInfo = await response.json();
-        console.log('3333333', userInfo)
-        setUser(userInfo)
+        await AuthStore.loginByGoogle(userInfo)
      }
 
     const handleAppleSignIn = async () => {
@@ -63,22 +62,35 @@ export const LoginScreen = ({ navigation }) => {
         }
     };
 
-    return (
-        <View style={styles.container}>
-            <Image source={require('../../../assets/logo.png')} style={styles.imageStyle} />
-            <Text style={styles.textStyle}>Регистрация</Text>
-            <AppleAuthentication.AppleAuthenticationButton
-                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
-                cornerRadius={5}
-                style={styles.button}
-                onPress={handleAppleSignIn} />
+    const GoogleBtn = () => {
+        return (
             <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => promptAsync({ useProxy: true })}>
                 <View style={styles.containerForGoogleButton}>
                     <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
                     <Text style={styles.buttonText}>Sign In with Google</Text>
                 </View>
             </TouchableHighlight>
+        )
+    }
+
+    const AppleBtn = () => {
+        if (Platform.OS === 'android') return null
+        return (
+            <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => promptAsync({ useProxy: true })}>
+                <View style={styles.containerForGoogleButton}>
+                    <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
+                    <Text style={styles.buttonText}>Sign In with Google</Text>
+                </View>
+            </TouchableHighlight>
+        )
+    }
+
+    return (
+        <View style={styles.container}>
+            <Image source={require('../../../assets/logo.png')} style={styles.imageStyle} />
+            <Text style={styles.textStyle}>Регистрация</Text>
+            <AppleBtn/>
+            <GoogleBtn/>
         </View>
     );
 }

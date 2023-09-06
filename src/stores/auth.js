@@ -39,6 +39,26 @@ class AuthStore {
         return status
     }
 
+    async loginByGoogle(user) {
+        let status =  REQUEST_STATUS.success
+        try {
+            const resp = await api.post('api/v1/auth/login/google', {
+                google_id: user.id,
+                name: user.given_name,
+                surname: user.family_name,
+                google_locale: user.locale,
+                google_img: user.picture,
+                google_verified_email: user.verified_email
+            })
+            setSession(resp.data.session)
+            await setUser(resp.data.user)
+        } catch (e) {
+            status =  REQUEST_STATUS.error
+            console.log(e.message)
+        }
+        return status
+    }
+
     async updateUser(user) {
         let status =  REQUEST_STATUS.success
         try {
