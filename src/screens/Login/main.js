@@ -32,7 +32,6 @@ export const LoginScreen = ({ navigation }) => {
             accessToken && fetchUserInfo();
             openSettings()
         }
-        console.log("response: ", response);
       }, [response, accessToken]);
 
      async function fetchUserInfo() {
@@ -76,12 +75,12 @@ export const LoginScreen = ({ navigation }) => {
     const AppleBtn = () => {
         if (Platform.OS === 'android') return null
         return (
-            <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => promptAsync({ useProxy: true })}>
-                <View style={styles.containerForGoogleButton}>
-                    <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
-                    <Text style={styles.buttonText}>Sign In with Google</Text>
-                </View>
-            </TouchableHighlight>
+            <AppleAuthentication.AppleAuthenticationButton
+                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+                cornerRadius={5}
+                style={styles.button}
+                onPress={handleAppleSignIn} />
         )
     }
 
