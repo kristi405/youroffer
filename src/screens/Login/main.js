@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react'
+import React, { useEffect, useState }  from 'react'
 import { StyleSheet, Text, View, Image, Button, TouchableHighlight } from 'react-native';
 import { Keyboard } from 'react-native';
 import AuthStore from '../../stores/auth'
@@ -6,24 +6,45 @@ import { REQUEST_STATUS } from '../../services/constants'
 import { getSession } from '../../services/auth'
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+import * as AuthSession from 'expo-auth-session';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export const LoginScreen = ({ navigation }) => {
-    const [userInfo, setUserInfo] = React.useState(null);
-    const GOOGLE_CLIENT_ID = '834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com';
+    const discovery = AuthSession.useAutoDiscovery('https://demo.identityserver.io');
+    const [accessToken, setAccessToken] = useState(null)
+    const [user, setUser] = useState(null);
     const [request, response, promptAsync] = Google.useAuthRequest({
-        iosClientId:
-          "834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com",
-        expoClientId:
-          "834107509512-jlm87hnbatouh2cl7oocv3unu3sfk2qo.apps.googleusercontent.com",
-      });
+        clientId: "431628664212-giaeh0eb4u6ptkmc2nahsa0mpbcobpab.apps.googleusercontent.com", 
+        redirectUri: "https://auth.expo.io/@kristina_gyk/youoffer",
+        androidClientId: "431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com",
+        iosClientId: "834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com",  
+        scopes: ['profile', 'email'], discovery});
 
-    // const openSettings = async () => {
-    //     navigation.navigate('CreateUserScreen')
-    // }
+    const openSettings = async () => {
+        navigation.navigate('CreateUserScreen')
+    }
 
     useEffect(() => {
+        if (response?.type === "success") {
+            setAccessToken(response.authentication.accessToken);
+            accessToken && fetchUserInfo();
+            openSettings()
+        }
         console.log("response: ", response);
-      }, [response]);
+      }, [response, accessToken]);
+
+     async function fetchUserInfo() {
+        let response = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+            headers: {
+                Authorization: `Bearer ${(accessToken)}`
+            }
+        })
+        const userInfo = await response.json();
+        console.log('3333333', userInfo)
+        setUser(userInfo)
+     }
 
     const handleAppleSignIn = async () => {
         try {
@@ -52,7 +73,7 @@ export const LoginScreen = ({ navigation }) => {
                 cornerRadius={5}
                 style={styles.button}
                 onPress={handleAppleSignIn} />
-            <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => promptAsync({ useProxy: false, showInRecents: true })}>
+            <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => promptAsync({ useProxy: true })}>
                 <View style={styles.containerForGoogleButton}>
                     <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
                     <Text style={styles.buttonText}>Sign In with Google</Text>

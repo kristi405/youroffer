@@ -26,7 +26,7 @@
       "infoPlist": {
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": ["com.googleusercontent.apps.834107509512-4ml4fiue0sovdee82fuj67900vglpsdc"]
+            "CFBundleURLSchemes": ["com.googleusercontent.apps.431628664212-gfpbub2u5uj45nql72nd2hno30n8p4g1"]
           }
         ]
       },
@@ -48,6 +48,9 @@
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDe_-maQXTeKOnHEKilBL5lcjKweuGYE-I"
+        },
+        "googleSignIn": {
+          "expoClientId": "431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com"
         }
       },
       "adaptiveIcon": {
@@ -58,7 +61,7 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "googleSignIn": {
-        "expoClientId": "834107509512-jlm87hnbatouh2cl7oocv3unu3sfk2qo.apps.googleusercontent.com"
+        "expoClientId": "431628664212-giaeh0eb4u6ptkmc2nahsa0mpbcobpab.apps.googleusercontent.com"
       }
     },
     "extra": {
