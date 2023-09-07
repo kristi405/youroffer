@@ -48,7 +48,26 @@ class AuthStore {
                 surname: user.family_name,
                 google_locale: user.locale,
                 google_img: user.picture,
+                email: user.email,
                 google_verified_email: user.verified_email
+            })
+            setSession(resp.data.session)
+            await setUser(resp.data.user)
+        } catch (e) {
+            status =  REQUEST_STATUS.error
+            console.log(e.message)
+        }
+        return status
+    }
+
+    async loginByApple(user) {
+        let status =  REQUEST_STATUS.success
+        try {
+            const resp = await api.post('api/v1/auth/login/apple', {
+                apple_id: user.user,
+                name: user.fullName?.givenName || undefined,
+                surname: user.fullName?.familyName || undefined,
+                email: user.email ||  undefined,
             })
             setSession(resp.data.session)
             await setUser(resp.data.user)

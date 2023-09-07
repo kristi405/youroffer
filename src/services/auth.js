@@ -61,7 +61,7 @@ export const cleanAuthData = async () => {
     try {
         await AsyncStorage.clear();
         console.log('Cache cleared successfully');
-     } catch (error) {
-         console.log(error)
-     }
+    } catch (error) {
+        console.log(error)
+    }
 }

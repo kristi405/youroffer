@@ -30,7 +30,6 @@ export const LoginScreen = ({ navigation }) => {
         if (response?.type === "success") {
             setAccessToken(response.authentication.accessToken);
             accessToken && fetchUserInfo();
-            openSettings()
         }
       }, [response, accessToken]);
 
@@ -42,21 +41,19 @@ export const LoginScreen = ({ navigation }) => {
         })
         const userInfo = await response.json();
         await AuthStore.loginByGoogle(userInfo)
+        openSettings()
      }
 
     const handleAppleSignIn = async () => {
         try {
-            const credential = await AppleAuthentication.signInAsync({
+            const userInfo = await AppleAuthentication.signInAsync({
                 requestedScopes: [AppleAuthentication.AppleAuthenticationScope.EMAIL, AppleAuthentication.AppleAuthenticationScope.FULL_NAME],
             });
-            // Handle the credential (e.g., send it to your server for authentication)
-            // openSettings()
-            console.log(credential);
+            await AuthStore.loginByApple(userInfo)
+            openSettings()
         } catch (error) {
             if (error.code === 'ERR_CANCELED') {
-                // Handle user cancellation
             } else {
-                // Handle other errors
             }
         }
     };
@@ -66,7 +63,7 @@ export const LoginScreen = ({ navigation }) => {
             <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => promptAsync({ useProxy: true })}>
                 <View style={styles.containerForGoogleButton}>
                     <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
-                    <Text style={styles.buttonText}>Sign In with Google</Text>
+                    <Text style={styles.buttonText}>Sign in with Google</Text>
                 </View>
             </TouchableHighlight>
         )
@@ -87,7 +84,7 @@ export const LoginScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Image source={require('../../../assets/logo.png')} style={styles.imageStyle} />
-            <Text style={styles.textStyle}>Регистрация</Text>
+            <Text style={styles.textStyle}>Вход</Text>
             <AppleBtn/>
             <GoogleBtn/>
         </View>
