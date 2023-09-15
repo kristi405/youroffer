@@ -11,7 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": ["expo-apple-authentication"],
+    "plugins": [
+      "expo-apple-authentication",
+      ["expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(youoffer) to use your location."
+        }
+      ]
+    ],
     "webClientId": "com.example.myapp.AppleSignIn",
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,6 +31,8 @@
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.offer.youoffer",
       "infoPlist": {
+        "locationAlwaysAndWhenInUsePermission":"Allow $(youoffer) to use your location.",
+        "locationWhenInUsePermission": "Allow $(youoffer) to use your location.",
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": ["com.googleusercontent.apps.431628664212-gfpbub2u5uj45nql72nd2hno30n8p4g1"]

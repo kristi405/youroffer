@@ -1,5 +1,4 @@
 import { StatusBar, Text, View, StyleSheet } from 'react-native';
-import { useEffect } from 'react'
 import { Navigator } from './navigation/navigator'
 import MainStore from './stores/main'
 import AnimatedLoader from "react-native-animated-loader";

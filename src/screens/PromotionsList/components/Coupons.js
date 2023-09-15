@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, RefreshControl, ActivityIndicator } from 'react-native';
 import PromotionStore from "../../../stores/promotion"
+import { observer } from "mobx-react-lite"
 
 const styles = StyleSheet.create({
   app: {
@@ -47,18 +48,16 @@ const styles = StyleSheet.create({
 })
 
 
-export const Coupon = ({ openDetail }) => {
-  const [data, setData] = useState([]);
-  const [items, setItems] = useState(data)
+export const Coupon = observer(({ openDetail }) => {
+  const [items, setItems] = useState(PromotionStore.list)
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isPageLoading, setIsPageLoading] = useState(true);
-  
+
   const savePromotion = (id) => {
-    const newItems = [...data]
+    const newItems = [...PromotionStore.list]
     const index = newItems.findIndex(item => item.id === id)
-    const favoriteItem = data[index]
-    data[index].favorite = !data[index].favorite
+    const favoriteItem = PromotionStore.list[index]
+    favoriteItem.favorite = !favoriteItem.favorite
     PromotionStore.addToFavorite(favoriteItem.id, favoriteItem.favorite)
     setItems(newItems)
   }
@@ -82,12 +81,7 @@ export const Coupon = ({ openDetail }) => {
       setIsLoading(true);
 
       try {
-        PromotionStore.getList();
-        setTimeout(() => {
-          const newData = PromotionStore.list;
-          setData(prevData => [...prevData, ...newData]);
-          setIsPageLoading(false);
-        }, 1000);
+        await PromotionStore.getList()
       } catch (error) {
         // Handle error
       } finally {
@@ -96,9 +90,7 @@ export const Coupon = ({ openDetail }) => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
+  useEffect(() => {}, []);
 
   const renderFooter = () => {
     if (!isLoading) return null;
@@ -107,44 +99,40 @@ export const Coupon = ({ openDetail }) => {
 
   return (
     <View style={styles.app}>
-      {isPageLoading ? (
-      <ActivityIndicator style={{flex: 1}} size="large" color="white" />
-        ) : (
-      <FlatList
-        style={styles.flatList}
-        data={data}
-        numColumns={2}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefreshing}
-            onRefresh={handleRefresh}
-            colors={['white']}
-            tintColor={'white'}
-            progressViewOffset={5}
-          />
-        }
-        renderItem={({ item }) =>
-          <TouchableWithoutFeedback onPress={() => { openDetail(item) }}>
-            <View style={styles.coupon}>
-              <View style={styles.item}>
-                <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.icon} />
-                <Text style={styles.title}>{item.name}</Text>
-              </View>
-              <TouchableWithoutFeedback style={styles.icon} onPress={() => { savePromotion(item.id) }}>
-                <View style={styles.save}>
-                  <Image source={item.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+        <FlatList
+          style={styles.flatList}
+          data={PromotionStore.list}
+          numColumns={2}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              colors={['white']}
+              tintColor={'white'}
+              progressViewOffset={5}
+            />
+          }
+          renderItem={({ item }) =>
+            <TouchableWithoutFeedback onPress={() => { openDetail(item) }}>
+              <View style={styles.coupon}>
+                <View style={styles.item}>
+                  <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.icon} />
+                  <Text style={styles.title}>{item.name}</Text>
                 </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback>
-        }
-        keyExtractor={(item) => item.id}
-        onEndReached={fetchItems}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={renderFooter}
-      >
-      </FlatList>
-      )}
+                <TouchableWithoutFeedback style={styles.icon} onPress={() => { savePromotion(item.id) }}>
+                  <View style={styles.save}>
+                    <Image source={item.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+            </TouchableWithoutFeedback>
+          }
+          keyExtractor={(item) => item.id}
+          onEndReached={fetchItems}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={renderFooter}
+        >
+        </FlatList>
     </View >
   )
-}
+})

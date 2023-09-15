@@ -19,10 +19,10 @@ class PromotionStore {
                   page: this.page
                 }
               })
-            this.list = resp.data
+            this.list = [...this.list, ...resp.data]
             this.page += 1;
         } catch (e) {
-            status =  REQUEST_STATUS.error
+            status =  REQUEST_STATUS.errorr
         }
         return status
     }

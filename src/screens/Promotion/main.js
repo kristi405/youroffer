@@ -9,6 +9,14 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         navigation.navigate('QrCodeScreen')
     }
     const item = route?.params?.data
+
+    const AccumulativePromotionView = () => {
+        if (item.type != 'accumulative') return null
+        return (
+            <PromotionView/>
+        )
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.descriptionContainer}>
@@ -24,7 +32,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
                 <Text style={styles.contentText}>{item.description}</Text>
                 <View style={styles.circle}>
-                    <PromotionView />
+                    <AccumulativePromotionView />
                 </View>
             </View>
             <TouchableOpacity style={styles.buttonStyle} onPress={openQr}>
