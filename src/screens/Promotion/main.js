@@ -1,7 +1,5 @@
 import React from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PromotionView } from "./components/PromotionView";
 import { getUser } from "../../services/auth"
 
@@ -10,13 +8,22 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const openQr = async (props) => {
         const user = await getUser()
-        navigation.navigate('QrCodeScreen', {data: {userId: user.id, itemId: item.id}})
+        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: item.id } })
     }
-    
+
     const AccumulativePromotionView = () => {
         if (item.type != 'accumulative') return null
         return (
-            <PromotionView/>
+            <PromotionView data={item}/>
+        )
+    }
+
+    const DefaultPromotionView = () => {
+        if (item.type == 'default') return null
+        return (
+            <TouchableOpacity style={styles.buttonStyle} onPress={openQr}>
+                <Text style={styles.showPromotionText}>Сгенерировать QR код</Text>
+            </TouchableOpacity>
         )
     }
 
@@ -38,9 +45,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                     <AccumulativePromotionView />
                 </View>
             </View>
-            <TouchableOpacity style={styles.buttonStyle} onPress={openQr}>
-                <Text style={styles.showPromotionText}>Сгенерировать QR код</Text>
-            </TouchableOpacity>
+            <DefaultPromotionView />
         </View>
     )
 }

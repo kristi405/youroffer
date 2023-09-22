@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "youoffer",
+    "scheme": "youoffer",
     "slug": "youoffer",
     "version": "1.0.0",
     "orientation": "portrait",

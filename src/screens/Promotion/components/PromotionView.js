@@ -1,15 +1,15 @@
 import React from "react";
-import { StyleSheet, View, Image, Text, TouchableOpacity, FlatList } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StyleSheet, View, FlatList } from 'react-native';
 
-const Circle = ({ size }) => (
-    <View style={[styles.circle, { width: size, height: size }]} />
+const Circle = ({ size, color }) => (
+    <View style={[styles.circle, { width: size, height: size, backgroundColor: color }]} />
 )
 
-export const PromotionView = ({ navigation, route }) => {
-    const circles = Array.from({ length: 10 }).map((_, index) => (
-        <Circle key={index} size={44} />
+export const PromotionView = (route) => {
+    const item  = route?.data
+
+    const circles = Array.from({ length: item.max_count }).map((_, index) => (
+        <Circle key={index} size={44} color={index < item.use_count ? '#0EA47A' : 'white'} />
     ));
 
     return (
@@ -37,12 +37,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     containerForRow: {
-        flex: 1,
-        alignItems: 'center',
+        paddingHorizontal: 2,
+        alignItems: 'flex-start',
     },
     circle: {
         borderRadius: 22,
-        backgroundColor: 'white',
         opacity: 0.8,
         margin: 10,
     },

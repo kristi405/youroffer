@@ -12,18 +12,12 @@ export const QrCodeScreen = ({navigation, route}) => {
         id_user: data.userId
     })  
 
-    const useOffer = async (props) => {
-        console.log('111111', json)
-    }
-
     return (
         <View style={styles.container}>
             <View style={styles.qrCode}>
                 <SvgQRCode value={json} size={290} />
             </View>
-            <TouchableOpacity style={styles.buttonStyle} onPress={useOffer}>
-                <Text style={styles.acseptPromotion}>Применить QR код</Text>
-            </TouchableOpacity>
+            <Text style={styles.acseptPromotion}> * Для применения акции менеджер должен отсканировать ваш QR code</Text>
         </View>
     )
 }
@@ -33,10 +27,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
         backgroundColor: 'black',
-        paddingVertical: 40,
+        paddingTop: 70,
     },
     qrCode: {
         width: 300,
@@ -45,18 +37,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    buttonStyle: {
-        width: '100%',
-        height: 40,
-        borderRadius: 8,
-        backgroundColor: '#0EA47A',
-        opacity: 0.8,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     acseptPromotion: {
-        fontSize: 13,
-        color: 'black',
-        fontWeight: '600'
+        paddingTop: 40,
+        paddingHorizontal: 30,
+        paddingBottom: 30,
+        fontSize: 14,
+        color: 'white',
+        fontWeight: '500'
     },
 })

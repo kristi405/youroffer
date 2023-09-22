@@ -70,6 +70,8 @@ export const Coupon = observer(({ openDetail }) => {
 
   const fetchData = () => {
     setTimeout(() => {
+      PromotionStore.page = 1
+      PromotionStore.list = []
       PromotionStore.getList();
       setIsRefreshing(false);
     }, 1000);

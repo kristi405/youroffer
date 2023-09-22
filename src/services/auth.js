@@ -51,7 +51,7 @@ export const getSession = async () => {
 
 export const getToken = async () => {
     try {
-       return (await getSession()).token
+       return (await getSession())?.token
     } catch (error) {
         console.log(error)
     }

@@ -1,8 +1,7 @@
 import React from "react"
 import { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Keyboard } from 'react-native'
-import SwitchSelector from "react-native-switch-selector"
 import AuthStore from '../../stores/auth'
 import ValidateStore from '../../stores/validate'
 import { getUser } from '../../services/auth'
@@ -31,17 +30,11 @@ const validateStroe = new ValidateStore({
     }
 })
 
-const SEX_OPTIONS = [
-    { label: "Мужской", value: 1 },
-    { label: "Женский", value: 2 }
-];
-
 export const CreateUserScreen = observer(({ navigation }) => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [bdate, setBirsday] = useState('');
     const [email, setEmail] = useState('');
-    const [sex, setSex] = useState(1);
 
     const pressHandler = async () => {
         const data =  {
@@ -49,7 +42,6 @@ export const CreateUserScreen = observer(({ navigation }) => {
             surname,
             bdate,
             email,
-            sex
         }
 
         if (!validateStroe.validate(data)) return;
@@ -66,7 +58,6 @@ export const CreateUserScreen = observer(({ navigation }) => {
             setSurname(user?.surname)
             setEmail(user?.email)
             setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY'): '')
-            setSex(user?.sex)
         })
     }, []);
 
@@ -97,17 +88,6 @@ export const CreateUserScreen = observer(({ navigation }) => {
                         placeholder="Фамилия"
                         maxLength={30}
                         placeholderTextColor={'grey'} />
-                    <SwitchSelector style={styles.switcherStyle}
-                        initial={sex}
-                        onPress={(value) => { console.log('0000', value); setSex(value) }}
-                        backgroundColor='black'
-                        textColor='gray'
-                        selectedColor='black'
-                        buttonColor='gray'
-                        borderColor='gray'
-                        borderRadius={8}
-                        hasPadding
-                        options={SEX_OPTIONS} />
                     <MaskedTextInput style={[styles.codeInputStyle, changeBorder('bdate')]}
                         mask="99.99.9999"
                         type="date"
@@ -170,11 +150,6 @@ const styles = StyleSheet.create({
     },
     codeInputError: {
         borderColor: 'red',
-    },
-    switcherStyle: {
-        margin: 5,
-        width: '90%',
-        height: 40
     },
     buttonStyle: {
         width: '40%',
