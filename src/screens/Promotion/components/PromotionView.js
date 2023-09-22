@@ -18,6 +18,7 @@ export const PromotionView = (route) => {
                 style={styles.flatList}
                 data={circles}
                 numColumns={5}
+                scrollEnabled={false}
                 renderItem={({ item }) =>
                     <View style={styles.containerForRow}>
                         {item}
@@ -31,8 +32,7 @@ export const PromotionView = (route) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-        height: 130,
+        // flexDirection: 'row',
         backgroundColor: '#333333',
         borderRadius: 10,
     },

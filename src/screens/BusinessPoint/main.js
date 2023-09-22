@@ -12,7 +12,7 @@ export const CompanyProfile = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <View style={styles.profile}>
-                <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.img}.${item.img_ext}`}} style={styles.image} />
+                <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.img}.${item.img_ext}`}} style={styles.image} />
                 <View style={styles.descriptionView}>
                     <Text style={styles.nameStyle}>{item.name} </Text>
                     <View style={styles.stack}>

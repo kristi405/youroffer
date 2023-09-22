@@ -6,10 +6,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 export const Profile = ({ navigation }) => {
     const openSettings = item => {
         if (item.id == 0) {
+            navigation.navigate('EditScreen', { data: item })
+        } else if (item.id == 4) {
             navigation.navigate('LoginScreen');
             AuthStore.clearUser()
-            
-            // navigation.navigate('EditScreen', { data: item })
         } else if (item.id == 3) {
             navigation.navigate('Scan', { data: item })
         }
@@ -105,6 +105,11 @@ const itemData = [
     {
         id: 3,
         title: (<Text style={styles.title}>Cканировать Qr</Text>),
+        image: (<Image source={require('../../../assets/scan.png')} style={styles.image} />),
+    },
+    {
+        id: 4,
+        title: (<Text style={styles.title}>Очистить кеш</Text>),
         image: (<Image source={require('../../../assets/scan.png')} style={styles.image} />),
     },
 ]

@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { PromotionView } from "./components/PromotionView";
 import { getUser } from "../../services/auth"
 
@@ -14,7 +14,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const AccumulativePromotionView = () => {
         if (item.type != 'accumulative') return null
         return (
-            <PromotionView data={item}/>
+            <PromotionView data={item} />
         )
     }
 
@@ -29,7 +29,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.descriptionContainer}>
+            <ScrollView style={styles.descriptionContainer}>
                 <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
                 <View style={styles.headerContainerView}>
                     <View style={styles.headerView}>
@@ -41,11 +41,14 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.descriptionText}>Описание акции:</Text>
 
                 <Text style={styles.contentText}>{item.description}</Text>
+                <View style={styles.button}>
+                    <DefaultPromotionView />
+                </View>
                 <View style={styles.circle}>
                     <AccumulativePromotionView />
                 </View>
-            </View>
-            <DefaultPromotionView />
+            </ScrollView>
+
         </View>
     )
 }
@@ -53,25 +56,28 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: 'black',
         paddingHorizontal: 15,
-        paddingBottom: 40,
-        paddingTop: 5
+        paddingTop: 5,
+        paddingBottom: 10
     },
     descriptionContainer: {
         flex: 1,
+        backgroundColor: 'black',
         flexDirection: 'column',
         gap: 10,
+        paddingBottom: 10
+    },
+    button: {
+        paddingTop: 30,
     },
     circle: {
-        paddingTop: 10,
-        flexDirection: 'row'
+        paddingTop: 20,
     },
     imageContainer: {
         width: '100%',
-        height: '40%',
+        height: 200,
         borderRadius: 10,
     },
     headerContainerView: {
@@ -96,6 +102,11 @@ const styles = StyleSheet.create({
         color: '#fff',
         paddingLeft: 10,
     },
+    showPromotionText: {
+        fontSize: 15,
+        fontWeight: 800,
+        color: '#fff',
+    },
     titleText: {
         fontSize: 17,
         color: '#fff',
@@ -104,10 +115,10 @@ const styles = StyleSheet.create({
     descriptionText: {
         fontSize: 15,
         color: '#fff',
-        paddingTop: 3,
         opacity: 0.6
     },
     contentText: {
+        paddingTop: 8,
         fontSize: 12,
         color: '#fff',
         opacity: 0.6
