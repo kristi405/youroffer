@@ -3,13 +3,16 @@ import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PromotionView } from "./components/PromotionView";
+import { getUser } from "../../services/auth"
 
 export const CouponDetailScreen = ({ navigation, route }) => {
-    const openQr = props => {
-        navigation.navigate('QrCodeScreen')
-    }
     const item = route?.params?.data
 
+    const openQr = async (props) => {
+        const user = await getUser()
+        navigation.navigate('QrCodeScreen', {data: {userId: user.id, itemId: item.id}})
+    }
+    
     const AccumulativePromotionView = () => {
         if (item.type != 'accumulative') return null
         return (
@@ -20,10 +23,10 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <View style={styles.descriptionContainer}>
-                <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
+                <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
                 <View style={styles.headerContainerView}>
                     <View style={styles.headerView}>
-                        <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.bp_img}.${item.img_ext}` }} style={styles.avatar} />
+                        <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.bp_img}.${item.img_ext}` }} style={styles.avatar} />
                         <Text style={styles.headerText}>{item.name}</Text>
                     </View>
                 </View>

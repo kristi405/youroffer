@@ -78,7 +78,7 @@ export const MyCompany = ({ navigation, openDetail }) => {
                 renderItem={({ item }) =>
                     <TouchableWithoutFeedback onPress={() => { openDetail(item) }}>
                         <View style={styles.item}>
-                            <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
+                            <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
                             <View style={styles.header}>
                                 <Text style={styles.nameStyle}>{item.name}</Text>
                                 <View style={styles.stack}>

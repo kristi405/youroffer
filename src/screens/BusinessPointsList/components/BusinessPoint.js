@@ -3,20 +3,18 @@ import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, Refr
 import BusinessPointsStore from "../../../stores/businessPoints"
 
 export const Company = ({ navigation, openDetail }) => {
-    const [data, setData] = useState([]);
-    const [items, setItems] = useState(data)
+    const [items, setItems] = useState(BusinessPointsStore.businessPoint)
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isPageLoading, setIsPageLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     const savePromotion = (id) => {
-        const newItems = [...data]
+        const newItems = [...BusinessPointsStore.businessPoint]
         const index = newItems.findIndex(item => item.id === id)
-        const favoriteItem = data[index]
-        data[index].favorite = !data[index].favorite
+        const favoriteItem = BusinessPointsStore.businessPoint[index]
+        BusinessPointsStore.businessPoint[index].favorite = !BusinessPointsStore.businessPoint[index].favorite
         BusinessPointsStore.addToFavorite(favoriteItem.id, favoriteItem.favorite)
         setItems(newItems)
-      }
+    }
 
     const openCompanyProfile = item => {
         navigation.navigate('CompanyProfile', { data: item })
@@ -35,17 +33,12 @@ export const Company = ({ navigation, openDetail }) => {
     }
 
     const fetchBusinessPoints = useCallback(async () => {
-        if (isLoading) {
+        if (!isLoading) {
+            setIsLoading(true)
             return
         } else {
-            setIsLoading(true);
             try {
-                BusinessPointsStore.getBusinessPoints();
-                setTimeout(() => {
-                    const newData = BusinessPointsStore.businessPoint;
-                    setData(prevData => [...prevData, ...newData]);
-                    setIsPageLoading(false);
-                }, 1000);
+                await BusinessPointsStore.getBusinessPoints();
             } catch (error) {
                 // Handle error
             } finally {
@@ -54,17 +47,18 @@ export const Company = ({ navigation, openDetail }) => {
         }
     }, []);
 
-    useEffect(() => {
-        fetchBusinessPoints();
-    }, []);
+    useEffect(() => { }, []);
+
+    const renderFooter = () => {
+        if (!isLoading) return null;
+        return <ActivityIndicator style={{ marginVertical: 20 }} size="large" color="white" />;
+    };
 
     return (
-        <View style={styles.app}>{isPageLoading ? (
-            <ActivityIndicator style={{ flex: 1 }} size="large" color="white" />
-        ) : (
+        <View style={styles.app}>
             <FlatList
                 style={styles.flatList}
-                data={data}
+                data={BusinessPointsStore.businessPoint}
                 numColumns={1}
                 refreshControl={
                     <RefreshControl
@@ -78,7 +72,7 @@ export const Company = ({ navigation, openDetail }) => {
                 renderItem={({ item }) =>
                     <TouchableWithoutFeedback onPress={() => { openDetail(item) }}>
                         <View style={styles.item}>
-                            <Image source={{ uri: `http://192.168.0.112:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
+                            <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
                             <View style={styles.header}>
                                 <Text style={styles.nameStyle}>{item.name}</Text>
                                 <View style={styles.stack}>
@@ -106,9 +100,9 @@ export const Company = ({ navigation, openDetail }) => {
                 keyExtractor={(item) => item.id}
                 onEndReached={fetchBusinessPoints}
                 onEndReachedThreshold={0.1}
+                ListFooterComponent={renderFooter}
             >
             </FlatList>
-        )}
         </View>
     )
 }

@@ -5,13 +5,23 @@ import * as Asset from 'expo-asset';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-export const QrCodeScreen = navigation => {
+export const QrCodeScreen = ({navigation, route}) => {
+    const data = route?.params?.data
+    const json = JSON.stringify({
+        id_offer: data.itemId,
+        id_user: data.userId
+    })  
+
+    const useOffer = async (props) => {
+        console.log('111111', json)
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.qrCode}>
-                <SvgQRCode value='http://apple.com' size={290} />
+                <SvgQRCode value={json} size={290} />
             </View>
-            <TouchableOpacity style={styles.buttonStyle}>
+            <TouchableOpacity style={styles.buttonStyle} onPress={useOffer}>
                 <Text style={styles.acseptPromotion}>Применить QR код</Text>
             </TouchableOpacity>
         </View>

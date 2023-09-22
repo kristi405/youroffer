@@ -4,6 +4,7 @@ import { REQUEST_STATUS } from '../services/constants'
 
 class PromotionStore {
     list = []
+    currentList = []
     favoriteList = []
     page = 1
 
@@ -20,6 +21,7 @@ class PromotionStore {
                 }
               })
             this.list = [...this.list, ...resp.data]
+            this.currentList = resp.data
             this.page += 1;
         } catch (e) {
             status =  REQUEST_STATUS.errorr

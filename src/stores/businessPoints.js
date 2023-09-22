@@ -15,7 +15,7 @@ class BusinessPointsStore {
                   page: this.page
                 }
               })
-            this.businessPoint = resp.data
+            this.businessPoint = [...this.businessPoint, ...resp.data]
             this.page += 1;
         } catch (e) {
             status =  REQUEST_STATUS.error
