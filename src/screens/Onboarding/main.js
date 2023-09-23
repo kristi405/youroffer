@@ -14,7 +14,6 @@ export const OnboardingScreen = ({navigation}) => {
         setVisible(!visible);
       }, 1000);
       if (session && session.token) {
-        console.log('1111111')
         navigation.navigate('CouponScreen')
       } else {
         navigation.navigate('LoginScreen')

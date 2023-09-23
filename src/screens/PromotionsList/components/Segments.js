@@ -17,8 +17,7 @@ export const Segments = ( ) => {
 
   const openDetail = item => {
     navigation.navigate('CouponDetailScreen', {data: item})
-    console.log('33333333', item)
-}
+  }
 
   return (
     <View style={{width: '100%', flex: 1, gap: 10, alignItems: 'center'}}>

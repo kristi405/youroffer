@@ -18,11 +18,13 @@ api.interceptors.request.use(
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
-    const location = await getLocation()
-    if (location) {
-      config.headers['Coords'] = `${location.latitude},${location.longitude}`
-      return config
-    }
+    // const location = await getLocation()
+    // if (location) {
+    //   config.headers['Coords'] = `${location.latitude},${location.longitude}`
+
+    // }
+
+    return config
   },
   (error) => Promise.reject(error)
 )

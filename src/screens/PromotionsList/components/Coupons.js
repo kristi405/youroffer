@@ -1,9 +1,29 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, RefreshControl, ActivityIndicator } from 'react-native';
 import PromotionStore from "../../../stores/promotion"
 import { observer } from "mobx-react-lite"
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 const styles = StyleSheet.create({
+  segment: {
+    width: '97%',
+    height: 35,
+    borderWidth: 1,
+    borderColor: '#434343',
+  },
+  textStyle: {
+    fontSize: 24,
+    textAlign: 'center',
+    paddingVertical: 10
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    paddingHorizontal: 10,
+    gap: 16
+  },
   app: {
     width: '100%',
     height: '100%',
@@ -48,102 +68,121 @@ const styles = StyleSheet.create({
 })
 
 
-export const Coupon = observer(({ openDetail }) => {
-  const [items, setItems] = useState(PromotionStore.list)
-  const [isRefreshing, setIsRefreshing] = useState(false);
+export const Coupons = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isPageMaxAmountReached, setIsPageMaxAmountReached] = useState(PromotionStore.currentList.length == 10);
+  const [isFavoriteList, setIsFavoriteList] = useState(0)
 
-  const savePromotion = (id) => {
-    const newItems = [...PromotionStore.list]
-    const index = newItems.findIndex(item => item.id === id)
-    const favoriteItem = PromotionStore.list[index]
-    favoriteItem.favorite = !favoriteItem.favorite
-    PromotionStore.addToFavorite(favoriteItem.id, favoriteItem.favorite)
-    setItems(newItems)
-  }
+  const flatListRef = useRef(null);
 
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    fetchData()
-  }
-
-  const fetchData = () => {
-    setTimeout(() => {
-      PromotionStore.page = 1
-      PromotionStore.list = []
-      PromotionStore.getList();
-      setIsRefreshing(false);
-    }, 1000);
-  }
-
-  const fetchItems = useCallback(async () => {
-    // console.log('11111111', PromotionStore.currentList.length == 10)
-    // setIsPageMaxAmountReached(PromotionStore.currentList.length == 10)
-    if (!isPageMaxAmountReached) {
-      console.log('33333333')
-      return
-    } else {
-    setIsLoading(true);
-      try {
-        await PromotionStore.getList()
-        const isReached = PromotionStore.currentList.length == 10
-        setIsPageMaxAmountReached(isReached)
-        console.log('11111111', isReached)
-        console.log('22222222', isPageMaxAmountReached)
-      } catch (error) {
-        // Handle error
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  useEffect(() => {
+    init()
   }, []);
 
-  useEffect(() => { }, []);
+  const init = (isFavorite) => {
+    setIsLoading(true)
+    PromotionStore.resetLists();
+    setTimeout(async () => {
+      await PromotionStore.getList(isFavorite);
+      setIsLoading(false)
+    }, 400)
+  }
 
-  const renderFooter = () => {
-    if (isLoading) {
-      return <ActivityIndicator style={{ marginVertical: 20 }} size="large" color="white" />;
-    }
-    return null;
+  const handleValueChange = async (isFavorite) => {
+    setIsFavoriteList(isFavorite)
+    init(!!isFavorite)
   };
 
-  return (
+  const handleRefresh = () => {
+    init(!!isFavoriteList)
+  }
+
+  const handleOnEndReached = useCallback(async () => {
+    if (PromotionStore.finishScroll || PromotionStore.isLoding) return
+    await PromotionStore.getList(!!isFavoriteList)
+  }, [])
+
+  const openDetail = (item) => {
+    navigation.navigate('CouponDetailScreen', {data: item})
+  }
+
+  const Component = () => (
+    <View style={{width: '100%', flex: 1, gap: 10, alignItems: 'center'}}>
+      <SegmentedControl
+        style={styles.segment}
+        backgroundColor='black'
+        tintColor='#0EA47A'
+        values={['Все акции', 'Мои акции']}
+        selectedIndex={isFavoriteList}
+        onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
+      />
+      {isLoading ? <Loading/> : <Coupons/>}
+    </View >
+  )
+
+  const renderFooter = observer(() => {
+    if (PromotionStore.isLoding) {
+      return <ActivityIndicator style={{ marginVertical: 20 }} size="large" color="white" />;
+    }
+    return null
+  });
+
+  const Loading = () => (
+    <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
+  )
+
+  const Coupons = observer(() => (
     <View style={styles.app}>
       <FlatList
+        ref={flatListRef}
         style={styles.flatList}
         data={PromotionStore.list}
         numColumns={2}
         refreshControl={
           <RefreshControl
-            refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            colors={['white']}
+            colors={['#0EA47A']}
             tintColor={'white'}
             progressViewOffset={5}
           />
         }
-        renderItem={({ item }) =>
-          <TouchableWithoutFeedback onPress={() => { openDetail(item) }}>
-            <View style={styles.coupon}>
-              <View style={styles.item}>
-                <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.icon} />
-                <Text style={styles.title}>{item.name}</Text>
-              </View>
-              <TouchableWithoutFeedback style={styles.icon} onPress={() => { savePromotion(item.id) }}>
-                <View style={styles.save}>
-                  <Image source={item.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback>
-        }
+        renderItem={({ item }) =>  <Item item={item} navigation={navigation}/>}
         keyExtractor={(item) => item.id}
-        onEndReached={fetchItems}
+        onEndReached={() => { handleOnEndReached() }}
         onEndReachedThreshold={0.1}
         ListFooterComponent={renderFooter}
       >
       </FlatList>
     </View >
+  ));
+
+  return <Component/>
+}
+
+const Item = ({ navigation, item }) => {
+  const [offer, setOffer] = useState(item)
+
+  const openDetail = (item) => {
+    navigation.navigate('CouponDetailScreen', {data: item})
+  }
+
+  const addToFavorite = (offer) => {
+    setOffer({...offer, favorite: !offer.favorite})
+    PromotionStore.addToFavorite(offer.id, !offer.favorite)
+  }
+
+  return (
+    <TouchableWithoutFeedback onPress={() => { openDetail(offer) }}>
+      <View style={styles.coupon}>
+        <View style={styles.item}>
+          <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.icon} />
+          <Text style={styles.title}>{offer.name}</Text>
+        </View>
+        <TouchableWithoutFeedback style={styles.icon} onPress={() => {  addToFavorite(offer) }}>
+          <View style={styles.save}>
+            <Image source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    </TouchableWithoutFeedback>
   )
-})
+}
