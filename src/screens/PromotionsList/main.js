@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { Coupons } from "./components/Coupons";
 
 const styles = StyleSheet.create({

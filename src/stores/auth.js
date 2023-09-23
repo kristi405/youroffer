@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
+import { getLocation } from '../services/geo'
 import { REQUEST_STATUS, SEX, SEX_TO_STIRNG } from '../services/constants'
 import { setSession, setUser, getUser, cleanAuthData } from '../services/auth'
 
@@ -84,6 +85,22 @@ class AuthStore {
             const userToUpdate = await userToApi(user)
             const resp = await api.patch('/api/v1/user/update', userToUpdate)
             await setUser(resp.data)
+        } catch (e) {
+            status =  REQUEST_STATUS.error
+            console.log(e.message)
+        }
+        return status
+    }
+
+    async updateCoord() {
+        let status =  REQUEST_STATUS.success
+        try {
+            const location = await getLocation()
+            if (!location) return
+            await api.patch('/api/v1/user/coordinates', {
+                lng: location.longitude,
+                lat: location.latitude
+            })
         } catch (e) {
             status =  REQUEST_STATUS.error
             console.log(e.message)

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { getToken } from './auth'
-import { getLocation } from './geo'
 
 const api = axios.create({
   timeout: 100000,
@@ -18,11 +17,6 @@ api.interceptors.request.use(
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
-    // const location = await getLocation()
-    // if (location) {
-    //   config.headers['Coords'] = `${location.latitude},${location.longitude}`
-
-    // }
 
     return config
   },

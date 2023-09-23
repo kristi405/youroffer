@@ -1,4 +1,4 @@
-import { StatusBar, Text, View, StyleSheet } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { Navigator } from './navigation/navigator'
 import { observer } from 'mobx-react-lite';
 

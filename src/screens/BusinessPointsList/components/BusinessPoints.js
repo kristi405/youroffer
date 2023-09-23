@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, RefreshControl, ActivityIndicator } from 'react-native';
-import PromotionStore from "../../../stores/promotion"
+import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  coupon: {
+  businessPoint: {
     flexDirection: 'column',
     width: '47%',
     height: 220,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 })
 
 
-export const Coupons = ({ navigation }) => {
+export const BusinessPoints = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFavoriteList, setIsFavoriteList] = useState(0)
 
@@ -80,9 +80,9 @@ export const Coupons = ({ navigation }) => {
 
   const init = (isFavorite) => {
     setIsLoading(true)
-    PromotionStore.resetLists();
+    BusinessPointsStore.resetLists();
     setTimeout(async () => {
-      await PromotionStore.getList(isFavorite);
+      await BusinessPointsStore.getList(isFavorite);
       setIsLoading(false)
     }, 400)
   }
@@ -97,8 +97,8 @@ export const Coupons = ({ navigation }) => {
   }
 
   const handleOnEndReached = useCallback(async () => {
-    if (PromotionStore.finishScroll || PromotionStore.isLoding) return
-    await PromotionStore.getList(!!isFavoriteList)
+    if (BusinessPointsStore.finishScroll || BusinessPointsStore.isLoding) return
+    await BusinessPointsStore.getList(!!isFavoriteList)
   }, [])
 
   const Component = () => (
@@ -107,16 +107,16 @@ export const Coupons = ({ navigation }) => {
         style={styles.segment}
         backgroundColor='black'
         tintColor='#0EA47A'
-        values={['Все акции', 'Мои акции']}
+        values={['Все компании', 'Мои компании']}
         selectedIndex={isFavoriteList}
         onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
       />
-      {isLoading ? <Loading/> : <Coupons/>}
+      {isLoading ? <Loading/> : <BusinessPoints/>}
     </View >
   )
 
   const renderFooter = observer(() => {
-    if (PromotionStore.isLoding) {
+    if (BusinessPointsStore.isLoding) {
       return <ActivityIndicator style={{ marginVertical: 20 }} size="large" color="white" />;
     }
     return null
@@ -126,12 +126,12 @@ export const Coupons = ({ navigation }) => {
     <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
   )
 
-  const Coupons = observer(() => (
+  const BusinessPoints = observer(() => (
     <View style={styles.app}>
       <FlatList
         ref={flatListRef}
         style={styles.flatList}
-        data={PromotionStore.list}
+        data={BusinessPointsStore.list}
         numColumns={2}
         refreshControl={
           <RefreshControl
@@ -155,27 +155,27 @@ export const Coupons = ({ navigation }) => {
 }
 
 const Item = ({ navigation, item }) => {
-  const [offer, setOffer] = useState(item)
+  const [company, setCompany] = useState(item)
 
   const openDetail = (item) => {
-    navigation.navigate('CouponDetailScreen', {data: item})
+    navigation.navigate('CompanyProfile', {data: item})
   }
 
-  const addToFavorite = (offer) => {
-    setOffer({...offer, favorite: !offer.favorite})
-    PromotionStore.addToFavorite(offer.id, !offer.favorite)
+  const addToFavorite = (company) => {
+    setCompany({...company, favorite: !company.favorite})
+    BusinessPointsStore.addToFavorite(company.id, !company.favorite)
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => { openDetail(offer) }}>
-      <View style={styles.coupon}>
+    <TouchableWithoutFeedback onPress={() => { openDetail(company) }}>
+      <View style={styles.businessPoint}>
         <View style={styles.item}>
-          <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${offer.img}.${offer.img_ext}` }} style={styles.icon} />
-          <Text style={styles.title}>{offer.name}</Text>
+          <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${company.img}.${company.img_ext}` }} style={styles.icon} />
+          <Text style={styles.title}>{company.name}</Text>
         </View>
-        <TouchableWithoutFeedback style={styles.icon} onPress={() => {  addToFavorite(offer) }}>
+        <TouchableWithoutFeedback style={styles.icon} onPress={() => {  addToFavorite(company) }}>
           <View style={styles.save}>
-            <Image source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+            <Image source={company.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
           </View>
         </TouchableWithoutFeedback>
       </View>

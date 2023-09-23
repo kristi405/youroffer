@@ -1,23 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import AnimatedLoader from "react-native-animated-loader";
 import { getSession } from '../../services/auth'
-
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
+import AuthStore from '../../stores/auth'
 export const OnboardingScreen = ({navigation}) => {
   const [visible, setVisible] = useState(true);
   useEffect(() => {
+    AuthStore.updateCoord()
     getSession().then(async (session) => {
-      await sleep(1000)
-      setInterval(() => {
-        setVisible(!visible);
+      setTimeout(() => {
+        setVisible(false);
+        if (session && session.token) {
+          navigation.navigate('CouponScreen')
+        } else {
+          navigation.navigate('LoginScreen')
+        }
       }, 1000);
-      if (session && session.token) {
-        navigation.navigate('CouponScreen')
-      } else {
-        navigation.navigate('LoginScreen')
-      }
     })}, []);
 
     return (
@@ -28,7 +26,6 @@ export const OnboardingScreen = ({navigation}) => {
           source={require("../../../assets/loader.json")}
           speed={1}
         >
-          <Text>Doing something...</Text>
         </AnimatedLoader>
       </View>
     );

@@ -19,7 +19,7 @@ const getUserLocation = async () => {
         const location = await Location.getCurrentPositionAsync({});
         CAHCE.latitude = location.coords.latitude;
         CAHCE.longitude = location.coords.longitude;
-        console.log(`Latitude: ${CAHCE.latitude}, Longitude: ${CAHCE.longitude}`);
+        console.log(CAHCE)
         return CAHCE;
     } catch (error) {
         console.error(error);
