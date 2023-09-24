@@ -3,10 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import AnimatedLoader from "react-native-animated-loader";
 import { getSession } from '../../services/auth'
 import AuthStore from '../../stores/auth'
+import BusinessPointsStore from '../../stores/businessPoints'
+
 export const OnboardingScreen = ({navigation}) => {
   const [visible, setVisible] = useState(true);
   useEffect(() => {
     AuthStore.updateCoord()
+    BusinessPointsStore.getAll()
     getSession().then(async (session) => {
       setTimeout(() => {
         setVisible(false);

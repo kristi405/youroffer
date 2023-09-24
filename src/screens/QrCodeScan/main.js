@@ -22,7 +22,9 @@ export const Scan = ({ navigation }) => {
 
     const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
+        console.log('111111111', type, data)
         const jsonData = JSON.parse(data.trim())
+
         const offer = await OfferUsingStore.getOfferById(jsonData.id_offer)
         Alert.alert('', `Применить акцию "${offer.name}"?`,
         [
@@ -72,6 +74,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        paddingBottom: 50
+        paddingBottom: 50,
+        backgroundColor: '#000000',
     },
 });

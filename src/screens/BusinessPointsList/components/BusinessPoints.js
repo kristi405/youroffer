@@ -69,39 +69,20 @@ const styles = StyleSheet.create({
 
 
 export const BusinessPoints = ({ navigation }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [isFavoriteList, setIsFavoriteList] = useState(0)
+  const [list, setList] = useState(BusinessPointsStore.all)
 
-  const flatListRef = useRef(null);
-
-  useEffect(() => {
-    init()
-  }, []);
-
-  const init = (isFavorite) => {
-    setIsLoading(true)
-    BusinessPointsStore.resetLists();
-    setTimeout(async () => {
-      await BusinessPointsStore.getList(isFavorite);
-      setIsLoading(false)
-    }, 400)
-  }
 
   const handleValueChange = async (isFavorite) => {
     setIsFavoriteList(isFavorite)
-    init(!!isFavorite)
+    if (isFavorite) {
+      setList(BusinessPointsStore.favorite)
+    } else {
+      setList(BusinessPointsStore.all)
+    }
   };
 
-  const handleRefresh = () => {
-    init(!!isFavoriteList)
-  }
-
-  const handleOnEndReached = useCallback(async () => {
-    if (BusinessPointsStore.finishScroll || BusinessPointsStore.isLoding) return
-    await BusinessPointsStore.getList(!!isFavoriteList)
-  }, [])
-
-  const Component = () => (
+  const Component = observer(() => (
     <View style={{width: '100%', flex: 1, gap: 10, alignItems: 'center'}}>
       <SegmentedControl
         style={styles.segment}
@@ -111,45 +92,26 @@ export const BusinessPoints = ({ navigation }) => {
         selectedIndex={isFavoriteList}
         onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
       />
-      {isLoading ? <Loading/> : <BusinessPoints/>}
+      {BusinessPointsStore.isLoading ? <Loading/> : <BusinessPoints/>}
     </View >
-  )
-
-  const renderFooter = observer(() => {
-    if (BusinessPointsStore.isLoding) {
-      return <ActivityIndicator style={{ marginVertical: 20 }} size="large" color="white" />;
-    }
-    return null
-  });
+  ))
 
   const Loading = () => (
     <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
   )
 
-  const BusinessPoints = observer(() => (
+  const BusinessPoints = () => (
     <View style={styles.app}>
       <FlatList
-        ref={flatListRef}
         style={styles.flatList}
-        data={BusinessPointsStore.list}
+        data={list}
         numColumns={2}
-        refreshControl={
-          <RefreshControl
-            onRefresh={handleRefresh}
-            colors={['#0EA47A']}
-            tintColor={'white'}
-            progressViewOffset={5}
-          />
-        }
         renderItem={({ item }) =>  <Item item={item} navigation={navigation}/>}
         keyExtractor={(item) => item.id}
-        onEndReached={() => { handleOnEndReached() }}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={renderFooter}
       >
       </FlatList>
     </View >
-  ));
+  );
 
   return <Component/>
 }
@@ -163,7 +125,8 @@ const Item = ({ navigation, item }) => {
 
   const addToFavorite = (company) => {
     setCompany({...company, favorite: !company.favorite})
-    BusinessPointsStore.addToFavorite(company.id, !company.favorite)
+    company.favorite = !company.favorite
+    BusinessPointsStore.addToFavorite(company.id, company.favorite)
   }
 
   return (
@@ -171,7 +134,7 @@ const Item = ({ navigation, item }) => {
       <View style={styles.businessPoint}>
         <View style={styles.item}>
           <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${company.img}.${company.img_ext}` }} style={styles.icon} />
-          <Text style={styles.title}>{company.name}</Text>
+          <Text style={styles.title}>{company.name} {company.dist} {company.favorite} </Text>
         </View>
         <TouchableWithoutFeedback style={styles.icon} onPress={() => {  addToFavorite(company) }}>
           <View style={styles.save}>

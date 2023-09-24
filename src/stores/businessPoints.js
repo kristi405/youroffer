@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
+import { getLocation, distanceBetweenGeoPoints } from '../services/geo'
 
 // максимальное количесвто акций получаемых при одном запросе
 const COUNT_PER_ONE_REQUEST = 10
@@ -9,56 +10,61 @@ class BusinessPointsStore {
     page = 1
     // флаг указывающий что мы получили все акции
     finishScroll = false
-    isLoding = false
+    isLoading = false
 
     constructor() {
         makeAutoObservable(this)
     }
 
-    resetLists() {
+    get all() {
+        return this.list || []
+    }
+
+    get favorite() {
+        return this.list.filter(bp => bp.favorite) || []
+    }
+
+    setList(list) {
         runInAction(() => {
-            this.page = 1
-            this.finishScroll = false
-            this.list = []
+            this.list = list || []
         })
     }
 
-    addToList(chunck) {
-        runInAction(() => {
-            this.list = [...this.list, ...chunck]
-            this.page += 1
-            this.isLoding = false
-        })
-    }
-
-    async getList(favorite) {
-        // Если мы уже получили все акции
-        if (this.finishScroll) return
-        // если у нас 1 старница - то не нужно пказывать лоадер
-        // и если страница 1 то нам не нужна задержка , иначе ставим задержку на 1 секунду
-        this.isLoding = !(this.page === 1)
-        setTimeout(async () => {
-            let status = REQUEST_STATUS.success
-            try {
-                const resp = await api.get('/api/v1/business_point/client/list', {
-                    params: {
-                        page: this.page,
-                        favorite: favorite ? favorite : undefined
-                    }
-                })
-
-                if (resp.data.length < COUNT_PER_ONE_REQUEST) {
-                    this.finishScroll = true
-                }
-
-                this.addToList(resp.data || [])
-            } catch (e) {
-                this.isLoding = false
-                console.error(e)
-                status = REQUEST_STATUS.error
+    async getAll() {
+        this.isLoading = true
+        try {
+            const resp = await api.get('/api/v1/business_point/all')
+            let data = resp.data
+            if (Array.isArray(data)) {
+                data = await this.sortByDistance(resp.data)
             }
-            return status
-        }, this.page === 1 ? 0 : 1000)
+            this.setList(data)
+        } catch (e) {
+            console.error(e)
+        }
+        this.isLoading = false
+    }
+
+    async sortByDistance(businessPoints) {
+        const userCoord = await getLocation()
+        if (!userCoord.latitude || !userCoord.latitude) return;
+        businessPoints.forEach(bp => {
+            if (bp.lng && bp.lat) {
+                const dist = distanceBetweenGeoPoints(
+                    {latitude: bp.lat, longitude: bp.lng},
+                    userCoord
+                )
+                bp.dist = dist
+            }
+        });
+
+        businessPoints.sort((a, b) => {
+            if (a.dist > b.dist) return 1
+            if (a.dist < b.dist) return -1
+            return 0
+        })
+
+        return businessPoints
     }
 
     async addToFavorite(id, favorite) {
