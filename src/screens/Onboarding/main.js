@@ -8,9 +8,13 @@ import BusinessPointsStore from '../../stores/businessPoints'
 export const OnboardingScreen = ({navigation}) => {
   const [visible, setVisible] = useState(true);
   useEffect(() => {
-    AuthStore.updateCoord()
-    BusinessPointsStore.getAll()
-    getSession().then(async (session) => {
+      init()
+  }, []);
+
+    const init = async () => {
+      AuthStore.updateCoord()
+      BusinessPointsStore.getAll()
+      const session = await getSession()
       setTimeout(() => {
         setVisible(false);
         if (session && session.token) {
@@ -19,7 +23,8 @@ export const OnboardingScreen = ({navigation}) => {
           navigation.navigate('LoginScreen')
         }
       }, 1000);
-    })}, []);
+
+    }
 
     return (
       <View style={{ flex: 1, paddingTop: 0, backgroundColor: 'black' }}>

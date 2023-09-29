@@ -68,10 +68,9 @@ const styles = StyleSheet.create({
 })
 
 
-export const BusinessPoints = ({ navigation }) => {
+export const BusinessPoints = observer(({ navigation }) => {
   const [isFavoriteList, setIsFavoriteList] = useState(0)
-  const [list, setList] = useState(BusinessPointsStore.all)
-
+  const [list, setList] = useState([])
 
   const handleValueChange = async (isFavorite) => {
     setIsFavoriteList(isFavorite)
@@ -81,6 +80,10 @@ export const BusinessPoints = ({ navigation }) => {
       setList(BusinessPointsStore.all)
     }
   };
+
+  useEffect(() => {
+    handleValueChange(isFavoriteList)
+  }, [BusinessPointsStore.isLoading]);
 
   const Component = observer(() => (
     <View style={{width: '100%', flex: 1, gap: 10, alignItems: 'center'}}>
@@ -114,18 +117,18 @@ export const BusinessPoints = ({ navigation }) => {
   );
 
   return <Component/>
-}
+})
 
 const Item = ({ navigation, item }) => {
   const [company, setCompany] = useState(item)
 
   const openDetail = (item) => {
-    navigation.navigate('CompanyProfile', {data: item})
+    // navigation.navigate('CompanyProfile', {data: item})
   }
 
   const addToFavorite = (company) => {
-    setCompany({...company, favorite: !company.favorite})
     company.favorite = !company.favorite
+    setCompany({...company})
     BusinessPointsStore.addToFavorite(company.id, company.favorite)
   }
 

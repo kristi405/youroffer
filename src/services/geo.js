@@ -1,6 +1,7 @@
 import * as Location from 'expo-location';
 
 const CAHCE = {}
+const EARTH_RADIUS = 6371;  // Радиус Земли в километрах
 
 export const getLocation = async () => {
     if (CAHCE.latitude && CAHCE.longitude) {
@@ -22,7 +23,6 @@ export const distanceBetweenGeoPoints = (pointA, pointB) => {
     const lng2 = pointB.longitude;
 
     // Вычисляем расстояние по формуле Гаверсинусов
-    const R = 6371; // Радиус Земли в километрах
     const φ1 = lat1 * Math.PI / 180;
     const φ2 = lat2 * Math.PI / 180;
     const Δφ = φ2 - φ1;
@@ -31,7 +31,7 @@ export const distanceBetweenGeoPoints = (pointA, pointB) => {
     // Вычисляем расстояние
     const a = Math.sin(Δφ / 2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return parseInt(R * c * 1000);
+    return parseInt(EARTH_RADIUS * c * 1000);
 }
 
 const getUserLocation = async () => {
