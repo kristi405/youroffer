@@ -6,7 +6,7 @@ import SegmentedControl from '@react-native-segmented-control/segmented-control'
 
 const styles = StyleSheet.create({
   segment: {
-    width: '97%',
+    width: '95%',
     height: 35,
     borderWidth: 1,
     borderColor: '#434343',
@@ -27,9 +27,7 @@ const styles = StyleSheet.create({
   app: {
     width: '100%',
     height: '100%',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: 50
+    alignContent: 'center'
   },
   flatList: {
     width: '100%',
@@ -53,6 +51,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingRight: 10,
     borderRadius: 10,
+    opacity: 0.8
   },
   title: {
     fontSize: 15,
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
 })
 
 
-export const Coupons = ({ navigation }) => {
+export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFavoriteList, setIsFavoriteList] = useState(0)
 
@@ -82,7 +81,7 @@ export const Coupons = ({ navigation }) => {
     setIsLoading(true)
     PromotionStore.resetLists();
     setTimeout(async () => {
-      await PromotionStore.getList(isFavorite);
+      await PromotionStore.getList(isFavorite, businessPointId);
       setIsLoading(false)
     }, 400)
   }
@@ -98,11 +97,12 @@ export const Coupons = ({ navigation }) => {
 
   const handleOnEndReached = useCallback(async () => {
     if (PromotionStore.finishScroll || PromotionStore.isLoding) return
-    await PromotionStore.getList(!!isFavoriteList)
+    await PromotionStore.getList(!!isFavoriteList, businessPointId)
   }, [])
 
   const Component = () => (
     <View style={{width: '100%', flex: 1, gap: 10, alignItems: 'center'}}>
+      {!isCompanyPromotions ? 
       <SegmentedControl
         style={styles.segment}
         backgroundColor='black'
@@ -110,7 +110,7 @@ export const Coupons = ({ navigation }) => {
         values={['Все акции', 'Мои акции']}
         selectedIndex={isFavoriteList}
         onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
-      />
+      /> : null }
       {isLoading ? <Loading/> : <Coupons/>}
     </View >
   )

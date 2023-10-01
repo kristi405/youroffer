@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 export const CouponScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Coupons navigation={navigation} />
+      <Coupons navigation={navigation} isCompanyPromotions={false} />
     </SafeAreaView>
   )
 }

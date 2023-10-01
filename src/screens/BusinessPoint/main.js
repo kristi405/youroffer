@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Image, Text } from 'react-native';
-import { Coupon } from "../PromotionsList/components/Coupons";
+import { Coupons } from "../PromotionsList/components/Coupons";
 
 export const CompanyProfile = ({ navigation, route }) => {
     const item = route?.params?.data
@@ -17,16 +17,16 @@ export const CompanyProfile = ({ navigation, route }) => {
                     <Text style={styles.nameStyle}>{item.name} </Text>
                     <View style={styles.stack}>
                         <Image source={require('../../../assets/time.png')} style={styles.clock} />
-                        {/* {item.time} */}
+                        <Text style={styles.time}> 9:00 - 22:00</Text>
                     </View>
                     <View style={styles.stack}>
                         <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
-                        {/* {item.distance} */}
+                        <Text style={styles.time}> 500 m </Text>
                     </View>
                     <Text style={styles.description}>Мы специализируемся на французской кухне, у нам большая винная карта. Также по выходным мы проводим закрытые мероприятия. Тел. +375(29)1234567 </Text>
                 </View>
             </View>
-            <Coupon openDetail={openDetail}/>
+            <Coupons openDetail={openDetail} isCompanyPromotions={true} businessPointId={item.id}/>
         </View>
     )
 }
@@ -40,17 +40,18 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         backgroundColor: 'black',
         gap: 15,
-        paddingBottom: 100
     },
     profile: {
         width: '100%',
         flexDirection: 'row',
         gap: 20,
+        paddingBottom: 15
     },
     image: {
         height: 100,
         width: 100,
         borderRadius: 50,
+        opacity: 0.9
     },
     descriptionView: {
         flex: 1,
@@ -81,21 +82,10 @@ const styles = StyleSheet.create({
         width: 14,
         height: 14,
     },
-    headerStyle: {
+      time: {
         color: 'white',
-        paddingHorizontal: 10,
-        paddingTop: 10,
-      },
-      imageContainer: {
-        width: '100%',
-        height: 120,
-        borderRadius: 10,
-        opacity: 0.8
+        paddingLeft: 5,
+        paddingTop: 3,
+        opacity: 0.5
       },
 })
-
-const newStyles = StyleSheet.create({
-    nameStyle: {
-        color: 'red',
-    },
-});
