@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useCallback } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, RefreshControl, ActivityIndicator } from 'react-native';
 import PromotionStore from "../../../stores/promotion"
 import { observer } from "mobx-react-lite"
@@ -73,9 +74,11 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
 
   const flatListRef = useRef(null);
 
-  useEffect(() => {
-    init()
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      init()
+    }, [])
+  );
 
   const init = (isFavorite) => {
     setIsLoading(true)

@@ -40,7 +40,6 @@ class PromotionStore {
         this.isLoding = !(this.page === 1)
         setTimeout(async () => {
             let status = REQUEST_STATUS.success
-            console.log('22222222', businessPointId)
             try {
                 
                 const resp = await api.get('/api/v1/offer/list', {
@@ -50,7 +49,6 @@ class PromotionStore {
                         businessPointId: businessPointId ? businessPointId : undefined
                     }
                 })
-                console.log('3333333', resp.data)
                 if (resp.data.length < COUNT_PER_ONE_REQUEST) {
                     this.finishScroll = true
                 }
