@@ -2,115 +2,80 @@ import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import MapView from "react-native-map-clustering";
 import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useEffect, useState } from 'react';
-import { useRef } from "react";
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as Location from 'expo-location';
+import { useState } from 'react';
 import Modal from 'react-native-modal';
+import BusinessPointsStore from "../../stores/businessPoints";
+import { MAP_STYLE } from "../../services/geo"
 
 export const Map = ({ navigation }) => {
-    const markers = [
-        { id: 0, coordinates: { latitude: 52.2503026, longitude: 20.9947617 } },
-        { id: 1, coordinates: { latitude: 52.2402027, longitude: 20.9847620 } },
-        { id: 2, coordinates: { latitude: 52.2835028, longitude: 20.9647620 } },
-        { id: 3, coordinates: { latitude: 52.2335028, longitude: 20.9647620 } },
-        { id: 4, coordinates: { latitude: 52.2135028, longitude: 20.9447620 } },
-        { id: 5, coordinates: { latitude: 52.2865028, longitude: 21.0047620 } },
-        { id: 6, coordinates: { latitude: 52.2815028, longitude: 21.0547620 } },
-        { id: 7, coordinates: { latitude: 52.2535028, longitude: 21.0747620 } },
-        { id: 8, coordinates: { latitude: 52.2235028, longitude: 21.0447620 } },
-        { id: 9, coordinates: { latitude: 52.2135028, longitude: 21.0347620 } },
-        { id: 10, coordinates: { latitude: 52.2035028, longitude: 21.0117620 } },
-        { id: 11, coordinates: { latitude: 52.2012028, longitude: 21.0297620 } },
-        { id: 12, coordinates: { latitude: 52.1735028, longitude: 21.0347620 } },
-        { id: 13, coordinates: { latitude: 52.1735028, longitude: 21.0207620 } },
-        { id: 14, coordinates: { latitude: 52.1635028, longitude: 21.0507620 } },
-        { id: 15, coordinates: { latitude: 52.1635028, longitude: 20.9997620 } },
-    ];
-
-    const [location, setLocation] = useState(null)
-    const [errorMsg, setErrorMsg] = useState(null)
+    const [selectedBp, setSelectedBp] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const mapViewRef = useRef(null);
-    const warsawRegion = {
-        latitude: 52.2403025,
-        longitude: 20.9947616,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
+
+    const openDetail = (item) => {
+        setIsModalVisible(false)
+        setSelectedBp(null)
+        // для того чтобы окно перерисовалось и модальное окно скрылось
+        setTimeout(() => {
+            navigation.navigate('CompanyProfile', { data: item })
+        })
     }
-    const goToWarszaw = () => {
-        mapViewRef.current.animateToRegion(warsawRegion, 3000)
-    }
-
-    useEffect(() => {
-        async function getLocationAsync() {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.log('Permission to access location was denied');
-                return;
-            }
-
-            let { coords } = await Location.getCurrentPositionAsync({});
-            setLocation(coords);
-        }
-
-        getLocationAsync();
-    }, []);
 
     return (
         <View style={styles.container}>
-            {location ? (
-                <MapView style={styles.map} provider={PROVIDER_GOOGLE} region={
-                    location
-                        ? {
-                            latitude: location.latitude,
-                            longitude: location.longitude,
-                            latitudeDelta: 0.03,
-                            longitudeDelta: 0.03
-                        } : undefined}
-                    clusterColor='red'
-                    cluster={true}
-                    clusterRadius={80}
-                    minimumClusterSize={10}>
-                    <Marker pinColor="blue" coordinate={location}>
-                        <Image source={require('../../../assets/pin.png')} style={styles.imageContainer} />
-                    </Marker>
-                    {markers.map((marker, index) => (
+            <MapView
+                mapType="standard"
+                userInterfaceStyle="dark"
+                style={styles.map}
+                showsUserLocation={true}
+                customMapStyle={MAP_STYLE}
+                provider={PROVIDER_GOOGLE}
+                tracksViewChanges={false}
+                region={{
+                    // TODO: добавить регионы (пока только брест)
+                    latitude: 52.08943642679975,
+                    longitude: 23.72369655950971,
+                    latitudeDelta: 0.5,
+                    longitudeDelta: 0.5,
+                }}
+                clusterColor='red'
+                cluster={true}
+                clusterRadius={80}
+                minimumClusterSize={10}>
+                    {BusinessPointsStore.all.map((bp) => (
                         <Marker
-                            key={index}
-                            coordinate={marker.coordinates}
-                            pinColor='red'
-                            onPress={(e) => setIsModalVisible(true)}
+                            key={bp.id}
+                            coordinate={{ latitude: parseFloat(bp.lat), longitude: parseFloat(bp.lng) }}
+                            pinColor={'red'}
+                            onPress={(e) => {
+                                setSelectedBp(bp)
+                                setIsModalVisible(true)
+                            }}
                             tracksViewChanges={false}
                         />
                     ))}
                 </MapView>
-            ) : (
-                <Text>{errorMsg || 'Waiting for location...'}</Text>
-            )}
-            <View style={styles.modal}>
+            {selectedBp && <View style={styles.modal}>
                 <Modal isVisible={isModalVisible} onBackdropPress={() => setIsModalVisible(false)} style={styles.modal}>
                     <View style={styles.modalContainer}>
                         <View style={styles.stackWithButton}>
                             <View style={styles.modalStack}>
-                                <Image source={require('../../../assets/333.webp')} style={styles.image} />
+                                <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${selectedBp.img}.${selectedBp.img_ext}` }} style={styles.image} />
                                 <View style={styles.vetricalStack}>
-                                    <Text style={styles.name}>My company</Text>
-                                    <View style={styles.stack}>
+                                    <Text style={styles.name}>{selectedBp.name}</Text>
+                                    {selectedBp.dist && <View style={styles.stack}>
                                         <Image source={require('../../../assets/mapIcon.png')} style={styles.mapIcon} />
-                                        <Text style={styles.distans}>500 м</Text>
-                                    </View>
+                                        <Text style={styles.distans}>{selectedBp.dist} m</Text>
+                                    </View>}
                                     <View style={styles.separator} />
                                 </View>
                             </View>
-                            <TouchableOpacity style={styles.buttonStyle}>
-                                <Text style={styles.showPromotionText}>Посмотреть на карте</Text>
+                            <TouchableOpacity style={styles.buttonStyle} onPress={() => openDetail(selectedBp)}>
+                                <Text style={styles.showPromotionText}>Посмотреть</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </Modal>
-            </View>
+            </View>}
         </View>
     )
 }
@@ -195,7 +160,7 @@ const styles = StyleSheet.create({
     },
     showPromotionText: {
         fontSize: 13,
-        color: 'black',
+        color: '#CCC',
         fontWeight: '600'
     },
     buttonStyle: {

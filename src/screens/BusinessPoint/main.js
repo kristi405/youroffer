@@ -5,10 +5,6 @@ import { Coupons } from "../PromotionsList/components/Coupons";
 export const CompanyProfile = ({ navigation, route }) => {
     const item = route?.params?.data
 
-    const openDetail = item => {
-        navigation.navigate('CouponDetailScreen', {data: item})
-    }
-
     return (
         <View style={styles.container}>
             <View style={styles.profile}>
@@ -19,14 +15,14 @@ export const CompanyProfile = ({ navigation, route }) => {
                         <Image source={require('../../../assets/time.png')} style={styles.clock} />
                         <Text style={styles.time}> 9:00 - 22:00</Text>
                     </View>
-                    <View style={styles.stack}>
+                    {item.dist && <View style={styles.stack}>
                         <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
-                        <Text style={styles.time}> 500 m </Text>
-                    </View>
-                    <Text style={styles.description}>Мы специализируемся на французской кухне, у нам большая винная карта. Также по выходным мы проводим закрытые мероприятия. Тел. +375(29)1234567 </Text>
+                        <Text style={styles.time}> {item.dist} m </Text>
+                    </View>}
+                    <Text style={styles.description}>{item.description}</Text>
                 </View>
             </View>
-            <Coupons openDetail={openDetail} isCompanyPromotions={true} businessPointId={item.id}/>
+            <Coupons navigation={navigation} isCompanyPromotions={true} businessPointId={item.id}/>
         </View>
     )
 }

@@ -32,7 +32,7 @@ class PromotionStore {
     }
 
     async getList(favorite, businessPointId) {
-        
+
         // Если мы уже получили все акции
         if (this.finishScroll) return
         // если у нас 1 старница - то не нужно пказывать лоадер
@@ -41,7 +41,6 @@ class PromotionStore {
         setTimeout(async () => {
             let status = REQUEST_STATUS.success
             try {
-                
                 const resp = await api.get('/api/v1/offer/list', {
                     params: {
                         page: this.page,

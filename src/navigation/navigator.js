@@ -9,6 +9,7 @@ import { QrCodeScreen } from '../screens/QrCode/main';
 import { CompanyProfile } from '../screens/BusinessPoint/main'
 import { EditScreen } from '../screens/EditUser/main';
 import { OnboardingScreen } from '../screens/Onboarding/main';
+import { Map } from "../screens/Map/main";
 import { Scan } from '../screens/QrCodeScan/main'
 
 const Stack = createNativeStackNavigator();
