@@ -6,10 +6,12 @@ import { useState } from 'react';
 import Modal from 'react-native-modal';
 import BusinessPointsStore from "../../stores/businessPoints";
 import { MAP_STYLE } from "../../services/geo"
+import { getLocation } from '../../services/geo'
 
 export const Map = ({ navigation }) => {
     const [selectedBp, setSelectedBp] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const location = getLocation()._j
 
     const openDetail = (item) => {
         setIsModalVisible(false)
@@ -32,10 +34,10 @@ export const Map = ({ navigation }) => {
                 tracksViewChanges={false}
                 region={{
                     // TODO: добавить регионы (пока только брест)
-                    latitude: 52.08943642679975,
-                    longitude: 23.72369655950971,
-                    latitudeDelta: 0.5,
-                    longitudeDelta: 0.5,
+                    latitude: location ? location.latitude : 52.08943642679975,
+                    longitude: location ? location.longitude : 23.72369655950971,
+                    latitudeDelta: 0.3,
+                    longitudeDelta: 0.3,
                 }}
                 clusterColor='red'
                 cluster={true}

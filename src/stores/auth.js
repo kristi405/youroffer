@@ -86,6 +86,7 @@ class AuthStore {
             const resp = await api.patch('/api/v1/user/update', userToUpdate)
             await setUser(resp.data)
         } catch (e) {
+            console.log(e)
             status =  REQUEST_STATUS.error
             console.log(e.message)
         }

@@ -3,29 +3,89 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Keyboard } from 'react-native';
 import { getUser } from '../../services/auth'
+import ValidateStore from '../../stores/validate'
+import { VALIDATE_RULES } from '../../services/validate'
 import AuthStore from '../../stores/auth'
-import {  REQUEST_STATUS } from '../../services/constants'
+import { REQUEST_STATUS } from '../../services/constants'
+import dayjs from 'dayjs'
+
+const validateStroe = new ValidateStore({
+    name: {
+      isValid: true,
+      rules: [VALIDATE_RULES.required]
+    },
+    surname: {
+        isValid: true,
+        rules: [VALIDATE_RULES.required]
+    },
+    bdate: {
+        isValid: true,
+        rules: [VALIDATE_RULES.required, VALIDATE_RULES.date]
+    },
+    email: {
+        isValid: true,
+        rules: [VALIDATE_RULES.email]
+    }
+})
 
 export const EditScreen = ({ navigation }) => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
-    const [birsday, setBirsday] = useState('');
+    const [bdate, setBirsday] = useState('');
     const [email, setEmail] = useState('');
-    const [gander, setGander] = useState('');
+    const [login, setLogin] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
 
     useEffect(() => {
         getUser().then((user) => {
             setName(user.name)
             setSurname(user.surname)
             setEmail(user.email)
-            setBirsday(user.bdate)
-            setGander(user.sex)
+            setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY'): '')
+            setRole(user.role)
         })
     }, []);
 
-    const pressHandler = () => {
-        setName('')
-        navigation.navigate('CouponScreen')
+    const pressHandler = async () => {
+        const data =  {
+            name,
+            surname,
+            bdate,
+            email,
+            login,
+            password
+        }
+        
+        if (!validateStroe.validate(data)) return;
+        
+        const status = await AuthStore.updateUser(data)
+        if (status === REQUEST_STATUS.success) {
+            navigation.goBack()
+        }
+    }
+
+    const ChangePasswordView = () => {
+        if (role == 'manager') return null
+        return (
+            <View style={styles.changePasswordBlock}>
+            <Text style={styles.changePasswordText}>Сменить данные для входа</Text>
+            <TextInput style={styles.passwordInputStyle}
+                onChangeText={setLogin}
+                value={login}
+                keyboardType='default'
+                placeholder="Новый логин"
+                maxLength={20}
+                placeholderTextColor={'grey'} />
+            <TextInput style={styles.passwordInputStyle}
+                onChangeText={setPassword}
+                value={password}
+                keyboardType='default'
+                placeholder="Новый пароль"
+                maxLength={20}
+                placeholderTextColor={'grey'} />
+        </View>
+        )
     }
 
     return (
@@ -48,7 +108,7 @@ export const EditScreen = ({ navigation }) => {
                         placeholderTextColor={'grey'} />
                     <TextInput style={styles.codeInputStyle}
                         onChangeText={setBirsday}
-                        value={birsday}
+                        value={bdate}
                         keyboardType='number-pad'
                         placeholder="Дата Рождения"
                         maxLength={20}
@@ -61,7 +121,8 @@ export const EditScreen = ({ navigation }) => {
                         maxLength={30}
                         placeholderTextColor={'grey'} />
                 </View>
-                <TouchableOpacity style={[styles.buttonStyle]}>
+               <ChangePasswordView/>
+                <TouchableOpacity style={[styles.buttonStyle]} onPress={pressHandler}>
                     <Text style={styles.buttonText}>Сохранить</Text>
                 </TouchableOpacity>
             </View>
@@ -79,14 +140,12 @@ const styles = StyleSheet.create({
     createUserBlock: {
         width: '90%',
         flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingBottom: 20,
+        paddingBottom: 20
     },
     codeInputStyle: {
         color: 'white',
         margin: 5,
-        width: '90%',
+        width: '95%',
         height: 40,
         padding: 10,
         borderWidth: 0.5,
@@ -102,12 +161,34 @@ const styles = StyleSheet.create({
         width: '40%',
         paddingVertical: 10,
         borderRadius: 8,
-        backgroundColor: '#57A167',
-        opacity: 0.3,
+        backgroundColor: '#0EA47A',
         alignItems: 'center'
     },
     buttonText: {
         fontSize: 20,
         color: '#fff'
+    },
+    changePasswordBlock: {
+        width: '95%',
+        flexDirection: 'column',
+        paddingBottom: 10,
+        alignItems: 'center',
+    },
+    passwordInputStyle: {
+        color: 'white',
+        margin: 5,
+        width: '90%',
+        height: 40,
+        padding: 10,
+        borderWidth: 0.5,
+        borderColor: 'gray',
+        borderRadius: 8,
+    },
+    changePasswordText: {
+        fontSize: 16,
+        color: '#0EA47A',
+        paddingTop: 30,
+        paddingBottom: 10,
+        paddingRight:'25%'
     }
 })
