@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Keyboard } from 'react-native';
 import { getUser } from '../../services/auth'
@@ -11,8 +12,8 @@ import dayjs from 'dayjs'
 
 const validateStroe = new ValidateStore({
     name: {
-      isValid: true,
-      rules: [VALIDATE_RULES.required]
+        isValid: true,
+        rules: [VALIDATE_RULES.required]
     },
     surname: {
         isValid: true,
@@ -37,18 +38,20 @@ export const EditScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
 
-    useEffect(() => {
-        getUser().then((user) => {
-            setName(user.name)
-            setSurname(user.surname)
-            setEmail(user.email)
-            setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY'): '')
-            setRole(user.role)
-        })
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            getUser().then((user) => {
+                setName(user.name)
+                setSurname(user.surname)
+                setEmail(user.email)
+                setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY') : '')
+                setRole(user.role)
+            })
+        }, [])
+    );
 
     const pressHandler = async () => {
-        const data =  {
+        const data = {
             name,
             surname,
             bdate,
@@ -56,9 +59,9 @@ export const EditScreen = ({ navigation }) => {
             login,
             password
         }
-        
+
         if (!validateStroe.validate(data)) return;
-        
+
         const status = await AuthStore.updateUser(data)
         if (status === REQUEST_STATUS.success) {
             navigation.goBack()
@@ -69,22 +72,22 @@ export const EditScreen = ({ navigation }) => {
         if (role == 'manager') return null
         return (
             <View style={styles.changePasswordBlock}>
-            <Text style={styles.changePasswordText}>Сменить данные для входа</Text>
-            <TextInput style={styles.passwordInputStyle}
-                onChangeText={setLogin}
-                value={login}
-                keyboardType='default'
-                placeholder="Новый логин"
-                maxLength={20}
-                placeholderTextColor={'grey'} />
-            <TextInput style={styles.passwordInputStyle}
-                onChangeText={setPassword}
-                value={password}
-                keyboardType='default'
-                placeholder="Новый пароль"
-                maxLength={20}
-                placeholderTextColor={'grey'} />
-        </View>
+                <Text style={styles.changePasswordText}>Сменить данные для входа</Text>
+                <TextInput style={styles.passwordInputStyle}
+                    onChangeText={setLogin}
+                    value={login}
+                    keyboardType='default'
+                    placeholder="Новый логин"
+                    maxLength={20}
+                    placeholderTextColor={'grey'} />
+                <TextInput style={styles.passwordInputStyle}
+                    onChangeText={setPassword}
+                    value={password}
+                    keyboardType='default'
+                    placeholder="Новый пароль"
+                    maxLength={20}
+                    placeholderTextColor={'grey'} />
+            </View>
         )
     }
 
@@ -121,7 +124,7 @@ export const EditScreen = ({ navigation }) => {
                         maxLength={30}
                         placeholderTextColor={'grey'} />
                 </View>
-               <ChangePasswordView/>
+                <ChangePasswordView />
                 <TouchableOpacity style={[styles.buttonStyle]} onPress={pressHandler}>
                     <Text style={styles.buttonText}>Сохранить</Text>
                 </TouchableOpacity>
@@ -189,6 +192,6 @@ const styles = StyleSheet.create({
         color: '#0EA47A',
         paddingTop: 30,
         paddingBottom: 10,
-        paddingRight:'25%'
+        paddingRight: '25%'
     }
 })

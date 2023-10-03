@@ -11,6 +11,7 @@ import { EditScreen } from '../screens/EditUser/main';
 import { OnboardingScreen } from '../screens/Onboarding/main';
 import { Map } from "../screens/Map/main";
 import { Scan } from '../screens/QrCodeScan/main'
+import { ContactUs } from '../screens/ContactUs/main'
 
 const Stack = createNativeStackNavigator();
 
@@ -87,6 +88,15 @@ export const Navigator = () => {
                 component={EditScreen}
                 options={{
                     title: 'Редактировать',
+                    headerTintColor: '#0EA47A',
+                    headerStyle: { backgroundColor: 'black' }
+                }}
+            />
+            <Stack.Screen
+                name="ContactUs"
+                component={ContactUs}
+                options={{
+                    title: 'Контакты',
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 }}

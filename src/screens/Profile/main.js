@@ -1,40 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Image, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
 import AuthStore from '../../stores/auth'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getUser } from '../../services/auth'
 
 export const Profile = ({ navigation }) => {
+    const [id, setId] = useState('')
+
+    useEffect(() => {
+        getUser().then((user) => {
+            setId(user.number)
+        })
+    })
+
     const openSettings = item => {
         if (item.id == 0) {
             navigation.navigate('EditScreen', { data: item })
-        } else if (item.id == 4) {
-            navigation.navigate('LoginScreen');
-            AuthStore.clearUser()
+        } else if (item.id == 1) {
+            navigation.navigate('ContactUs', { data: item })
         } else if (item.id == 3) {
             navigation.navigate('Scan', { data: item })
         }
     }
 
+    const logout = () => {
+        navigation.navigate('LoginScreen');
+        AuthStore.clearUser()
+    }
+
     return (
         <View style={styles.container}>
-            <Text style={styles.navigationTitle}>Мой профиль</Text>
-            <FlatList
-                style={styles.flatList}
-                data={itemData}
-                numColumns={1}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) =>
-                    <TouchableWithoutFeedback onPress={() => { openSettings(item) }}>
-                        <View style={styles.item}>
-                            <View style={styles.header}>
-                                {item.image}
-                                {item.title}
+            <View>
+                <Text style={styles.navigationTitle}>Мой профиль</Text>
+                <TouchableWithoutFeedback onPress={() => { logout }}>
+                    <View style={styles.item}>
+                        <Text style={styles.idStyle}>Ваш ID: {id}</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+                <FlatList
+                    style={styles.flatList}
+                    data={itemData}
+                    numColumns={1}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) =>
+                        <TouchableWithoutFeedback onPress={() => { openSettings(item) }}>
+                            <View style={styles.item}>
+                                <View style={styles.header}>
+                                    {item.image}
+                                    {item.title}
+                                </View>
+                                <Image source={require('../../../assets/arrow.png')} style={styles.icon} />
                             </View>
-                            <Image source={require('../../../assets/arrow.png')} style={styles.icon} />
-                        </View>
-                    </TouchableWithoutFeedback>
-                }>
-            </FlatList>
+                        </TouchableWithoutFeedback>
+                    }>
+                </FlatList>
+            </View>
+            <TouchableWithoutFeedback onPress={() => { logout }}>
+                <View style={styles.item}>
+                    <View style={styles.header}>
+                        <Image source={require('../../../assets/scan.png')} style={styles.image} />
+                        <Text style={styles.title}>Выход</Text>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
         </View>
     )
 }
@@ -44,14 +71,23 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'black',
-        paddingTop: 44,
+        paddingTop: 30,
+        paddingBottom: 10,
         paddingHorizontal: 10,
+        justifyContent: 'space-between'
+    },
+    idStyle: {
+        fontSize: 20,
+        color: 'white',
+        opacity: 0.6,
+        fontWeight: '700',
     },
     navigationTitle: {
         fontSize: 20,
         color: '#0EA47A',
         fontWeight: '700',
-        paddingLeft: 5
+        paddingLeft: 10,
+        paddingBottom: 10
     },
     title: {
         fontSize: 14,
@@ -71,7 +107,7 @@ const styles = StyleSheet.create({
     },
     item: {
         flexDirection: 'row',
-        height: 60,
+        height: 55,
         margin: 5,
         backgroundColor: '#1A1A1A',
         justifyContent: 'space-between',
@@ -106,10 +142,5 @@ const itemData = [
         id: 3,
         title: (<Text style={styles.title}>Cканировать Qr</Text>),
         image: (<Image source={require('../../../assets/scan.png')} style={styles.image} />),
-    },
-    {
-        id: 4,
-        title: (<Text style={styles.title}>Очистить кеш</Text>),
-        image: (<Image source={require('../../../assets/scan.png')} style={styles.image} />),
-    },
+    }
 ]
