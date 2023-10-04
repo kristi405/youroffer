@@ -23,6 +23,7 @@ export const Profile = ({ navigation }) => {
     }
 
     const logout = () => {
+        console.log('11111')
         navigation.navigate('LoginScreen');
         AuthStore.clearUser()
     }
@@ -31,7 +32,7 @@ export const Profile = ({ navigation }) => {
         <View style={styles.container}>
             <View>
                 <Text style={styles.navigationTitle}>Мой профиль</Text>
-                <TouchableWithoutFeedback onPress={() => { logout }}>
+                <TouchableWithoutFeedback>
                     <View style={styles.item}>
                         <Text style={styles.idStyle}>Ваш ID: {id}</Text>
                     </View>
@@ -54,7 +55,7 @@ export const Profile = ({ navigation }) => {
                     }>
                 </FlatList>
             </View>
-            <TouchableWithoutFeedback onPress={() => { logout }}>
+            <TouchableWithoutFeedback onPress={logout}>
                 <View style={styles.item}>
                     <View style={styles.header}>
                         <Image source={require('../../../assets/logout.png')} style={styles.logout} />
