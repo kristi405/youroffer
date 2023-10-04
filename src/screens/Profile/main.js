@@ -23,7 +23,6 @@ export const Profile = ({ navigation }) => {
     }
 
     const logout = () => {
-        console.log('11111')
         navigation.navigate('LoginScreen');
         AuthStore.clearUser()
     }
