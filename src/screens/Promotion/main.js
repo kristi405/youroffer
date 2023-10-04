@@ -27,13 +27,20 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         )
     }
 
+    const QuantitativePromotionView = () => {
+        if (item.type != 'quantitative') return null
+        return (
+            <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {item.max_count}</Text>
+        )
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView style={styles.descriptionContainer}>
                 <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
                 <View style={styles.headerContainerView}>
                     <View style={styles.headerView}>
-                        <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.bp_img}.${item.img_ext}` }} style={styles.avatar} />
+                        <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${item.business_points[0].img}.${item.img_ext}` }} style={styles.avatar} />
                         <Text style={styles.headerText}>{item.name}</Text>
                     </View>
                 </View>
@@ -46,9 +53,9 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 </View>
                 <View style={styles.circle}>
                     <AccumulativePromotionView />
+                    <QuantitativePromotionView />
                 </View>
             </ScrollView>
-
         </View>
     )
 }
@@ -60,7 +67,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         paddingHorizontal: 15,
         paddingTop: 5,
-        paddingBottom: 10
+        paddingBottom: 15
     },
     descriptionContainer: {
         flex: 1,
@@ -98,9 +105,10 @@ const styles = StyleSheet.create({
         borderRadius: 13
     },
     headerText: {
-        fontSize: 15,
+        fontSize: 17,
         color: '#fff',
         paddingLeft: 10,
+        paddingTop: 10
     },
     showPromotionText: {
         fontSize: 15,
@@ -113,13 +121,13 @@ const styles = StyleSheet.create({
         paddingTop: 3
     },
     descriptionText: {
-        fontSize: 15,
+        fontSize: 16,
         color: '#fff',
         opacity: 0.6
     },
     contentText: {
         paddingTop: 8,
-        fontSize: 12,
+        fontSize: 13,
         color: '#fff',
         opacity: 0.6
     },
@@ -130,5 +138,11 @@ const styles = StyleSheet.create({
         opacity: 0.8,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    quantitativeStyle: {
+        fontSize: 18,
+        color: 'white',
+        opacity: 0.9,
+        fontWeight: '600',
     },
 })
