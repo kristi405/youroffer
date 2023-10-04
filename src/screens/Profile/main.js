@@ -57,7 +57,7 @@ export const Profile = ({ navigation }) => {
             <TouchableWithoutFeedback onPress={() => { logout }}>
                 <View style={styles.item}>
                     <View style={styles.header}>
-                        <Image source={require('../../../assets/scan.png')} style={styles.image} />
+                        <Image source={require('../../../assets/logout.png')} style={styles.logout} />
                         <Text style={styles.title}>Выход</Text>
                     </View>
                 </View>
@@ -118,7 +118,14 @@ const styles = StyleSheet.create({
     image: {
         width: 24,
         height: 24,
-        borderRadius: 5
+        borderRadius: 5,
+    },
+    logout: {
+        width: 23,
+        height: 23,
+        borderRadius: 5,
+        tintColor: 'white',
+        backgroundColor: '#0EA47A'
     }
 })
 
