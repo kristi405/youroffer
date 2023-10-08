@@ -1,14 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
 import { StyleSheet, Text, View, Image, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
+import ContactUsStore from '../../stores/contactUs'
 
 export const ContactUs = ({ navigation }) => {
     const [name, setName] = useState('');
     const [contact, setContact] = useState('');
-    const [message, setMessage] = useState('');
-    const scrollViewRef = useRef(null);
+    const [text, setText] = useState('');
 
     const handleScreenPress = () => {
         Keyboard.dismiss();
+    };
+
+    const sendRequest = async (props) => {
+        await ContactUsStore.sendMail(name, text, contact)
     };
 
     return (
@@ -35,23 +39,23 @@ export const ContactUs = ({ navigation }) => {
                         keyboardType='default'
                         placeholder="Ваше имя"
                         maxLength={20}
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                     <TextInput style={styles.codeInputStyle}
                         onChangeText={setContact}
                         value={contact}
                         keyboardType='default'
                         placeholder="Ваши контактные данные"
                         maxLength={50}
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                         <TextInput style={styles.messageInputStyle}
-                        onChangeText={setMessage}
-                        value={message}
+                        onChangeText={setText}
+                        value={text}
                         keyboardType='default'
                         placeholder="Оставьте нам сообщение и мы свяжемся с Вами в ближайшее время"
                         multiline
                         maxLength={150}
-                        placeholderTextColor={'grey'} />
-                    <TouchableOpacity style={[styles.buttonStyle]}>
+                        placeholderTextColor={'#474A51'} />
+                    <TouchableOpacity style={[styles.buttonStyle]} onPress={sendRequest}>
                         <Text style={styles.buttonText}>Отправить</Text>
                     </TouchableOpacity>
                 </View>
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
         width: '100%',
         gap: 10,
         flexDirection: 'column',
-        paddingTop: 70,
+        paddingTop: 65,
         alignItems: 'center'
     },
     buttonStyle: {

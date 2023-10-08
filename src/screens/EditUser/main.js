@@ -8,6 +8,8 @@ import ValidateStore from '../../stores/validate'
 import { VALIDATE_RULES } from '../../services/validate'
 import AuthStore from '../../stores/auth'
 import { REQUEST_STATUS } from '../../services/constants'
+import UserStore from '../../stores/user'
+import { observer } from "mobx-react-lite"
 import dayjs from 'dayjs'
 
 const validateStroe = new ValidateStore({
@@ -29,26 +31,29 @@ const validateStroe = new ValidateStore({
     }
 })
 
-export const EditScreen = ({ navigation }) => {
+export const EditScreen = observer(({ navigation }) => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [bdate, setBirsday] = useState('');
     const [email, setEmail] = useState('');
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
 
     useFocusEffect(
         React.useCallback(() => {
-            getUser().then((user) => {
-                setName(user.name)
-                setSurname(user.surname)
-                setEmail(user.email)
-                setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY') : '')
-                setRole(user.role)
-            })
+            init()
         }, [])
     );
+
+    const init = () => {
+        setTimeout(async () => {
+            let user = await UserStore.getUser()
+            setName(user.name)
+            setSurname(user.surname)
+            setEmail(user.email)
+            setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY') : '')
+        }, 300)
+    }
 
     const pressHandler = async () => {
         const data = {
@@ -69,7 +74,7 @@ export const EditScreen = ({ navigation }) => {
     }
 
     const ChangePasswordView = () => {
-        if (role == 'manager') return null
+        if (UserStore.role == 'manager') return null
         return (
             <View style={styles.changePasswordBlock}>
                 <Text style={styles.changePasswordText}>Сменить данные для входа</Text>
@@ -79,14 +84,14 @@ export const EditScreen = ({ navigation }) => {
                     keyboardType='default'
                     placeholder="Новый логин"
                     maxLength={20}
-                    placeholderTextColor={'grey'} />
+                    placeholderTextColor={'#474A51'} />
                 <TextInput style={styles.passwordInputStyle}
                     onChangeText={setPassword}
                     value={password}
                     keyboardType='default'
                     placeholder="Новый пароль"
                     maxLength={20}
-                    placeholderTextColor={'grey'} />
+                    placeholderTextColor={'#474A51'} />
             </View>
         )
     }
@@ -101,28 +106,28 @@ export const EditScreen = ({ navigation }) => {
                         keyboardType='default'
                         placeholder="Имя"
                         maxLength={20}
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                     <TextInput style={styles.codeInputStyle}
                         onChangeText={setSurname}
                         value={surname}
                         keyboardType='default'
                         placeholder="Фамилия"
                         maxLength={30}
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                     <TextInput style={styles.codeInputStyle}
                         onChangeText={setBirsday}
                         value={bdate}
                         keyboardType='number-pad'
                         placeholder="Дата Рождения"
                         maxLength={20}
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                     <TextInput style={styles.codeInputStyle}
                         onChangeText={setEmail}
                         value={email}
                         keyboardType='email-address'
                         placeholder="e-mail"
                         maxLength={30}
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                 </View>
                 <ChangePasswordView />
                 <TouchableOpacity style={[styles.buttonStyle]} onPress={pressHandler}>
@@ -131,7 +136,7 @@ export const EditScreen = ({ navigation }) => {
             </View>
         </TouchableWithoutFeedback>
     )
-}
+})
 
 const styles = StyleSheet.create({
     container: {
@@ -174,7 +179,7 @@ const styles = StyleSheet.create({
     changePasswordBlock: {
         width: '95%',
         flexDirection: 'column',
-        paddingBottom: 10,
+        paddingBottom: 30,
         alignItems: 'center',
     },
     passwordInputStyle: {

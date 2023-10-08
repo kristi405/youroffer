@@ -80,14 +80,14 @@ export const CreateUserScreen = observer(({ navigation }) => {
                         keyboardType='default'
                         placeholder="Имя"
                         maxLength={20}
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                     <TextInput style={[styles.codeInputStyle, changeBorder('surname')]}
                         onChangeText={(v) => {setSurname(v); resetValidation('surname')}}
                         value={surname}
                         keyboardType='default'
                         placeholder="Фамилия"
                         maxLength={30}
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                     <MaskedTextInput style={[styles.codeInputStyle, changeBorder('bdate')]}
                         mask="99.99.9999"
                         type="date"
@@ -98,14 +98,14 @@ export const CreateUserScreen = observer(({ navigation }) => {
                         value={bdate}
                         keyboardType='number-pad'
                         placeholder="Дата Рождения (дд.мм.гггг)"
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                     <TextInput style={[styles.codeInputStyle, changeBorder('email')]}
                         onChangeText={(v) => {setEmail(v); resetValidation('email')}}
                         value={email}
                         keyboardType='email-address'
                         placeholder="e-mail"
                         maxLength={30}
-                        placeholderTextColor={'grey'} />
+                        placeholderTextColor={'#474A51'} />
                 </View>
                 <TouchableOpacity
                     style={[styles.buttonStyle]}
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingBottom: 20,
+        paddingBottom: 30,
     },
     codeInputStyle: {
         color: 'white',
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         width: '40%',
         paddingVertical: 10,
         borderRadius: 8,
-        backgroundColor: '#57A167',
+        backgroundColor: '#0EA47A',
         alignItems: 'center'
     },
     buttonText: {

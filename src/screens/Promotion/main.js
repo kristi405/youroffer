@@ -1,10 +1,26 @@
 import React, { useState } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { PromotionView } from "./components/PromotionView";
 import { getUser } from "../../services/auth"
+import OfferUsingStore from '../../stores/offerUsing'
 
 export const CouponDetailScreen = ({ navigation, route }) => {
     const item = route?.params?.data
+    const [offer, setOffer] = useState('');
+
+    useFocusEffect(
+        React.useCallback(() => {
+            init()
+        }, [])
+    );
+
+    const init = () => {
+        setTimeout(async () => {
+            let offer = await OfferUsingStore.getOfferById(item.id)
+            setOffer(offer)
+        }, 300)
+    }
 
     const openQr = async (props) => {
         const user = await getUser()
@@ -14,7 +30,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const AccumulativePromotionView = () => {
         if (item.type != 'accumulative') return null
         return (
-            <PromotionView data={item} />
+            <PromotionView data={offer} />
         )
     }
 
@@ -30,7 +46,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const QuantitativePromotionView = () => {
         if (item.type != 'quantitative') return null
         return (
-            <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {item.max_count}</Text>
+            <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {offer.max_count}</Text>
         )
     }
 

@@ -28,11 +28,12 @@ const styles = StyleSheet.create({
   app: {
     width: '100%',
     height: '100%',
-    alignContent: 'center'
+    alignContent: 'center',
+    paddingBottom: 40
   },
   flatList: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   item: {
     flex: 1,

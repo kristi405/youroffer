@@ -14,11 +14,11 @@ export const Profile = ({ navigation }) => {
 
     const openSettings = item => {
         if (item.id == 0) {
-            navigation.navigate('EditScreen', { data: item })
+            navigation.navigate('EditScreen')
         } else if (item.id == 1) {
-            navigation.navigate('ContactUs', { data: item })
+            navigation.navigate('ContactUs')
         } else if (item.id == 3) {
-            navigation.navigate('Scan', { data: item })
+            navigation.navigate('Scan')
         }
     }
 
