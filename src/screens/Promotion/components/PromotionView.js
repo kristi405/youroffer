@@ -32,7 +32,6 @@ export const PromotionView = (route) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // flexDirection: 'row',
         backgroundColor: '#333333',
         borderRadius: 10,
     },

@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
     headerView: {
         flexDirection: 'row',
         alignItems: 'flex-end',
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-end',
+        paddingTop: 10
     },
     avatar: {
         width: 26,
@@ -124,7 +125,6 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: '#fff',
         paddingLeft: 10,
-        paddingTop: 10
     },
     showPromotionText: {
         fontSize: 15,

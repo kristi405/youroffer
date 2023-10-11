@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CouponScreen } from "../screens/PromotionsList/main";
 import { CompanyScreen } from "../screens/BusinessPointsList/main";
 import { Map } from "../screens/Map/main";
 import { Profile } from "../screens/Profile/main";
+import { Scan } from "../screens/QrCodeScan/main";
+import UserStore from '../stores/user'
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +18,9 @@ const images = {
     couponSelected: require("../../assets/couponIconSelected.png"),
     companySelected: require("../../assets/companyIconSelected.png"),
     mapSelected: require("../../assets/mapIconSelected.png"),
-    profileSelected: require("../../assets/mapIconSelected.png"),
+    profileSelected: require("../../assets/profileSelected.png"),
+    scan: require("../../assets/scan.png"),
+    scanSelected: require("../../assets/scanSelected.png"),
 };
 
 const TabBarImage = ({focused, imgName}) => {
@@ -32,6 +36,15 @@ const TabBarImage = ({focused, imgName}) => {
 }
 
 export const TabBar = () => {
+const [isShowScan, setIsShowScan] = useState(false);
+
+useEffect(() => {
+    setTimeout(async () => {
+        let user = await UserStore.getUser()
+        setIsShowScan(user.role == 'admin' || user.role == 'manager' ? true : false)
+    }, 300)
+})
+
   return (
     <Tab.Navigator
         screenOptions={{
@@ -90,6 +103,21 @@ export const TabBar = () => {
                 headerShown: false
             }}
         />
+        {isShowScan && (
+        <Tab.Screen
+            name="Скан"
+            component={Scan}
+            visible = {isShowScan}
+            options={{
+                tabBarIcon: ({focused}) => (
+                    <TabBarImage
+                        focused={focused}
+                        imgName={'scan'}
+                    />
+                ),
+                headerShown: false,
+            }}/>
+        )}
     </Tab.Navigator>
   )
 }

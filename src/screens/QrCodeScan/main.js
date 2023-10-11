@@ -22,7 +22,6 @@ export const Scan = ({ navigation }) => {
 
     const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
-        console.log('111111111', type, data)
         const jsonData = JSON.parse(data.trim())
 
         const offer = await OfferUsingStore.getOfferById(jsonData.id_offer)

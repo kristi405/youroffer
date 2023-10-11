@@ -17,8 +17,6 @@ export const Profile = ({ navigation }) => {
             navigation.navigate('EditScreen')
         } else if (item.id == 1) {
             navigation.navigate('ContactUs')
-        } else if (item.id == 3) {
-            navigation.navigate('Scan')
         }
     }
 
@@ -144,10 +142,5 @@ const itemData = [
         id: 2,
         title: (<Text style={styles.title}>Информация о приложении</Text>),
         image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
-    },
-    {
-        id: 3,
-        title: (<Text style={styles.title}>Cканировать Qr</Text>),
-        image: (<Image source={require('../../../assets/scan.png')} style={styles.image} />),
     }
 ]

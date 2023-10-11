@@ -9,8 +9,6 @@ import { QrCodeScreen } from '../screens/QrCode/main';
 import { CompanyProfile } from '../screens/BusinessPoint/main'
 import { EditScreen } from '../screens/EditUser/main';
 import { OnboardingScreen } from '../screens/Onboarding/main';
-import { Map } from "../screens/Map/main";
-import { Scan } from '../screens/QrCodeScan/main'
 import { ContactUs } from '../screens/ContactUs/main'
 
 const Stack = createNativeStackNavigator();
@@ -97,15 +95,6 @@ export const Navigator = () => {
                 component={ContactUs}
                 options={{
                     title: 'Контакты',
-                    headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
-                }}
-            />
-            <Stack.Screen
-                name="Scan"
-                component={Scan}
-                options= {{
-                    title: 'Сканировать',
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 }}
