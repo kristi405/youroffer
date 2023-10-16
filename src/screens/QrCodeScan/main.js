@@ -23,13 +23,11 @@ export const Scan = ({ navigation }) => {
     const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
         const jsonData = JSON.parse(data.trim())
-
-        const offer = await OfferUsingStore.getOfferById(jsonData.id_offer)
-        Alert.alert('', `Применить акцию "${offer.name}"?`,
+        Alert.alert('', `Применить акцию "${jsonData.name_offer}"?`,
         [
             {
               text: 'Отменить',
-              onPress: () => console.log('Cancel Pressed'),
+              onPress: () => setScanned(false),
               style: 'cancel',
             },
             {
@@ -43,10 +41,27 @@ export const Scan = ({ navigation }) => {
 
     const useOffer = async (id_offer, id_user) => {
         const response = await OfferUsingStore.useOffer(id_offer, id_user)
-        if (response.error) {
-            Alert.alert('', Errors[`${response.error}`]);
+        let isError = false
+        let errorText = ''
+        for (resp of response) {
+            if (resp.error) {
+                isError = true
+                errorText += `${Errors[resp.error] || resp.error} `
+            }
+        }
+        
+        if (isError) {
+            Alert.alert('', errorText);
+            setScanned(false)
         } else {
-            Alert.alert('', "Акция успешно применена!");
+            Alert.alert('', "Акция успешно применена!",
+            [
+                {
+                  text: 'ОК',
+                  onPress: () => setScanned(false),
+                  style: 'cancel',
+                },
+            ])
         }
     }
 

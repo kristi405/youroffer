@@ -1,15 +1,13 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useEffect} from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import SvgQRCode from 'react-native-qrcode-svg';
-import * as Asset from 'expo-asset';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 export const QrCodeScreen = ({navigation, route}) => {
     const data = route?.params?.data
     const json = JSON.stringify({
         id_offer: data.itemId,
-        id_user: data.userId
+        id_user: data.userId,
+        name_offer: data.name
     })  
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { PromotionView } from "./components/PromotionView";
@@ -8,6 +8,13 @@ import OfferUsingStore from '../../stores/offerUsing'
 export const CouponDetailScreen = ({ navigation, route }) => {
     const item = route?.params?.data
     const [offer, setOffer] = useState('');
+    const [ids, setIds] = useState(null)
+
+    useEffect(() => {
+        const newIds = item.related
+        newIds.push(item.id)
+        setIds(newIds)
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -24,7 +31,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const openQr = async (props) => {
         const user = await getUser()
-        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: item.id } })
+        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name} })
     }
 
     const AccumulativePromotionView = () => {
