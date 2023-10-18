@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { PromotionView } from "./components/PromotionView";
 import { getUser } from "../../services/auth"
 import OfferUsingStore from '../../stores/offerUsing'
@@ -25,13 +25,17 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const init = () => {
         setTimeout(async () => {
             let offer = await OfferUsingStore.getOfferById(item.id)
-            setOffer(offer)
+            if (offer) {
+                setOffer(offer)
+            } else {
+                Alert.alert('', 'Акция была удалена');
+            }
         }, 300)
     }
 
     const openQr = async (props) => {
         const user = await getUser()
-        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name} })
+        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name } })
     }
 
     const AccumulativePromotionView = () => {
@@ -53,7 +57,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const QuantitativePromotionView = () => {
         if (item.type != 'quantitative') return null
         return (
-            <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {offer.max_count}</Text>
+            <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {offer?.max_count || 0}</Text>
         )
     }
 
