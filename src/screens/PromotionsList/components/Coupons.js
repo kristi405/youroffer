@@ -174,7 +174,7 @@ const Item = ({ navigation, item }) => {
     <TouchableWithoutFeedback onPress={() => { openDetail(offer) }}>
       <View style={styles.coupon}>
         <View style={styles.item}>
-          <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${offer.img}.${offer.img_ext}` }} style={styles.icon} />
+          <Image source={{ uri: `http://62.171.164.180:8888/api/v1/file/${offer.img}.${offer.img_ext}` }} style={styles.icon} />
           <Text style={styles.title}>{offer.name}</Text>
         </View>
         <TouchableWithoutFeedback style={styles.icon} onPress={() => {  addToFavorite(offer) }}>

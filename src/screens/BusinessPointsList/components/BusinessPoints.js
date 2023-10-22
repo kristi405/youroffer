@@ -154,7 +154,7 @@ const Item = ({ navigation, item }) => {
     <TouchableWithoutFeedback onPress={() => { openDetail(company) }}>
       <View style={styles.businessPoint}>
         <View style={styles.item}>
-          <Image source={{ uri: `http://31.220.77.203:8888/api/v1/file/${company.img}.${company.img_ext}` }} style={styles.icon} />
+          <Image source={{ uri: `http://62.171.164.180:8888/api/v1/file/${company.img}.${company.img_ext}` }} style={styles.icon} />
           <View style={styles.header}>
             <Text style={styles.title}>{company.name} </Text>
             <View style={styles.row}>

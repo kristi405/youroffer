@@ -9,6 +9,7 @@ export const Profile = ({ navigation }) => {
     useEffect(() => {
         getUser().then((user) => {
             setId(user.number)
+            console.log('33333333', user)
         })
     })
 

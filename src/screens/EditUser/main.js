@@ -74,7 +74,7 @@ export const EditScreen = observer(({ navigation }) => {
     }
 
     const ChangePasswordView = () => {
-        if (UserStore.role == 'manager') return null
+        if (UserStore.role == 'manager' || UserStore.role == 'client') return null
         return (
             <View style={styles.changePasswordBlock}>
                 <Text style={styles.changePasswordText}>Сменить данные для входа</Text>

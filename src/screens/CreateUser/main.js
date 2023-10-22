@@ -48,7 +48,7 @@ export const CreateUserScreen = observer(({ navigation }) => {
 
         const status = await AuthStore.updateUser(data)
         if (status === REQUEST_STATUS.success) {
-            navigation.navigate('CouponScreen')
+            navigation.navigate('Profile')
         }
     }
 
