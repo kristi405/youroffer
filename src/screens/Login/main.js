@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { makeRedirectUri, useAuthRequest, ResponseType } from 'expo-auth-session';
 import { StyleSheet, Text, View, Image, Button, TouchableHighlight } from 'react-native';
 import { Keyboard } from 'react-native';
 import AuthStore from '../../stores/auth'
@@ -7,7 +8,7 @@ import { getSession } from '../../services/auth'
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
-import * as AuthSession from 'expo-auth-session';
+// import * as AuthSession from 'expo-auth-session';
 import { Platform } from 'react-native';
 
 WebBrowser.maybeCompleteAuthSession();
@@ -17,7 +18,7 @@ export const LoginScreen = ({ navigation }) => {
     const [user, setUser] = useState(null);
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: "431628664212-giaeh0eb4u6ptkmc2nahsa0mpbcobpab.apps.googleusercontent.com",
-        redirectUri: "https://auth.expo.io/@kristina_gyk/youoffer",
+        // redirectUri: makeRedirectUri({ scheme: 'com.offer.youoffer', path: 'redirect' }),
         androidClientId: "431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com",
         iosClientId: "834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com",
         scopes: ['profile', 'email']
@@ -32,6 +33,7 @@ export const LoginScreen = ({ navigation }) => {
             setAccessToken(response.authentication.accessToken);
             accessToken && fetchUserInfo();
         }
+        console.log('6666666', response)
     }, [response, accessToken]);
 
     async function fetchUserInfo() {
@@ -61,7 +63,7 @@ export const LoginScreen = ({ navigation }) => {
 
     const GoogleBtn = () => {
         return (
-            <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => promptAsync({ useProxy: true })}>
+            <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => promptAsync()}>
                 <View style={styles.containerForGoogleButton}>
                     <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
                     <Text style={styles.buttonText}>Sign in with Google</Text>
