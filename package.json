@@ -26,7 +26,6 @@
     "expo-auth-session": "~4.0.3",
     "expo-barcode-scanner": "~12.3.2",
     "expo-dev-client": "~2.2.1",
-    "expo-google-sign-in": "^11.0.0",
     "expo-location": "~15.1.1",
     "expo-navigation-bar": "~2.1.1",
     "expo-permissions": "^14.2.1",

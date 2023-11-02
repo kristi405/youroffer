@@ -31,12 +31,13 @@
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.offer.youoffer",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "locationAlwaysAndWhenInUsePermission":"Allow $(youoffer) to use your location.",
         "locationWhenInUsePermission": "Allow $(youoffer) to use your location.",
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": ["com.googleusercontent.apps.431628664212-gfpbub2u5uj45nql72nd2hno30n8p4g1"]
+            "CFBundleURLSchemes": ["com.googleusercontent.apps.834107509512-4ml4fiue0sovdee82fuj67900vglpsdc"]
           }
         ]
       },

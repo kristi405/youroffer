@@ -9,7 +9,6 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
-// import * as AuthSession from 'expo-auth-session';
 import { Platform } from 'react-native';
 
 WebBrowser.maybeCompleteAuthSession();
