@@ -18,9 +18,9 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(youoffer) to use your location."
         }
-      ]
+      ],
+      "@react-native-google-signin/google-signin"
     ],
-    "webClientId": "com.example.myapp.AppleSignIn",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -58,9 +58,6 @@
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDe_-maQXTeKOnHEKilBL5lcjKweuGYE-I"
-        },
-        "googleSignIn": {
-          "expoClientId": "431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com"
         }
       },
       "adaptiveIcon": {

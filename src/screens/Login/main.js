@@ -8,6 +8,7 @@ import { getSession } from '../../services/auth'
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 // import * as AuthSession from 'expo-auth-session';
 import { Platform } from 'react-native';
 
@@ -24,27 +25,25 @@ export const LoginScreen = ({ navigation }) => {
         scopes: ['profile', 'email']
     });
 
-    const openSettings = async () => {
-        navigation.navigate('CreateUserScreen')
+    GoogleSignin.configure({
+        androidClientId: "431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com",
+        iosClientId: "834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com",
+        forceConsentPrompt: true,
+    });
+
+    const googleSignin = async () => {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            await AuthStore.loginByGoogle(userInfo.user)
+            openSettings()
+        } catch (error) {
+            console.log("ERROR IS: " + JSON.stringify(e));
+        }
     }
 
-    useEffect(() => {
-        if (response?.type === "success") {
-            setAccessToken(response.authentication.accessToken);
-            accessToken && fetchUserInfo();
-        }
-        console.log('6666666', response)
-    }, [response, accessToken]);
-
-    async function fetchUserInfo() {
-        let response = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: {
-                Authorization: `Bearer ${(accessToken)}`
-            }
-        })
-        const userInfo = await response.json();
-        await AuthStore.loginByGoogle(userInfo)
-        openSettings()
+    const openSettings = () => {
+        navigation.navigate('CreateUserScreen')
     }
 
     const handleAppleSignIn = async () => {
@@ -63,7 +62,7 @@ export const LoginScreen = ({ navigation }) => {
 
     const GoogleBtn = () => {
         return (
-            <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => promptAsync()}>
+            <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => {googleSignin()}}>
                 <View style={styles.containerForGoogleButton}>
                     <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
                     <Text style={styles.buttonText}>Sign in with Google</Text>
@@ -88,7 +87,7 @@ export const LoginScreen = ({ navigation }) => {
         <View style={styles.container}>
             <Image source={require('../../../assets/logo.png')} style={styles.imageStyle} />
             <View style={styles.buttonContainer}>
-                <Text style={styles.textStyle}>Вход</Text>
+                <Text style={styles.textStyle}></Text>
                 <AppleBtn />
                 <GoogleBtn />
             </View>

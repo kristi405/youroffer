@@ -2,4 +2,5 @@
   <string name="app_name">youoffer</string>
   <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
   <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
+  <string name="server_client_id">431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com</string>
 </resources>

@@ -45,13 +45,14 @@ class AuthStore {
         try {
             const resp = await api.post('api/v1/auth/login/google', {
                 google_id: user.id,
-                name: user.given_name,
-                surname: user.family_name,
+                name: user.givenName,
+                surname: user.familyName,
                 google_locale: user.locale,
-                google_img: user.picture,
-                email: user.email,
-                google_verified_email: user.verified_email
+                google_img: user.photo,
+                email: user.email
             })
+
+            console.log(resp.data.user)
             setSession(resp.data.session)
             await setUser(resp.data.user)
         } catch (e) {
