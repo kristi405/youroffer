@@ -96,8 +96,8 @@ export const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     imageStyle: {
-        width: 220,
-        height: 220,
+        width: 230,
+        height: 240,
         tintColor: '#0EA47A'
     },
     googleImage: {
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         backgroundColor: 'black',
-        paddingTop: 100,
+        paddingTop: 120,
         gap: 20
     },
     buttonContainer: {

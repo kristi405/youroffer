@@ -6,6 +6,9 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
       "ios": {
         "simulator": true,
         "resourceClass": "m1-medium"
@@ -13,6 +16,9 @@
     },
     "preview": {
       "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      },
       "ios": {
         "simulator": true,
         "resourceClass": "m1-medium"
