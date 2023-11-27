@@ -6,7 +6,7 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "android": {
+      "android":{
         "buildType": "apk"
       },
       "ios": {
@@ -16,8 +16,8 @@
     },
     "preview": {
       "distribution": "internal",
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
+      "android":{
+        "buildType": "apk"
       },
       "ios": {
         "simulator": true,
@@ -25,6 +25,9 @@
       }
     },
     "production": {
+      "android":{
+        "buildType": "apk"
+      },
       "ios": {
         "simulator": true,
         "resourceClass": "m1-medium"

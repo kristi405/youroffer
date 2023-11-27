@@ -55,6 +55,7 @@
       }
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "package": "com.offer.youoffer",
       "config": {
         "googleMaps": {
