@@ -12,12 +12,12 @@ export const OnboardingScreen = ({navigation}) => {
   }, []);
 
     const init = async () => {
-      AuthStore.updateCoord()
-      BusinessPointsStore.getAll()
       const session = await getSession()
       setTimeout(() => {
         setVisible(false);
         if (session && session.token) {
+          AuthStore.updateCoord()
+          BusinessPointsStore.getAll()
           navigation.navigate('CouponScreen')
         } else {
           navigation.navigate('LoginScreen')

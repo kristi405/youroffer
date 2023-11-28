@@ -18,7 +18,6 @@ class AuthStore {
         try {
             this.phone = phone
             const resp = await api.post('api/v1/auth/login/phone', {phone})
-            console.log('1',resp.data)
         } catch (e) {
             status =  REQUEST_STATUS.error
             console.log(e.message)
@@ -52,7 +51,6 @@ class AuthStore {
                 email: user.email
             })
 
-            console.log(resp.data.user)
             setSession(resp.data.session)
             await setUser(resp.data.user)
         } catch (e) {
@@ -87,7 +85,6 @@ class AuthStore {
             const resp = await api.patch('/api/v1/user/update', userToUpdate)
             await setUser(resp.data)
         } catch (e) {
-            console.log(e)
             status =  REQUEST_STATUS.error
             console.log(e.message)
         }
