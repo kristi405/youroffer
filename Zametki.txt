@@ -1,0 +1,9 @@
+ сменить версию JAVA
+ sudo update-alternatives --config java
+ adb start-server
+ adb kill-server
+
+Обновить expo  https://blog.expo.dev/expo-sdk-49-c6d398cdf740
+npm install expo@^49.0.0
+npx expo install --fix
+npx expo-doctor@latest

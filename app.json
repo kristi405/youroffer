@@ -40,22 +40,9 @@
             "CFBundleURLSchemes": ["com.googleusercontent.apps.834107509512-4ml4fiue0sovdee82fuj67900vglpsdc"]
           }
         ]
-      },
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyDe_-maQXTeKOnHEKilBL5lcjKweuGYE-I"
-        },
-        "appleSignIn": {
-          "clientId": "com.example.myapp.AppleSignIn",
-          "scope": ["email", "name"]
-        },
-        "googleSignIn": {
-          "expoClientId": "834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com"
-        }
       }
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
       "package": "com.offer.youoffer",
       "config": {
         "googleMaps": {
@@ -78,10 +65,6 @@
         "projectId": "bf189e94-81ad-4deb-9d3b-3de10662db11"
       }
     },
-    "permissions": [
-      "ACCESS_COARSE_LOCATION",
-      "ACCESS_FINE_LOCATION"
-    ],
     "owner": "kristina_gyk"
   }
 }

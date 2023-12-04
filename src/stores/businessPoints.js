@@ -48,7 +48,7 @@ class BusinessPointsStore {
 
     async sortByDistance(businessPoints) {
         const userCoord = await getLocation()
-        if (!userCoord.latitude || !userCoord.latitude) return businessPoints;
+        if (!userCoord?.latitude || !userCoord?.latitude) return businessPoints;
         businessPoints.forEach(bp => {
             if (bp.lng && bp.lat) {
                 const dist = distanceBetweenGeoPoints(
