@@ -64,8 +64,10 @@ const styles = StyleSheet.create({
   },
   save: {
     alignItems: 'flex-end',
-    paddingRight: 10,
-    paddingBottom: 10
+  },
+  touch: {
+    paddingHorizontal: 10,
+    paddingVertical: 10
   }
 })
 
@@ -78,7 +80,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
 
   useFocusEffect(
     React.useCallback(() => {
-      init()
+      init(PromotionStore.isFavoriteBlock)
     }, [])
   );
 
@@ -93,6 +95,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
 
   const handleValueChange = async (isFavorite) => {
     setIsFavoriteList(isFavorite)
+    PromotionStore.isFavoriteBlock = !!isFavorite
     init(!!isFavorite)
   };
 
@@ -106,17 +109,17 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   }, [])
 
   const Component = () => (
-    <View style={{width: '100%', flex: 1, gap: 10, alignItems: 'center'}}>
+    <View style={{ width: '100%', flex: 1, gap: 10, alignItems: 'center' }}>
       {!isCompanyPromotions ?
-      <SegmentedControl
-        style={styles.segment}
-        backgroundColor='black'
-        tintColor='#0EA47A'
-        values={['Все акции', 'Мои акции']}
-        selectedIndex={isFavoriteList}
-        onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
-      /> : null }
-      {isLoading ? <Loading/> : <Coupons/>}
+        <SegmentedControl
+          style={styles.segment}
+          backgroundColor='black'
+          tintColor='#0EA47A'
+          values={['Все акции', 'Мои акции']}
+          selectedIndex={isFavoriteList}
+          onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
+        /> : null}
+      {isLoading ? <Loading /> : <Coupons />}
     </View >
   )
 
@@ -146,7 +149,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
             progressViewOffset={5}
           />
         }
-        renderItem={({ item }) =>  <Item item={item} navigation={navigation}/>}
+        renderItem={({ item }) => <Item item={item} navigation={navigation} />}
         keyExtractor={(item) => item.id}
         onEndReached={() => { handleOnEndReached() }}
         onEndReachedThreshold={0.1}
@@ -156,18 +159,18 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
     </View >
   ));
 
-  return <Component/>
+  return <Component />
 }
 
 const Item = ({ navigation, item }) => {
   const [offer, setOffer] = useState(item)
 
   const openDetail = (item) => {
-    navigation.navigate('CouponDetailScreen', {data: item})
+    navigation.navigate('CouponDetailScreen', { data: item })
   }
 
   const addToFavorite = (offer) => {
-    setOffer({...offer, favorite: !offer.favorite})
+    setOffer({ ...offer, favorite: !offer.favorite })
     PromotionStore.addToFavorite(offer.id, !offer.favorite)
   }
 
@@ -178,11 +181,13 @@ const Item = ({ navigation, item }) => {
           <Image source={{ uri: `${FILE_URL}${offer.img}.${offer.img_ext}` }} style={styles.icon} />
           <Text style={styles.title}>{offer.name}</Text>
         </View>
-        <TouchableWithoutFeedback style={styles.icon} onPress={() => {  addToFavorite(offer) }}>
-          <View style={styles.save}>
-            <Image source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={styles.save}>
+          <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>
+            <View style={styles.touch}>
+              <Image source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   )

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback } from 'react-native';
 import { PromotionView } from "./components/PromotionView";
 import { getUser } from "../../services/auth"
 import OfferUsingStore from '../../stores/offerUsing'
 import { FILE_URL } from '../../services/constants'
+import PromotionStore from "../../stores/promotion"
 
 export const CouponDetailScreen = ({ navigation, route }) => {
     const item = route?.params?.data
@@ -42,7 +43,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const AccumulativePromotionView = () => {
         if (item.type != 'accumulative') return null
         return (
-            <PromotionView data={offer} />
+            <PromotionView data={item} />
         )
     }
 
@@ -62,15 +63,25 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         )
     }
 
+    const addToFavorite = (offer) => {
+        setOffer({offer, favorite: !offer.favorite})
+        PromotionStore.addToFavorite(offer.id, !offer.favorite)
+      }
+
     return (
         <View style={styles.container}>
-            <ScrollView style={styles.descriptionContainer}>
+            <ScrollView>
                 <Image source={{ uri: `${FILE_URL}${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
                 <View style={styles.headerContainerView}>
                     <View style={styles.headerView}>
                         <Image source={{ uri: `${FILE_URL}${item.business_points[0].img}.${item.business_points[0].img_ext}` }} style={styles.avatar} />
                         <Text style={styles.headerText}>{item.name}</Text>
                     </View>
+                    <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>
+                        <View style={styles.touch}>
+                            <Image source={offer.favorite ? require('../../../assets/saveSelected.png') : require('../../../assets/save.png')} />
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
                 <Text style={styles.titleText}>{item.title}</Text>
                 <Text style={styles.descriptionText}>Описание акции:</Text>
@@ -97,13 +108,6 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 15
     },
-    descriptionContainer: {
-        flex: 1,
-        backgroundColor: 'black',
-        flexDirection: 'column',
-        gap: 10,
-        paddingBottom: 10
-    },
     button: {
         paddingTop: 30,
     },
@@ -115,17 +119,19 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 10,
     },
+    profile: {
+        flexDirection: 'row',
+    },
     headerContainerView: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'space-between',
         width: '100%',
+        paddingTop: 5,
         height: 30,
     },
     headerView: {
         flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
         paddingTop: 10
     },
     avatar: {
@@ -172,5 +178,9 @@ const styles = StyleSheet.create({
         color: 'white',
         opacity: 0.9,
         fontWeight: '600',
+    },
+    touch: {
+        paddingVertical: 10,
+        paddingHorizontal: 10
     },
 })

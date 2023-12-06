@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 5,
+    paddingBottom: 7,
     color: 'white'
   },
   row: {
@@ -78,12 +78,19 @@ const styles = StyleSheet.create({
     width: 16,
     height: 24,
     tintColor: '#0EA47A',
-},
+  },
+  save: {
+    alignItems: 'flex-end'
+  },
   title: {
     fontSize: 15,
     color: '#fff',
     paddingTop: 10,
   },
+  touch: {
+    paddingHorizontal: 10,
+    paddingVertical: 10
+  }
 })
 
 
@@ -94,7 +101,7 @@ export const BusinessPoints = observer(({ navigation }) => {
   const handleValueChange = async (isFavorite) => {
     setIsFavoriteList(isFavorite)
     if (isFavorite) {
-      setList(BusinessPointsStore.favorite)
+      setList(BusinessPointsStore.favoriteList())
     } else {
       setList(BusinessPointsStore.all)
     }
@@ -164,15 +171,20 @@ const Item = ({ navigation, item }) => {
             </View> */}
           </View>
         </View>
-        <TouchableWithoutFeedback style={styles.icon} onPress={() => { addToFavorite(company) }}>
+
         <View style={styles.header}>
-            <View style={styles.row}>
-              <Image source={require('../../../../assets/mapIcon.png')} style={styles.map} />
-              <Text style={styles.time}>{company.dist ? company.dist + ' метров' : '' }</Text>
-            </View>
-            <Image source={company.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+          <View style={styles.row}>
+            <Image source={require('../../../../assets/mapIcon.png')} style={styles.map} />
+            <Text style={styles.time}>{company.dist ? company.dist + ' метров' : ''}</Text>
           </View>
-        </TouchableWithoutFeedback>
+          <View style={styles.save}>
+            <TouchableWithoutFeedback style={styles.save} onPress={() => { addToFavorite(company) }}>
+              <View style={styles.touch}>
+                <Image source={company.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   )

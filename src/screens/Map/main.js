@@ -38,14 +38,13 @@ export const Map = ({ navigation }) => {
                 style={styles.map}
                 showsUserLocation={ CURRENT_COORD?.latitude ?  true : false }
                 customMapStyle={MAP_STYLE}
-                provider={PROVIDER_GOOGLE}
                 tracksViewChanges={false}
                 region={{
                     // TODO: добавить регионы (пока только брест)
                     latitude: CURRENT_COORD ? CURRENT_COORD.latitude : 52.08943642679975,
                     longitude: CURRENT_COORD ? CURRENT_COORD.longitude : 23.72369655950971,
-                    latitudeDelta: 0.3,
-                    longitudeDelta: 0.3,
+                    latitudeDelta: 0.15,
+                    longitudeDelta: 0.15,
                 }}
                 clusterColor='red'
                 cluster={true}

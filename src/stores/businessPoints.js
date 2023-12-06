@@ -20,8 +20,9 @@ class BusinessPointsStore {
         return this.list || []
     }
 
-    get favorite() {
-        return this.list.filter(bp => bp.favorite) || []
+    favoriteList() {
+        let favorite = this.all.filter(bp => bp.favorite) || []
+        return favorite
     }
 
     setList(list) {

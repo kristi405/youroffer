@@ -31,7 +31,6 @@
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.offer.youoffer",
-      "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "locationAlwaysAndWhenInUsePermission":"Allow $(youoffer) to use your location.",
         "locationWhenInUsePermission": "Allow $(youoffer) to use your location.",

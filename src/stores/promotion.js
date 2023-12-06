@@ -10,6 +10,7 @@ class PromotionStore {
     // флаг указывающий что мы получили все акции
     finishScroll = false
     isLoding = false
+    isFavoriteBlock = false
 
     constructor() {
         makeAutoObservable(this)
