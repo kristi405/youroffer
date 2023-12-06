@@ -16,14 +16,10 @@ export const LoginScreen = ({ navigation }) => {
     });
 
     const googleSignin = async () => {
-        try {
-            await GoogleSignin.hasPlayServices();
-            const userInfo = await GoogleSignin.signIn();
-            await AuthStore.loginByGoogle(userInfo.user)
-            openSettings()
-        } catch (error) {
-            console.log("ERROR IS: " + JSON.stringify(e));
-        }
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        await AuthStore.loginByGoogle(userInfo.user)
+        openSettings()
     }
 
     const openSettings = () => {
