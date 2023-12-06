@@ -3,7 +3,7 @@ import { getToken } from './auth'
 
 const api = axios.create({
   timeout: 100000,
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: 'https://myoffer.life/', // process.env.EXPO_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json'
   },

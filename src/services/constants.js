@@ -15,5 +15,5 @@ export const SEX_TO_NUMBER = {
     // 'not_specified': 3
 }
 
-export const FILE_URL = `${process.env.EXPO_PUBLIC_API_URL}api/v1/file/`;
+export const FILE_URL = `https://myoffer.life/api/v1/file/`;
 
