@@ -4,15 +4,28 @@ import { StyleSheet, View, FlatList, Text, Image } from 'react-native';
 export const PromotionView = (route) => {
     const item = route?.data
 
-    const Circle = ({ size, color, source }) => (
-        <View style={[styles.circle, { width: size, height: size, backgroundColor: color }]}>
-            <Image source={source} style={styles.image} />
-        </View>
-    )
+    const CircleView = ({source}) => {
+        if (source) {
+            return (<Image source={source} style={styles.image} />)
+        }
+        return (<View style={styles.image}></View>);
+    }
+
+    const Circle = ({ size, color, source }) => {
+        return (
+            <View style={[styles.circle, { width: size, height: size, backgroundColor: color }]}>
+                <CircleView  source={source}/>
+            </View>
+        )
+    }
 
     const circles = Array.from({ length: item.max_count + 1 }).map((_, index) => (
-        <Circle key={index} source={index == item.max_count ? require('../../../../assets/gift.png') : null} size={48} 
-        color={index < item.use_count ? '#0EA47A' : 'white' && index == item.max_count ? 'clear' : 'white'} />
+        <Circle
+            key={index}
+            source={index == item.max_count ? require('../../../../assets/gift.png') : null}
+            size={48}
+            color={index < item.use_count ? '#0EA47A' : 'white' && index == item.max_count ? 'clear' : 'white'}
+        />
     ));
 
     return (

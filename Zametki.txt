@@ -7,3 +7,10 @@
 npm install expo@^49.0.0
 npx expo install --fix
 npx expo-doctor@latest
+
+
+билд
+eas login
+eas build:configure
+eas build --platform android
+eas build --platform ios

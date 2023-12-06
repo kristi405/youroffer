@@ -4,6 +4,7 @@ import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, Alert } fr
 import { PromotionView } from "./components/PromotionView";
 import { getUser } from "../../services/auth"
 import OfferUsingStore from '../../stores/offerUsing'
+import { FILE_URL } from '../../services/constants'
 
 export const CouponDetailScreen = ({ navigation, route }) => {
     const item = route?.params?.data
@@ -64,10 +65,10 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <ScrollView style={styles.descriptionContainer}>
-                <Image source={{ uri: `http://62.171.164.180:8888/api/v1/file/${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
+                <Image source={{ uri: `${FILE_URL}${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
                 <View style={styles.headerContainerView}>
                     <View style={styles.headerView}>
-                        <Image source={{ uri: `http://62.171.164.180:8888/api/v1/file/${item.business_points[0].img}.${item.business_points[0].img_ext}` }} style={styles.avatar} />
+                        <Image source={{ uri: `${FILE_URL}${item.business_points[0].img}.${item.business_points[0].img_ext}` }} style={styles.avatar} />
                         <Text style={styles.headerText}>{item.name}</Text>
                     </View>
                 </View>
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     },
     showPromotionText: {
         fontSize: 15,
-        fontWeight: 800,
+        fontWeight: '800',
         color: '#fff',
     },
     titleText: {

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { Coupons } from "../PromotionsList/components/Coupons";
+import { FILE_URL } from '../../services/constants'
 
 export const CompanyProfile = ({ navigation, route }) => {
     const item = route?.params?.data
@@ -8,13 +9,13 @@ export const CompanyProfile = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <View style={styles.profile}>
-                <Image source={{ uri: `http://62.171.164.180:8888/api/v1/file/${item.img}.${item.img_ext}`}} style={styles.image} />
+                <Image source={{ uri: `${FILE_URL}${item.img}.${item.img_ext}`}} style={styles.image} />
                 <View style={styles.descriptionView}>
                     <Text style={styles.nameStyle}>{item.name} </Text>
-                    <View style={styles.stack}>
+                    {/* <View style={styles.stack}>
                         <Image source={require('../../../assets/time.png')} style={styles.clock} />
                         <Text style={styles.time}> 9:00 - 22:00</Text>
-                    </View>
+                    </View> */}
                     {item.dist && <View style={styles.stack}>
                         <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
                         <Text style={styles.time}> {item.dist} m </Text>

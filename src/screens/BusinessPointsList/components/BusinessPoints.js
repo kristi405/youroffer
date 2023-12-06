@@ -3,6 +3,7 @@ import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, Refr
 import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
+import { FILE_URL } from '../../../services/constants'
 
 const styles = StyleSheet.create({
   segment: {
@@ -154,20 +155,20 @@ const Item = ({ navigation, item }) => {
     <TouchableWithoutFeedback onPress={() => { openDetail(company) }}>
       <View style={styles.businessPoint}>
         <View style={styles.item}>
-          <Image source={{ uri: `http://62.171.164.180:8888/api/v1/file/${company.img}.${company.img_ext}` }} style={styles.icon} />
+          <Image source={{ uri: `${FILE_URL}${company.img}.${company.img_ext}` }} style={styles.icon} />
           <View style={styles.header}>
-            <Text style={styles.title}>{company.name} </Text>
-            <View style={styles.row}>
+            <Text style={styles.title}>{company.name}</Text>
+            {/* <View style={styles.row}>
               <Image source={require('../../../../assets/time.png')} style={styles.clock} />
               <Text style={styles.time}> 9:00 - 22:00</Text>
-            </View>
+            </View> */}
           </View>
         </View>
         <TouchableWithoutFeedback style={styles.icon} onPress={() => { addToFavorite(company) }}>
         <View style={styles.header}>
             <View style={styles.row}>
               <Image source={require('../../../../assets/mapIcon.png')} style={styles.map} />
-              <Text style={styles.time}> 500 m </Text>
+              <Text style={styles.time}>{company.dist ? company.dist + ' метров' : '' }</Text>
             </View>
             <Image source={company.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
           </View>

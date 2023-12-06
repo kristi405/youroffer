@@ -7,6 +7,7 @@ import Modal from 'react-native-modal';
 import BusinessPointsStore from "../../stores/businessPoints";
 import { MAP_STYLE } from "../../services/geo"
 import { getLocation } from '../../services/geo'
+import { FILE_URL } from '../../services/constants'
 
 let CURRENT_COORD;
 async function getCurrentCoordinates() {
@@ -68,7 +69,7 @@ export const Map = ({ navigation }) => {
                     <View style={styles.modalContainer}>
                         <View style={styles.stackWithButton}>
                             <View style={styles.modalStack}>
-                                <Image source={{ uri: `http://62.171.164.180:8888/api/v1/file/${selectedBp.img}.${selectedBp.img_ext}` }} style={styles.image} />
+                                <Image source={{ uri: `${FILE_URL}${selectedBp.img}.${selectedBp.img_ext}` }} style={styles.image} />
                                 <View style={styles.vetricalStack}>
                                     <Text style={styles.name}>{selectedBp.name}</Text>
                                     {selectedBp.dist && <View style={styles.stack}>

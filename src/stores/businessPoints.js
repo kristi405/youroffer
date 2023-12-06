@@ -43,11 +43,11 @@ class BusinessPointsStore {
         } catch (e) {
             console.error(e)
         }
-        this.isLoading = false
     }
 
     async sortByDistance(businessPoints) {
         const userCoord = await getLocation()
+
         if (!userCoord?.latitude || !userCoord?.latitude) return businessPoints;
         businessPoints.forEach(bp => {
             if (bp.lng && bp.lat) {

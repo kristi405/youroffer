@@ -5,11 +5,12 @@ import { Keyboard } from 'react-native'
 import AuthStore from '../../stores/auth'
 import ValidateStore from '../../stores/validate'
 import { getUser } from '../../services/auth'
-import { REQUEST_STATUS, SEX_TO_NUMBER, SEX_TO_STIRNG } from '../../services/constants'
+import { REQUEST_STATUS } from '../../services/constants'
 import { MaskedTextInput } from "react-native-mask-text"
 import { VALIDATE_RULES } from '../../services/validate'
 import { observer } from "mobx-react-lite"
 import dayjs from 'dayjs'
+import BusinessPointsStore from '../../stores/businessPoints'
 
 const validateStroe = new ValidateStore({
     name: {
@@ -59,6 +60,7 @@ export const CreateUserScreen = observer(({ navigation }) => {
             setEmail(user?.email)
             setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY'): '')
         })
+        BusinessPointsStore.getAll()
     }, []);
 
     function changeBorder(key) {

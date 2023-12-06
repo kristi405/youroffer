@@ -4,6 +4,7 @@ import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, Refr
 import PromotionStore from "../../../stores/promotion"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
+import { FILE_URL } from '../../../services/constants'
 
 const styles = StyleSheet.create({
   segment: {
@@ -106,7 +107,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
 
   const Component = () => (
     <View style={{width: '100%', flex: 1, gap: 10, alignItems: 'center'}}>
-      {!isCompanyPromotions ? 
+      {!isCompanyPromotions ?
       <SegmentedControl
         style={styles.segment}
         backgroundColor='black'
@@ -174,7 +175,7 @@ const Item = ({ navigation, item }) => {
     <TouchableWithoutFeedback onPress={() => { openDetail(offer) }}>
       <View style={styles.coupon}>
         <View style={styles.item}>
-          <Image source={{ uri: `http://62.171.164.180:8888/api/v1/file/${offer.img}.${offer.img_ext}` }} style={styles.icon} />
+          <Image source={{ uri: `${FILE_URL}${offer.img}.${offer.img_ext}` }} style={styles.icon} />
           <Text style={styles.title}>{offer.name}</Text>
         </View>
         <TouchableWithoutFeedback style={styles.icon} onPress={() => {  addToFavorite(offer) }}>
