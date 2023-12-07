@@ -23,7 +23,7 @@ export const LoginScreen = ({ navigation }) => {
             await AuthStore.loginByGoogle(userInfo.user);
             openSettings()
         } catch (error) {
-            Sentry.Native.captureException(error);
+            Sentry.Native.captureException('googleSignin' + error);
         }
     }
 
