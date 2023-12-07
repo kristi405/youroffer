@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SEX_TO_NUMBER } from '../services/constants'
+import * as Sentry from 'sentry-expo';
 
 const CAHCE = {}
 const keyPrefix = '$$MYOFFER$$:'
@@ -11,7 +12,7 @@ export const setUser = async (user) => {
         CAHCE[key] = user
         await AsyncStorage.setItem(key, JSON.stringify(user));
     } catch (error) {
-        console.log(error)
+        Sentry.Native.captureException(error);
     }
 }
 
@@ -23,7 +24,7 @@ export const getUser = async () => {
         CAHCE[key] = JSON.parse(user)
         return CAHCE[key]
     } catch (error) {
-        console.log(error)
+        Sentry.Native.captureException(error);
     }
 }
 
@@ -33,7 +34,7 @@ export const setSession = async (session) => {
         CAHCE[key] = session
         await AsyncStorage.setItem(key, JSON.stringify(session));
     } catch (error) {
-        console.log(error)
+        Sentry.Native.captureException(error);
     }
 }
 
@@ -45,7 +46,7 @@ export const getSession = async () => {
         CAHCE[key] = JSON.parse(session)
         return CAHCE[key]
     } catch (error) {
-        console.log(error)
+        Sentry.Native.captureException(error);
     }
 }
 
@@ -53,7 +54,7 @@ export const getToken = async () => {
     try {
        return (await getSession())?.token
     } catch (error) {
-        console.log(error)
+        Sentry.Native.captureException(error);
     }
 }
 
@@ -62,6 +63,6 @@ export const cleanAuthData = async () => {
         await AsyncStorage.clear();
         console.log('Cache cleared successfully');
     } catch (error) {
-        console.log(error)
+        Sentry.Native.captureException(error);
     }
 }

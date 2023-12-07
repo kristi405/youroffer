@@ -5,6 +5,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
+import * as Sentry from 'sentry-expo';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -16,10 +17,17 @@ export const LoginScreen = ({ navigation }) => {
     });
 
     const googleSignin = async () => {
-        await GoogleSignin.hasPlayServices();
-        const userInfo = await GoogleSignin.signIn();
-        await AuthStore.loginByGoogle(userInfo.user)
-        openSettings()
+        try {
+            // await GoogleSignin.hasPlayServices();
+            // const userInfo = await GoogleSignin.signIn();
+            // await AuthStore.loginByGoogle(userInfo.user)
+            throw new Error('new error!!!!')
+            console.log('EEEEEEE')
+            openSettings()
+        } catch (error) {
+            Sentry.Native.captureException(error);
+            openSettings()
+        }
     }
 
     const openSettings = () => {

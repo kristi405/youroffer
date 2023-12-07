@@ -12,14 +12,28 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "myofferapp",
+            "project": "react-native"
+          }
+        }
+      ]
+    },
     "plugins": [
+      "sentry-expo",
       "expo-apple-authentication",
-      ["expo-location",
+      [
+        "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(youoffer) to use your location."
         }
       ],
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      "sentry-expo"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -32,11 +46,13 @@
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.offer.youoffer",
       "infoPlist": {
-        "locationAlwaysAndWhenInUsePermission":"Allow $(youoffer) to use your location.",
+        "locationAlwaysAndWhenInUsePermission": "Allow $(youoffer) to use your location.",
         "locationWhenInUsePermission": "Allow $(youoffer) to use your location.",
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": ["com.googleusercontent.apps.834107509512-4ml4fiue0sovdee82fuj67900vglpsdc"]
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.834107509512-4ml4fiue0sovdee82fuj67900vglpsdc"
+            ]
           }
         ]
       }
