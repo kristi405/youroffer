@@ -18,15 +18,12 @@ export const LoginScreen = ({ navigation }) => {
 
     const googleSignin = async () => {
         try {
-            // await GoogleSignin.hasPlayServices();
-            // const userInfo = await GoogleSignin.signIn();
-            // await AuthStore.loginByGoogle(userInfo.user)
-            throw new Error('new error!!!!')
-            console.log('EEEEEEE')
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            await AuthStore.loginByGoogle(userInfo.user);
             openSettings()
         } catch (error) {
             Sentry.Native.captureException(error);
-            openSettings()
         }
     }
 
