@@ -17,8 +17,8 @@
         {
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
-            "organization": "myofferapp",
-            "project": "react-native"
+            "organization": "myoffer",
+            "project": "myoffer_app"
           }
         }
       ]

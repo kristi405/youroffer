@@ -1,17 +1,18 @@
 import * as Location from 'expo-location';
+import * as Sentry from 'sentry-expo';
 
 const CAHCE = {}
 const EARTH_RADIUS = 6371;  // Радиус Земли в километрах
 
 export const getLocation = async () => {
     if (CAHCE.latitude && CAHCE.longitude) {
-       return CAHCE
+      return CAHCE
     }
     const status = await Location.requestForegroundPermissionsAsync();
     if (status.status == 'granted') {
-        return await getUserLocation()
+      return await getUserLocation()
     } else {
-        return;
+      return;
     }
 };
 
@@ -40,7 +41,11 @@ const getUserLocation = async () => {
         CAHCE.latitude = location.coords.latitude;
         CAHCE.longitude = location.coords.longitude;
         return CAHCE;
-    } catch (error) {
+    } catch (e) {
+        Sentry.Native.captureException(e, (scope) => {
+          scope.setTransactionName('service:geo:getUserLocation');
+          return scope;
+        });
         console.error(error);
         return
     }

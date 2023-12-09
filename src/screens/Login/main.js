@@ -23,7 +23,10 @@ export const LoginScreen = ({ navigation }) => {
             await AuthStore.loginByGoogle(userInfo.user);
             openSettings()
         } catch (error) {
-            Sentry.Native.captureException('googleSignin' + error);
+            Sentry.Native.captureException(error, (scope) => {
+                scope.setTransactionName('LoginScreen:googleSignin');
+                return scope;
+            });
         }
     }
 
@@ -39,9 +42,10 @@ export const LoginScreen = ({ navigation }) => {
             await AuthStore.loginByApple(userInfo)
             openSettings()
         } catch (error) {
-            if (error.code === 'ERR_CANCELED') {
-            } else {
-            }
+            Sentry.Native.captureException(error, (scope) => {
+                scope.setTransactionName('LoginScreen:handleAppleSignIn');
+                return scope;
+            });
         }
     };
 

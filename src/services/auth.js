@@ -12,7 +12,10 @@ export const setUser = async (user) => {
         CAHCE[key] = user
         await AsyncStorage.setItem(key, JSON.stringify(user));
     } catch (error) {
-        Sentry.Native.captureException(error);
+        Sentry.Native.captureException(error, (scope) => {
+            scope.setTransactionName('service:auth:setUser');
+            return scope;
+        });
     }
 }
 
@@ -24,7 +27,10 @@ export const getUser = async () => {
         CAHCE[key] = JSON.parse(user)
         return CAHCE[key]
     } catch (error) {
-        Sentry.Native.captureException(error);
+        Sentry.Native.captureException(error, (scope) => {
+            scope.setTransactionName('service:auth:getUser');
+            return scope;
+        });
     }
 }
 
@@ -34,7 +40,10 @@ export const setSession = async (session) => {
         CAHCE[key] = session
         await AsyncStorage.setItem(key, JSON.stringify(session));
     } catch (error) {
-        Sentry.Native.captureException(error);
+        Sentry.Native.captureException(error, (scope) => {
+            scope.setTransactionName('service:auth:setSession');
+            return scope;
+        });
     }
 }
 
@@ -46,7 +55,10 @@ export const getSession = async () => {
         CAHCE[key] = JSON.parse(session)
         return CAHCE[key]
     } catch (error) {
-        Sentry.Native.captureException(error);
+        Sentry.Native.captureException(error, (scope) => {
+            scope.setTransactionName('service:auth:getSession');
+            return scope;
+        });
     }
 }
 
@@ -54,7 +66,10 @@ export const getToken = async () => {
     try {
        return (await getSession())?.token
     } catch (error) {
-        Sentry.Native.captureException(error);
+        Sentry.Native.captureException(error, (scope) => {
+            scope.setTransactionName('service:auth:getToken');
+            return scope;
+        });
     }
 }
 
@@ -63,6 +78,9 @@ export const cleanAuthData = async () => {
         await AsyncStorage.clear();
         console.log('Cache cleared successfully');
     } catch (error) {
-        Sentry.Native.captureException(error);
+        Sentry.Native.captureException(error, (scope) => {
+            scope.setTransactionName('service:auth:cleanAuthData');
+            return scope;
+        });
     }
 }
