@@ -18,7 +18,8 @@
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
             "organization": "myoffer",
-            "project": "myoffer_app"
+            "project": "myoffer_app",
+            "url": "https://app.glitchtip.com/"
           }
         }
       ]
