@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, Button, TouchableHighlight } from 'react-native';
 import AuthStore from '../../stores/auth'
-import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from '../../services/constants'
+import { ANDROID_CLIENT_ID, IOS_CLIENT_ID, API_URL, FILE_URL } from '../../services/constants'
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -19,11 +19,18 @@ export const LoginScreen = ({ navigation }) => {
 
     const googleSignin = async () => {
         try {
+            console.log('111111111111111', API_URL)
+            console.log('111111111111111', FILE_URL)
+            console.log(ANDROID_CLIENT_ID)
+            console.log(IOS_CLIENT_ID)
             await GoogleSignin.hasPlayServices();
+            console.log('11111111122222222222222111111')
             const userInfo = await GoogleSignin.signIn();
+            console.log('111111111111111', userInfo)
             await AuthStore.loginByGoogle(userInfo.user);
             openSettings()
         } catch (error) {
+            console.log('333333', error)
             Sentry.Native.captureException(error, (scope) => {
                 scope.setTransactionName('LoginScreen:googleSignin');
                 return scope;

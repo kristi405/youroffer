@@ -8,12 +8,21 @@ npm install expo@^49.0.0
 npx expo install --fix
 npx expo-doctor@latest
 
+npx expo prebuild
+
 
 билд
 eas login
 eas build:configure
 eas build --platform android
 eas build --platform ios
+
+sha-1 token
+https://expo.dev/accounts/kristina_gyk/projects/youoffer/credentials/android/com.offer.youoffer
+npx eas credentials
+
+проверить порт
+netstat -nlp | grep :8081
 
 sentry token
 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

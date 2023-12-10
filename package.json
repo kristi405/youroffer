@@ -2,9 +2,9 @@
   "name": "youoffer",
   "version": "1.0.0",
   "scripts": {
-    "start": "NODE_ENV=development expo start --dev-client --tunel",
-    "android": "NODE_ENV=development expo run:android",
-    "ios": "NODE_ENV=development expo run:ios"
+    "start": "NODE_ENV=development expo start --dev-client",
+    "android": "NODE_ENV=development expo run:android --device --variant debug",
+    "ios": "NODE_ENV=development expo run:ios --device"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.18.2",
