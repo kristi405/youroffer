@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
 import { getLocation } from '../services/geo'
-import { REQUEST_STATUS, SEX, SEX_TO_STIRNG } from '../services/constants'
+import { REQUEST_STATUS } from '../services/constants'
 import { setSession, setUser, getUser, cleanAuthData } from '../services/auth'
 import * as Sentry from 'sentry-expo';
 
@@ -140,27 +140,13 @@ class AuthStore {
 
 async function userToApi(user) {
     const id = (await getUser()).id
-    const sex = SEX_TO_STIRNG[user.sex]
     if (user.bdate) {
         const [day, month, year] = user.bdate.split('.');
         user.bdate = `${year}-${month}-${day}`
     }
-
     return {
         ...user,
-        sex,
         id
-    }
-}
-
-async function userFromApi(user) {
-    const id = (await getUser()).id
-    const [day, month, year] = user.bdate.split('.');
-
-    return {
-        ...user,
-        id,
-        sex: SEX[user.sex]
     }
 }
 

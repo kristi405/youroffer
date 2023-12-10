@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SEX_TO_NUMBER } from '../services/constants'
 import * as Sentry from 'sentry-expo';
 
 const CAHCE = {}
@@ -8,7 +7,6 @@ const keyPrefix = '$$MYOFFER$$:'
 export const setUser = async (user) => {
     try {
         const key = keyPrefix + 'USER'
-        user.sex = SEX_TO_NUMBER[user?.sex] ? SEX_TO_NUMBER[user?.sex] : 1
         CAHCE[key] = user
         await AsyncStorage.setItem(key, JSON.stringify(user));
     } catch (error) {

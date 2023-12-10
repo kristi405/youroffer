@@ -33,8 +33,7 @@
           "locationAlwaysAndWhenInUsePermission": "Allow $(youoffer) to use your location."
         }
       ],
-      "@react-native-google-signin/google-signin",
-      "sentry-expo"
+      "@react-native-google-signin/google-signin"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0

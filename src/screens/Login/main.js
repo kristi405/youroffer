@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, Button, TouchableHighlight } from 'react-native';
 import AuthStore from '../../stores/auth'
+import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from '../../services/constants'
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -11,8 +12,8 @@ WebBrowser.maybeCompleteAuthSession();
 
 export const LoginScreen = ({ navigation }) => {
     GoogleSignin.configure({
-        androidClientId: "431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com",
-        iosClientId: "834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com",
+        androidClientId: ANDROID_CLIENT_ID,
+        iosClientId: IOS_CLIENT_ID,
         forceConsentPrompt: true,
     });
 

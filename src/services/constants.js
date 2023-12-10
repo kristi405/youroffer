@@ -3,17 +3,11 @@ export const REQUEST_STATUS = {
     error: 'error'
 }
 
-export const SEX_TO_STIRNG = {
-    1: 'male',
-    2: 'female',
-    // 3: 'not_specified'
-}
+export const FILE_URL = `${process.env.EXPO_PUBLIC_API_URL}https://myoffer.life/api/v1/file/`;
+export const API_URL = process.env.EXPO_PUBLIC_API_URL;
+export const ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID
+export const IOS_CLIENT_ID = process.env.EXPO_PUBLIC_IOS_CLIENT_ID
 
-export const SEX_TO_NUMBER = {
-    'male': 1,
-    'female': 2,
-    // 'not_specified': 3
-}
 
-export const FILE_URL = `https://myoffer.life/api/v1/file/`;
+
 
