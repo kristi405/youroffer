@@ -24,14 +24,6 @@ npx eas credentials
 5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
 45:15:80:17:99:BE:81:6B:FC:C3:5F:B6:D6:C1:7F:E7:AE:31:1E:39
 
-EXPO_PUBLIC_API_URL=http://31.220.77.203:8888/
-EXPO_PUBLIC_ANDROID_CLIENT_ID=431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com
-EXPO_PUBLIC_IOS_CLIENT_ID=834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com
-
-EXPO_PUBLIC_API_URL=https://myoffer.life/
-EXPO_PUBLIC_ANDROID_CLIENT_ID=431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com
-EXPO_PUBLIC_IOS_CLIENT_ID=834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com
-
 
 проверить порт
 netstat -nlp | grep :8081
