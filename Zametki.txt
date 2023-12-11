@@ -20,8 +20,7 @@ eas build --platform ios
 sha-1 token
 https://expo.dev/accounts/kristina_gyk/projects/youoffer/credentials/android/com.offer.youoffer
 npx eas credentials
-
-5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
+keytool -keystore ./android/app/debug.keystore -list -v
 45:15:80:17:99:BE:81:6B:FC:C3:5F:B6:D6:C1:7F:E7:AE:31:1E:39
 
 
