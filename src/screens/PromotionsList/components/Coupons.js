@@ -60,12 +60,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#fff',
     paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: 4,
   },
   businessPointsName: {
     fontSize: 14,
     color: 'gray',
     paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: 5,
   },
   save: {

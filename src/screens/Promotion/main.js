@@ -8,10 +8,9 @@ import { FILE_URL } from '../../services/constants'
 import PromotionStore from "../../stores/promotion"
 
 export const CouponDetailScreen = ({ navigation, route }) => {
-    const item = route?.params?.data
+    const [item, setItem] = useState(route?.params?.data)
     const [offer, setOffer] = useState('');
     const [ids, setIds] = useState(null)
-    const [address, setAddress] = useState('')
 
     useEffect(() => {
         const newIds = item.related
@@ -30,7 +29,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             let offer = await OfferUsingStore.getOfferById(item.id)
             if (offer) {
                 setOffer(offer)
-                // getAddress()
+                setItem(offer)
             } else {
                 Alert.alert('', 'Акция была удалена');
             }
@@ -68,17 +67,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const addToFavorite = (offer) => {
         setOffer({offer, favorite: !offer.favorite})
         PromotionStore.addToFavorite(offer.id, !offer.favorite)
-      }
-
-      const getAddress = () => {
-        let address = ''
-        for (bp of offer.business_points) {
-            address += `${ bp.address}, `
-            console.log('222222222', address)
-          }
-          setAddress(address)
-          console.log('33333333', address)
-      }
+    }
 
     return (
         <View style={styles.container}>
@@ -99,8 +88,15 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.descriptionText}>Описание акции:</Text>
 
                 <Text style={styles.contentText}>{item.description}</Text>
-                <Text style={styles.address}>Акция доступна по адресу:</Text>
-                {/* <Text style={styles.contentText}>{address}</Text> */}
+                <Text style={styles.addressTitle}>Акция доступна по адресу:</Text>
+                {item.business_points?.map(bp => {
+                    return (
+                    <View style={styles.addressList} key={bp.id}>
+                        <Image style={styles.addressImg} source={require('../../../assets/mapIcon.png')} />
+                        <Text style={styles.address}>{bp.name}: {bp.address}</Text>
+                    </View>
+                    )
+                })}
                 <View style={styles.button}>
                     <DefaultPromotionView />
                 </View>
@@ -142,11 +138,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         paddingTop: 5,
-        height: 30,
     },
     headerView: {
         flexDirection: 'row',
-        paddingTop: 10
+        paddingTop: 10,
+        paddingBottom: 0,
     },
     avatar: {
         width: 26,
@@ -157,6 +153,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: '#fff',
         paddingLeft: 10,
+        width: '82%'
     },
     showPromotionText: {
         fontSize: 15,
@@ -167,6 +164,20 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: '#fff',
         paddingTop: 3
+    },
+    addressTitle: {
+        fontSize: 15,
+        color: '#fff',
+        paddingTop: 5,
+        opacity: 0.6,
+        marginBottom: 10,
+        marginTop: 10
+    },
+    addressList: {
+        flexDirection: 'row',
+    },
+    addressImg: {
+        marginRight: 10,
     },
     address: {
         fontSize: 15,
@@ -181,7 +192,7 @@ const styles = StyleSheet.create({
     },
     contentText: {
         paddingTop: 8,
-        fontSize: 13,
+        fontSize: 15,
         color: '#fff',
         opacity: 0.6
     },
