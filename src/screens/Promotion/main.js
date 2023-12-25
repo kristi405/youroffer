@@ -11,6 +11,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const item = route?.params?.data
     const [offer, setOffer] = useState('');
     const [ids, setIds] = useState(null)
+    const [address, setAddress] = useState('')
 
     useEffect(() => {
         const newIds = item.related
@@ -29,6 +30,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             let offer = await OfferUsingStore.getOfferById(item.id)
             if (offer) {
                 setOffer(offer)
+                // getAddress()
             } else {
                 Alert.alert('', 'Акция была удалена');
             }
@@ -68,6 +70,16 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         PromotionStore.addToFavorite(offer.id, !offer.favorite)
       }
 
+      const getAddress = () => {
+        let address = ''
+        for (bp of offer.business_points) {
+            address += `${ bp.address}, `
+            console.log('222222222', address)
+          }
+          setAddress(address)
+          console.log('33333333', address)
+      }
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -87,6 +99,8 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.descriptionText}>Описание акции:</Text>
 
                 <Text style={styles.contentText}>{item.description}</Text>
+                <Text style={styles.address}>Акция доступна по адресу:</Text>
+                {/* <Text style={styles.contentText}>{address}</Text> */}
                 <View style={styles.button}>
                     <DefaultPromotionView />
                 </View>
@@ -153,6 +167,12 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: '#fff',
         paddingTop: 3
+    },
+    address: {
+        fontSize: 15,
+        color: '#fff',
+        paddingTop: 5,
+        opacity: 0.6
     },
     descriptionText: {
         fontSize: 16,

@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   coupon: {
     flexDirection: 'column',
     width: '47%',
-    height: 220,
+    height: 230,
     margin: 5,
     backgroundColor: '#1A1A1A',
     borderRadius: 10,
@@ -57,10 +57,16 @@ const styles = StyleSheet.create({
     opacity: 0.8
   },
   title: {
-    fontSize: 15,
+    fontSize: 13,
     color: '#fff',
     paddingLeft: 10,
-    paddingTop: 10,
+    paddingTop: 4,
+  },
+  businessPointsName: {
+    fontSize: 14,
+    color: 'gray',
+    paddingLeft: 10,
+    paddingTop: 5,
   },
   save: {
     alignItems: 'flex-end',
@@ -179,6 +185,7 @@ const Item = ({ navigation, item }) => {
       <View style={styles.coupon}>
         <View style={styles.item}>
           <Image source={{ uri: `${FILE_URL}${offer.img}.${offer.img_ext}` }} style={styles.icon} />
+          <Text style={styles.businessPointsName}>{offer.business_points[0].name}</Text>
           <Text style={styles.title}>{offer.name}</Text>
         </View>
         <View style={styles.save}>
