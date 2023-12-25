@@ -14,28 +14,33 @@ export const Scan = ({ navigation }) => {
     }
 
     useEffect(() => {
-        (async () => {
-            const { status } = await BarCodeScanner.requestPermissionsAsync();
-            setHasPermission(status === 'granted');
-        })();
-    }, []);
+        const unsubscribe = navigation.addListener('focus', () => {
+            setScanned(false);
+            setHasPermission(false);
+            (async () => {
+                const { status } = await BarCodeScanner.requestPermissionsAsync();
+                setHasPermission(status === 'granted');
+            })();
+        });
+        return unsubscribe;
+    }, [navigation])
 
     const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
         const jsonData = JSON.parse(data.trim())
         Alert.alert('', `Применить акцию "${jsonData.name_offer}"?`,
-        [
-            {
-              text: 'Отменить',
-              onPress: () => setScanned(false),
-              style: 'cancel',
-            },
-            {
-              text: 'Применить',
-              onPress: () => {useOffer(jsonData.id_offer, jsonData.id_user)},
-            },
-          ],
-          { cancelable: false }
+            [
+                {
+                    text: 'Отменить',
+                    onPress: () => setScanned(false),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Применить',
+                    onPress: () => { useOffer(jsonData.id_offer, jsonData.id_user) },
+                },
+            ],
+            { cancelable: false }
         )
     };
 
@@ -49,19 +54,19 @@ export const Scan = ({ navigation }) => {
                 errorText += `${Errors[resp.error] || resp.error} `
             }
         }
-        
+
         if (isError) {
             Alert.alert('', errorText);
             setScanned(false)
         } else {
             Alert.alert('', "Акция успешно применена!",
-            [
-                {
-                  text: 'ОК',
-                  onPress: () => setScanned(false),
-                  style: 'cancel',
-                },
-            ])
+                [
+                    {
+                        text: 'ОК',
+                        onPress: () => setScanned(false),
+                        style: 'cancel',
+                    },
+                ])
         }
     }
 

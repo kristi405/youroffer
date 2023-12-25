@@ -33,7 +33,6 @@ class PromotionStore {
     }
 
     async getList(favorite, businessPointId) {
-
         // Если мы уже получили все акции
         if (this.finishScroll) return
         // если у нас 1 старница - то не нужно пказывать лоадер
@@ -58,6 +57,10 @@ class PromotionStore {
                 this.isLoding = false
                 console.error(e)
                 status = REQUEST_STATUS.error
+                Sentry.Native.captureException(error, (scope) => {
+                    scope.setTransactionName('PromotionStore:getList');
+                    return scope;
+                });
             }
             return status
         }, this.page === 1 ? 0 : 1000)
@@ -69,6 +72,10 @@ class PromotionStore {
            await api.patch('/api/v1/offer/favorite', {id, favorite})
         } catch (e) {
             status =  REQUEST_STATUS.error
+            Sentry.Native.captureException(error, (scope) => {
+                scope.setTransactionName('PromotionStore:addToFavorite');
+                return scope;
+            });
         }
         return status
     }

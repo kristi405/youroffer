@@ -46,6 +46,48 @@ class AuthStore {
         return status
     }
 
+    async signUpByEmail(email, password) {
+        let status =  REQUEST_STATUS.success
+        try {
+            const resp = await api.post('api/v1/auth/login/create', {
+                password: password,
+                email: email
+            })
+
+            setSession(resp.data.session)
+            await setUser(resp.data.user)
+        } catch (e) {
+            status =  REQUEST_STATUS.error
+            Sentry.Native.captureException(e, (scope) => {
+                scope.setTransactionName('AuthStore:signUpByEmail');
+                return scope;
+            });
+            return e.response.data
+        }
+        return status
+    }
+
+    async loginByEmail(email, password) {
+        let status =  REQUEST_STATUS.success
+        try {
+            const resp = await api.post('api/v1/auth/login/email', {
+                password: password,
+                email: email
+            })
+
+            setSession(resp.data.session)
+            await setUser(resp.data.user)
+        } catch (e) {
+            status =  REQUEST_STATUS.error
+            Sentry.Native.captureException(e, (scope) => {
+                scope.setTransactionName('AuthStore:loginByEmail');
+                return scope;
+            });
+            return e.response.data
+        }
+        return status
+    }
+
     async loginByGoogle(user) {
         let status =  REQUEST_STATUS.success
         try {

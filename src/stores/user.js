@@ -17,6 +17,10 @@ class UserStore {
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
+            Sentry.Native.captureException(error, (scope) => {
+                scope.setTransactionName('UserStore:getUser');
+                return scope;
+            });
         }
     }
 }

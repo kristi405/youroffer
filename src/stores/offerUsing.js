@@ -14,6 +14,10 @@ class OfferUsingStore {
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
+            Sentry.Native.captureException(error, (scope) => {
+                scope.setTransactionName('OfferUsingStore:useOffer');
+                return scope;
+            });
         }
     }
 
@@ -24,6 +28,11 @@ class OfferUsingStore {
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
+            console.log(e)
+            Sentry.Native.captureException(error, (scope) => {
+                scope.setTransactionName('OfferUsingStore:getOfferById');
+                return scope;
+            });
         }
     }
 }

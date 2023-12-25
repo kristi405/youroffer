@@ -21,8 +21,6 @@ sha-1 token
 https://expo.dev/accounts/kristina_gyk/projects/youoffer/credentials/android/com.offer.youoffer
 npx eas credentials
 keytool -keystore ./android/app/debug.keystore -list -v
-45:15:80:17:99:BE:81:6B:FC:C3:5F:B6:D6:C1:7F:E7:AE:31:1E:39
-
 
 проверить порт
 netstat -nlp | grep :8081

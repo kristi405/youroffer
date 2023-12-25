@@ -150,9 +150,6 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 8,
     },
-    codeInputError: {
-        borderColor: 'red',
-    },
     buttonStyle: {
         width: '40%',
         paddingVertical: 10,

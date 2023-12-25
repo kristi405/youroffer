@@ -1,4 +1,5 @@
 import { LoginScreen } from '../screens/Login/main';
+import { Registration } from '../screens/Registration/main';
 import { CodeScreen } from '../screens/Pin/main';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -25,6 +26,11 @@ export const Navigator = () => {
             <Stack.Screen
                 name="LoginScreen"
                 component={LoginScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Registration"
+                component={Registration}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
