@@ -19,28 +19,18 @@ export const PromotionView = (route) => {
         )
     }
 
-    const circles = Array.from({ length: item.max_count + 1 }).map((_, index) => (
-        <Circle
-            key={index}
-            source={index == item.max_count ? require('../../../../assets/gift.png') : null}
-            size={40}
-            color={index < item.use_count ? '#0EA47A' : 'white' && index == item.max_count ? 'clear' : 'white'}
-        />
-    ));
-
     return (
         <View style={styles.container}>
-            <FlatList
-                style={styles.flatList}
-                data={circles}
-                numColumns={5}
-                scrollEnabled={false}
-                renderItem={({ item }) =>
-                    <View style={styles.containerForRow}>
-                        {item}
-                    </View>
-                }>
-            </FlatList>
+            {
+                Array.from({ length: item.max_count + 1 }).map((_, index) => (
+                    <Circle
+                        key={index}
+                        source={index == item.max_count ? require('../../../../assets/gift.png') : null}
+                        size={40}
+                        color={index < item.use_count ? '#0EA47A' : 'white' && index == item.max_count ? 'clear' : 'white'}
+                    />
+                ))
+            }
         </View>
     )
 }
@@ -50,6 +40,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#333333',
         borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        width: '100%'
     },
     containerForRow: {
         paddingHorizontal: '1.5%',

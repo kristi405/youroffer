@@ -5,6 +5,14 @@ import { FILE_URL } from '../../services/constants'
 
 export const CompanyProfile = ({ navigation, route }) => {
     const item = route?.params?.data
+    let workTime = '-'
+
+    if (item.start_time && item.end_time) {
+        const [start_h, start_m] = item.start_time.split(':')
+        const [end_h, end_m] = item.end_time.split(':')
+        workTime = `${start_h}:${start_m} - ${end_h}:${end_m}`
+    }
+
 
     return (
         <View style={styles.container}>
@@ -14,15 +22,15 @@ export const CompanyProfile = ({ navigation, route }) => {
                     <Text style={styles.nameStyle}>{item.name} </Text>
                     <View style={styles.stack}>
                         <Image source={require('../../../assets/time.png')} style={styles.clock} />
-                        <Text style={styles.time}> 9:00 - 22:00</Text>
+                        <Text style={styles.time}>{workTime}</Text>
                     </View>
                     {item.dist && <View style={styles.stack}>
                         <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
                         <Text style={styles.time}> {item.dist / 1000} км </Text>
                     </View>}
-                    <Text style={styles.description}>{item.description}</Text>
                 </View>
             </View>
+            <Text style={styles.description}>{item.description}</Text>
             <Coupons navigation={navigation} isCompanyPromotions={true} businessPointId={item.id} />
         </View>
     )
@@ -42,7 +50,6 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         gap: 20,
-        paddingBottom: 15,
         paddingLeft: 5
     },
     image: {
@@ -61,7 +68,8 @@ const styles = StyleSheet.create({
     description: {
         color: 'white',
         fontSize: 13,
-        opacity: 0.5
+        opacity: 0.5,
+        textAlign: 'left'
     },
     stack: {
         flexDirection: 'row',

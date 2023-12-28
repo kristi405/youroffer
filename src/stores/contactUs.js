@@ -19,7 +19,7 @@ class ContactUsStore {
         } catch (e) {
             status =  REQUEST_STATUS.error
             console.log(e.message)
-            Sentry.Native.captureException(error, (scope) => {
+            Sentry.Native.captureException(e, (scope) => {
                 scope.setTransactionName('ContactUsStore:sendMail');
                 return scope;
             });

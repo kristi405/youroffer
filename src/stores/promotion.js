@@ -54,9 +54,9 @@ class PromotionStore {
                 }
 
                 this.addToList(resp.data || [])
-            } catch (e) {
+            } catch (error) {
                 this.isLoding = false
-                console.error(e)
+                console.error(error)
                 status = REQUEST_STATUS.error
                 Sentry.Native.captureException(error, (scope) => {
                     scope.setTransactionName('PromotionStore:getList');
@@ -71,7 +71,7 @@ class PromotionStore {
         let status =  REQUEST_STATUS.success
         try {
            await api.patch('/api/v1/offer/favorite', {id, favorite})
-        } catch (e) {
+        } catch (error) {
             status =  REQUEST_STATUS.error
             Sentry.Native.captureException(error, (scope) => {
                 scope.setTransactionName('PromotionStore:addToFavorite');

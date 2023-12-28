@@ -176,9 +176,13 @@ const Item = ({ navigation, item }) => {
     navigation.navigate('CouponDetailScreen', { data: item })
   }
 
+  let timer;
   const addToFavorite = (offer) => {
-    setOffer({ ...offer, favorite: !offer.favorite })
-    PromotionStore.addToFavorite(offer.id, !offer.favorite)
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      setOffer({ ...offer, favorite: !offer.favorite })
+      PromotionStore.addToFavorite(offer.id, !offer.favorite)
+    }, 200)
   }
 
   return (

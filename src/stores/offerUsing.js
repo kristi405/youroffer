@@ -15,7 +15,7 @@ class OfferUsingStore {
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(error, (scope) => {
+            Sentry.Native.captureException(e, (scope) => {
                 scope.setTransactionName('OfferUsingStore:useOffer');
                 return scope;
             });
@@ -30,7 +30,7 @@ class OfferUsingStore {
         } catch (e) {
             status =  REQUEST_STATUS.error
             console.log(e)
-            Sentry.Native.captureException(error, (scope) => {
+            Sentry.Native.captureException(e, (scope) => {
                 scope.setTransactionName('OfferUsingStore:getOfferById');
                 return scope;
             });

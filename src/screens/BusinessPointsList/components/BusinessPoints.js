@@ -154,15 +154,26 @@ export const BusinessPoints = observer(({ navigation }) => {
 
 const Item = ({ navigation, item }) => {
   const [company, setCompany] = useState(item)
+  let workTime = '-'
+
+  if (item.start_time && item.end_time) {
+    const [start_h, start_m] = item.start_time.split(':')
+    const [end_h, end_m] = item.end_time.split(':')
+    workTime = `${start_h}:${start_m} - ${end_h}:${end_m}`
+  }
 
   const openDetail = (item) => {
     navigation.navigate('CompanyProfile', { data: item })
   }
 
+  let timer;
   const addToFavorite = (company) => {
-    company.favorite = !company.favorite
-    setCompany({ ...company })
-    BusinessPointsStore.addToFavorite(company.id, company.favorite)
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      company.favorite = !company.favorite
+      setCompany({ ...company })
+      BusinessPointsStore.addToFavorite(company.id, company.favorite)
+    }, 200)
   }
 
   return (
@@ -174,7 +185,7 @@ const Item = ({ navigation, item }) => {
             <Text style={styles.title}>{company.name}</Text>
             <View style={styles.row}>
               <Image source={require('../../../../assets/time.png')} style={styles.clock} />
-              <Text style={styles.time}> 9:00 - 22:00</Text>
+              <Text style={styles.time}>{ workTime }</Text>
             </View>
           </View>
         </View>

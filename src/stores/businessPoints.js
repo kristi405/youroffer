@@ -44,7 +44,7 @@ class BusinessPointsStore {
             this.setList(data)
         } catch (e) {
             console.error(e)
-            Sentry.Native.captureException(error, (scope) => {
+            Sentry.Native.captureException(e, (scope) => {
                 scope.setTransactionName('BusinessPointsStore:getAll');
                 return scope;
             });
@@ -80,7 +80,7 @@ class BusinessPointsStore {
            await api.patch('/api/v1/business_point/favorite', {id, favorite})
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(error, (scope) => {
+            Sentry.Native.captureException(e, (scope) => {
                 scope.setTransactionName('BusinessPointsStore:addToFavorite');
                 return scope;
             });
