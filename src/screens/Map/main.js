@@ -73,7 +73,7 @@ export const Map = ({ navigation }) => {
                                     <Text style={styles.name}>{selectedBp.name}</Text>
                                     {selectedBp.dist && <View style={styles.stack}>
                                         <Image source={require('../../../assets/mapIcon.png')} style={styles.mapIcon} />
-                                        <Text style={styles.distans}>{selectedBp.dist} m</Text>
+                                        <Text style={styles.distans}>{selectedBp.dist / 1000} км</Text>
                                     </View>}
                                     <View style={styles.separator} />
                                 </View>
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     modalStack: {
         width: '100%',
         flexDirection: 'row',
-        paddingHorizontal: 15,
+        paddingHorizontal: 25,
         paddingVertical: 15,
         gap: 20
     },
@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
     name: {
         color: 'white',
         fontSize: 18,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingTop: 7
     },
     stackWithButton: {
         alignItems: 'center',
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         opacity: 0.5,
-        paddingTop: 10
+        paddingTop: 5
     },
     imageContainer: {
         width: 20,
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     },
     separator: {
         height: 1,
-        width: '100%',
+        width: '95%',
         backgroundColor: 'white',
         opacity: 0.2,
     },
@@ -164,6 +165,7 @@ const styles = StyleSheet.create({
     mapIcon: {
         width: 17,
         height: 25,
+        tintColor: '#0EA47A',
     },
     marker: {
     },

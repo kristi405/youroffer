@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, RefreshControl, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, ActivityIndicator } from 'react-native';
 import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
@@ -31,47 +31,54 @@ const styles = StyleSheet.create({
   },
   flatList: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingLeft: 20,
     paddingRight: 5,
-    paddingBottom: 7,
+    paddingBottom: 3,
     color: 'white'
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 2,
+  },
+  column: {
+    flexDirection: 'column',
+    gap: 5
   },
   clock: {
-    width: 15,
-    height: 15,
+    width: 14,
+    height: 14,
   },
   time: {
     color: 'white',
     paddingLeft: 5,
-    paddingTop: 3,
+    paddingTop: 2,
     opacity: 0.5
   },
   item: {
     flex: 1,
-    flexDirection: 'column',
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    flexDirection: 'row',
+    gap: 25
   },
   businessPoint: {
     flexDirection: 'column',
-    width: '97%',
-    height: 200,
-    margin: 5,
+    width: '96%',
+    height: 136,
+    margin: 7,
     backgroundColor: '#1A1A1A',
     borderRadius: 10,
   },
   icon: {
-    height: '60%',
-    width: '100%',
-    paddingRight: 10,
-    borderRadius: 10,
+    height: 80,
+    width: 80,
+    borderRadius: 40,
     opacity: 0.8
   },
   map: {
@@ -112,7 +119,7 @@ export const BusinessPoints = observer(({ navigation }) => {
   }, [BusinessPointsStore.isLoading]);
 
   const Component = observer(() => (
-    <View style={{ width: '97%', flex: 1, gap: 10, alignItems: 'center' }}>
+    <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center' }}>
       <SegmentedControl
         style={styles.segment}
         backgroundColor='black'
@@ -163,19 +170,19 @@ const Item = ({ navigation, item }) => {
       <View style={styles.businessPoint}>
         <View style={styles.item}>
           <Image source={{ uri: `${FILE_URL}${company.img}.${company.img_ext}` }} style={styles.icon} />
-          <View style={styles.header}>
+          <View style={styles.column}>
             <Text style={styles.title}>{company.name}</Text>
-            {/* <View style={styles.row}>
+            <View style={styles.row}>
               <Image source={require('../../../../assets/time.png')} style={styles.clock} />
               <Text style={styles.time}> 9:00 - 22:00</Text>
-            </View> */}
+            </View>
           </View>
         </View>
 
         <View style={styles.header}>
           <View style={styles.row}>
             <Image source={require('../../../../assets/mapIcon.png')} style={styles.map} />
-            <Text style={styles.time}>{company.dist ? company.dist + ' метров' : ''}</Text>
+            <Text style={styles.time}>{company.dist ? company.dist / 1000 + ' км' : ''}</Text>
           </View>
           <View style={styles.save}>
             <TouchableWithoutFeedback style={styles.save} onPress={() => { addToFavorite(company) }}>

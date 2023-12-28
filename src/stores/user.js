@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
+import * as Sentry from 'sentry-expo';
 
 class UserStore {
     role = []

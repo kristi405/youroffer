@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 export const Main = observer(() => {
   return (
-    <View style={{ flex: 1, paddingTop: 0, backgroundColor: 'black' }}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       <StatusBar style={{ color: 'black' }} barStyle="dark-content" backgroundColor="black" />
       <Navigator/>
     </View>

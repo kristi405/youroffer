@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
 import { getLocation, distanceBetweenGeoPoints } from '../services/geo'
+import * as Sentry from 'sentry-expo';
 
 // максимальное количесвто акций получаемых при одном запросе
 const COUNT_PER_ONE_REQUEST = 10

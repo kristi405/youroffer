@@ -8,7 +8,7 @@ import { FILE_URL } from '../../../services/constants'
 
 const styles = StyleSheet.create({
   segment: {
-    width: '95%',
+    width: '96%',
     height: 35,
     borderWidth: 1,
     borderColor: '#434343',
@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
     backgroundColor: 'black',
     paddingHorizontal: 10,
     gap: 16

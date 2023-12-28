@@ -138,9 +138,9 @@ const itemData = [
         title: (<Text style={styles.title}>Свяжитесь с нами</Text>),
         image: (<Image source={require('../../../assets/contactUs.png')} style={styles.image} />),
     },
-    {
-        id: 2,
-        title: (<Text style={styles.title}>Информация о приложении</Text>),
-        image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
-    }
+    // {
+    //     id: 2,
+    //     title: (<Text style={styles.title}>Информация о приложении</Text>),
+    //     image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
+    // }
 ]

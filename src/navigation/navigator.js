@@ -52,8 +52,7 @@ export const Navigator = () => {
                 name="CouponDetailScreen"
                 component={CouponDetailScreen}
                 options={{
-                    title: 'MyCoupon',
-                    headerTitleStyle: { color: '#0EA47A' },
+                    title: 'Акция',
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 }}
@@ -63,7 +62,6 @@ export const Navigator = () => {
                 component={QrCodeScreen}
                 options={{
                     title: 'QR code',
-                    headerTitleStyle: { color: '#0EA47A' },
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 }}
@@ -77,7 +75,7 @@ export const Navigator = () => {
                 name="CompanyProfile"
                 component={CompanyProfile}
                 options={{
-                    title: '',
+                    title: 'Профиль',
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 }}

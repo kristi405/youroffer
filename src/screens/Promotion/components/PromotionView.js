@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, FlatList, Text, Image } from 'react-native';
+import { StyleSheet, View, FlatList, Image } from 'react-native';
 
 export const PromotionView = (route) => {
     const item = route?.data
@@ -23,7 +23,7 @@ export const PromotionView = (route) => {
         <Circle
             key={index}
             source={index == item.max_count ? require('../../../../assets/gift.png') : null}
-            size={48}
+            size={40}
             color={index < item.use_count ? '#0EA47A' : 'white' && index == item.max_count ? 'clear' : 'white'}
         />
     ));
@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     containerForRow: {
-        paddingHorizontal: 2,
-        alignItems: 'flex-start',
+        paddingHorizontal: '1.5%',
     },
     circle: {
         borderRadius: 24,

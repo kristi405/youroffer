@@ -84,7 +84,6 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
-                <Text style={styles.titleText}>{item.title}</Text>
                 <Text style={styles.descriptionText}>Описание акции:</Text>
 
                 <Text style={styles.contentText}>{item.description}</Text>
@@ -136,13 +135,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
-        width: '100%',
-        paddingTop: 5,
     },
     headerView: {
         flexDirection: 'row',
-        paddingTop: 10,
-        paddingBottom: 0,
+        paddingTop: 15,
+        gap: 3
     },
     avatar: {
         width: 26,
@@ -153,17 +150,12 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: '#fff',
         paddingLeft: 10,
-        width: '82%'
+        width: '85%'
     },
     showPromotionText: {
         fontSize: 15,
         fontWeight: '800',
         color: '#fff',
-    },
-    titleText: {
-        fontSize: 17,
-        color: '#fff',
-        paddingTop: 3
     },
     addressTitle: {
         fontSize: 15,
@@ -188,7 +180,8 @@ const styles = StyleSheet.create({
     descriptionText: {
         fontSize: 16,
         color: '#fff',
-        opacity: 0.6
+        opacity: 0.6,
+        paddingTop: 5
     },
     contentText: {
         paddingTop: 8,
@@ -211,7 +204,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     touch: {
-        paddingVertical: 10,
-        paddingHorizontal: 10
+        paddingVertical: 20,
+        paddingRight: 5
     },
 })

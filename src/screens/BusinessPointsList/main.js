@@ -8,8 +8,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: 'black',
-    paddingHorizontal: 10,
-    gap: 16
+    paddingHorizontal: 10
   }
 })
 
