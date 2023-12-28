@@ -77,7 +77,12 @@ class BusinessPointsStore {
     async addToFavorite(id, favorite) {
         let status =  REQUEST_STATUS.success
         try {
-           await api.patch('/api/v1/business_point/favorite', {id, favorite})
+           api.patch('/api/v1/business_point/favorite', {id, favorite})
+           this.list.forEach(item => {
+                if (item.id === id) {
+                    item.favorite = favorite
+                }
+           })
         } catch (e) {
             status =  REQUEST_STATUS.error
             Sentry.Native.captureException(e, (scope) => {
