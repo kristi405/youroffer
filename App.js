@@ -7,8 +7,7 @@ import * as Sentry from 'sentry-expo';
 Sentry.init({
   dsn: 'https://803698e536aa4528ac38b38788093389@app.glitchtip.com/5267',
   enableInExpoDevelopment: true,
-  debug: true,
-  tracesSampleRate: 1.0,
+  debug: false
 });
 
 export default function App() {

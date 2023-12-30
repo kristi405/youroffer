@@ -14,7 +14,7 @@ npx expo prebuild
 билд
 eas login
 eas build:configure
-eas build --platform android
+eas build --platform android --profile production
 eas build --platform ios
 
 sha-1 token
