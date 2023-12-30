@@ -58,6 +58,7 @@
       }
     },
     "android": {
+      "versionCode": 2,
       "package": "com.offer.youoffer",
       "config": {
         "googleMaps": {
