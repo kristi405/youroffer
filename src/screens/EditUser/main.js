@@ -1,9 +1,8 @@
 import React from "react";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Keyboard } from 'react-native';
-import { getUser } from '../../services/auth'
 import ValidateStore from '../../stores/validate'
 import { VALIDATE_RULES } from '../../services/validate'
 import AuthStore from '../../stores/auth'
@@ -73,29 +72,6 @@ export const EditScreen = observer(({ navigation }) => {
         }
     }
 
-    const ChangePasswordView = () => {
-        if (UserStore.role == 'manager' || UserStore.role == 'client') return null
-        return (
-            <View style={styles.changePasswordBlock}>
-                <Text style={styles.changePasswordText}>Сменить данные для входа</Text>
-                <TextInput style={styles.passwordInputStyle}
-                    onChangeText={setLogin}
-                    value={login}
-                    keyboardType='default'
-                    placeholder="Новый логин"
-                    maxLength={20}
-                    placeholderTextColor={'#474A51'} />
-                <TextInput style={styles.passwordInputStyle}
-                    onChangeText={setPassword}
-                    value={password}
-                    keyboardType='default'
-                    placeholder="Новый пароль"
-                    maxLength={20}
-                    placeholderTextColor={'#474A51'} />
-            </View>
-        )
-    }
-
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
@@ -129,7 +105,23 @@ export const EditScreen = observer(({ navigation }) => {
                         maxLength={30}
                         placeholderTextColor={'#474A51'} />
                 </View>
-                <ChangePasswordView />
+                <View style={styles.changePasswordBlock}>
+                    <Text style={styles.changePasswordText}>Сменить данные для входа</Text>
+                    <TextInput style={styles.passwordInputStyle}
+                        onChangeText={setLogin}
+                        value={login}
+                        keyboardType='default'
+                        placeholder="Новый логин"
+                        maxLength={20}
+                        placeholderTextColor={'#474A51'} />
+                    <TextInput style={styles.passwordInputStyle}
+                        onChangeText={setPassword}
+                        value={password}
+                        keyboardType='default'
+                        placeholder="Новый пароль"
+                        maxLength={20}
+                        placeholderTextColor={'#474A51'} />
+                </View>
                 <TouchableOpacity style={[styles.buttonStyle]} onPress={pressHandler}>
                     <Text style={styles.buttonText}>Сохранить</Text>
                 </TouchableOpacity>
