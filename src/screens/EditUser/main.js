@@ -35,7 +35,6 @@ export const EditScreen = observer(({ navigation }) => {
     const [surname, setSurname] = useState('');
     const [bdate, setBirsday] = useState('');
     const [email, setEmail] = useState('');
-    const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
     useFocusEffect(
@@ -60,7 +59,6 @@ export const EditScreen = observer(({ navigation }) => {
             surname,
             bdate,
             email,
-            login,
             password
         }
 
@@ -106,14 +104,7 @@ export const EditScreen = observer(({ navigation }) => {
                         placeholderTextColor={'#474A51'} />
                 </View>
                 <View style={styles.changePasswordBlock}>
-                    <Text style={styles.changePasswordText}>Сменить данные для входа</Text>
-                    <TextInput style={styles.passwordInputStyle}
-                        onChangeText={setLogin}
-                        value={login}
-                        keyboardType='default'
-                        placeholder="Новый логин"
-                        maxLength={20}
-                        placeholderTextColor={'#474A51'} />
+                    <Text style={styles.changePasswordText}>Сменить пароль для входа</Text>
                     <TextInput style={styles.passwordInputStyle}
                         onChangeText={setPassword}
                         value={password}
