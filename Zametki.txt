@@ -15,7 +15,7 @@ npx expo prebuild
 eas login
 eas build:configure
 eas build --platform android --profile production
-eas build --platform ios
+eas build --platform ios --profile production
 
 sha-1 token
 https://expo.dev/accounts/kristina_gyk/projects/youoffer/credentials/android/com.offer.youoffer
@@ -27,3 +27,6 @@ netstat -nlp | grep :8081
 
 sentry token
 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
+
+
+expo-location для android минимум 16.5.0, а для ios - 16.3.0
