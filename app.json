@@ -61,6 +61,11 @@
     "android": {
       "versionCode": 2,
       "package": "com.offer.youoffer",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDe_-maQXTeKOnHEKilBL5lcjKweuGYE-I"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
