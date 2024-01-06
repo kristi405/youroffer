@@ -15,7 +15,7 @@ npx expo prebuild
 eas login
 eas build:configure
 eas build --platform android --profile production
-eas build --platform ios
+eas build --platform ios --profile production
 
 sha-1 token
 https://expo.dev/accounts/kristina_gyk/projects/youoffer/credentials/android/com.offer.youoffer

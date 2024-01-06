@@ -49,7 +49,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     }
 
     const DefaultPromotionView = () => {
-        if (item.type == 'default') return null
+        if (item.type == 'default' && !item.generate_qr) return null
         return (
             <TouchableOpacity style={styles.buttonStyle} onPress={openQr}>
                 <Text style={styles.showPromotionText}>Сгенерировать QR код</Text>
