@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import MapView from "react-native-map-clustering";
-import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 import { useState } from 'react';
 import Modal from 'react-native-modal';
 import BusinessPointsStore from "../../stores/businessPoints";
 import { MAP_STYLE } from "../../services/geo"
 import { getLocation } from '../../services/geo'
 import { FILE_URL } from '../../services/constants'
+import { observer } from "mobx-react-lite"
 
 let CURRENT_COORD;
 async function getCurrentCoordinates() {
@@ -16,7 +17,7 @@ async function getCurrentCoordinates() {
 
 getCurrentCoordinates()
 
-export const Map = ({ navigation }) => {
+export const Map = observer(({ navigation }) => {
     const [selectedBp, setSelectedBp] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -50,8 +51,8 @@ export const Map = ({ navigation }) => {
                 cluster={true}
                 clusterRadius={80}
                 minimumClusterSize={10}>
-                    {BusinessPointsStore.all.map((bp) => (
-                        <Marker
+                    {BusinessPointsStore.all.map((bp) => {
+                        return (<Marker
                             key={bp.id}
                             coordinate={{ latitude: parseFloat(bp.lat), longitude: parseFloat(bp.lng) }}
                             pinColor={'red'}
@@ -60,8 +61,8 @@ export const Map = ({ navigation }) => {
                                 setIsModalVisible(true)
                             }}
                             tracksViewChanges={false}
-                        />
-                    ))}
+                        />)
+                        })}
                 </MapView>
             {selectedBp && <View style={styles.modal}>
                 <Modal isVisible={isModalVisible} onBackdropPress={() => setIsModalVisible(false)} style={styles.modal}>
@@ -87,7 +88,7 @@ export const Map = ({ navigation }) => {
             </View>}
         </View>
     )
-}
+})
 
 const styles = StyleSheet.create({
     container: {
