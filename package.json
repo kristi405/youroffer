@@ -24,7 +24,7 @@
     "expo-auth-session": "~5.0.2",
     "expo-barcode-scanner": "~12.5.3",
     "expo-dev-client": "~2.4.12",
-    "expo-location": "16.3.0",
+    "expo-location": "16.5.0",
     "expo-navigation-bar": "~2.3.0",
     "expo-permissions": "~14.2.1",
     "expo-splash-screen": "~0.20.5",

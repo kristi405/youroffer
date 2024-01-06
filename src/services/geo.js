@@ -37,7 +37,7 @@ export const distanceBetweenGeoPoints = (pointA, pointB) => {
 
 const getUserLocation = async () => {
     try {
-        const location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, maximumAge: 10000});
+        const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
         CAHCE.latitude = location.coords.latitude;
         CAHCE.longitude = location.coords.longitude;
         return CAHCE;
@@ -46,7 +46,7 @@ const getUserLocation = async () => {
           scope.setTransactionName('service:geo:getUserLocation');
           return scope;
         });
-        console.error(error);
+        console.error(e);
         return
     }
 };
