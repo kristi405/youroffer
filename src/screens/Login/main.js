@@ -110,7 +110,7 @@ export const LoginScreen = ({ navigation }) => {
             <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => { googleSignin() }}>
                 <View style={styles.containerForGoogleButton}>
                     <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
-                    <Text style={styles.buttonText}>Sign in with Google</Text>
+                    <Text style={styles.buttonText}>Вход с Google</Text>
                 </View>
             </TouchableHighlight>
         )
@@ -131,7 +131,10 @@ export const LoginScreen = ({ navigation }) => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
-                <Image source={require('../../../assets/logo.png')} style={styles.imageStyle} />
+            <View style={styles.header}>
+                <Image source={require('../../../assets/logoOnly.png')} style={styles.imageStyle} />
+                <Text style={styles.title}>Все акции</Text>
+                </View>
                 <View style={styles.signUpContainer}>
                     <TextInput style={[styles.codeInputStyle, changeBorder('email')]}
                         onChangeText={(v) => { setEmail(v), resetValidation('email') }}
@@ -156,11 +159,11 @@ export const LoginScreen = ({ navigation }) => {
                 <View style={styles.buttonContainer}>
                     <AppleBtn />
                     <GoogleBtn />
-                    <TouchableOpacity
+                </View>
+                <TouchableOpacity
                         onPress={signUp}>
                         <Text style={styles.signUpButtonText}>Зарегистрироваться</Text>
                     </TouchableOpacity>
-                </View>
             </View>
         </TouchableWithoutFeedback>
     );
@@ -170,7 +173,11 @@ const styles = StyleSheet.create({
     imageStyle: {
         width: 210,
         height: 220,
-        tintColor: '#0EA47A'
+    },
+    header: {
+        alignItems: 'center',
+        flexDirection: 'column',
+        paddingBottom: 30
     },
     googleImage: {
         width: 13,
@@ -181,15 +188,15 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         backgroundColor: 'black',
-        paddingTop: 45,
+        paddingTop: 40,
         gap: 10
     },
     buttonContainer: {
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: 75,
-        gap: 20
+        paddingTop: (Platform.OS == 'android') ? 95 : 45,
+        gap: 15
     },
     signUpContainer: {
         flexDirection: 'column',
@@ -208,9 +215,15 @@ const styles = StyleSheet.create({
     },
     googleButton: {
         backgroundColor: '#293133',
-        width: 180,
-        height: 40,
+        width: 150,
+        height: 38,
         borderRadius: 8
+    },
+    title: {
+        color: '#0EA47A',
+        fontSize: 23,
+        fontWeight: '400',
+        marginTop: -50
     },
     buttonText: {
         color: 'white',
@@ -249,7 +262,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500',
         letterSpacing: 0.4,
-        paddingTop: 15,
+        paddingBottom: 20,
         color: '#0EA47A',
         textDecorationLine: 'underline',
     },

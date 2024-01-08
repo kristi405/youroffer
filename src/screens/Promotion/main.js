@@ -52,7 +52,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         if (item.type == 'default' && !item.generate_qr) return null
         return (
             <TouchableOpacity style={styles.buttonStyle} onPress={openQr}>
-                <Text style={styles.showPromotionText}>Сгенерировать QR код</Text>
+                <Text style={styles.showPromotionText}>Воспользоваться акцией</Text>
             </TouchableOpacity>
         )
     }
@@ -95,7 +95,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 {item.business_points?.map(bp => {
                     return (
                     <View style={styles.addressList} key={bp.id}>
-                        <Image style={styles.addressImg} source={require('../../../assets/mapIcon.png')} />
+                        <Image source={require('../../../assets/mapIcon.png')} />
                         <Text style={styles.address}>{bp.name}: {bp.address}</Text>
                     </View>
                     )
@@ -171,14 +171,13 @@ const styles = StyleSheet.create({
     },
     addressList: {
         flexDirection: 'row',
-    },
-    addressImg: {
-        marginRight: 10,
+        paddingHorizontal: 10,
     },
     address: {
-        fontSize: 15,
+        fontSize: 13,
         color: '#fff',
         paddingTop: 5,
+        paddingHorizontal: 10,
         opacity: 0.6
     },
     descriptionText: {
