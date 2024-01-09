@@ -1,6 +1,6 @@
 {
   "name": "youoffer",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "scripts": {
     "start": "NODE_ENV=development expo start --dev-client",
     "android": "NODE_ENV=development expo run:android --device --variant debug",
