@@ -18,12 +18,11 @@ export const OnboardingScreen = ({navigation}) => {
         if (session && session.token) {
           AuthStore.updateCoord()
           BusinessPointsStore.getAll()
-          navigation.navigate('CouponScreen')
+          navigation.replace('CouponScreen')
         } else {
-          navigation.navigate('LoginScreen')
+          navigation.replace('LoginScreen')
         }
       }, 1000);
-
     }
 
     return (

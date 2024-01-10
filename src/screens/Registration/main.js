@@ -85,14 +85,14 @@ export const Registration = observer(({ navigation }) => {
                         value={email}
                         keyboardType='default'
                         placeholder="Email"
-                        maxLength={20}
+                        maxLength={40}
                         placeholderTextColor={'#474A51'} />
                     <TextInput style={[styles.codeInputStyle, changeBorder('email')]}
                         onChangeText={(v) => { setRepeatEmail(v), resetValidation('email') }}
                         value={repeatEmail}
                         keyboardType='default'
                         placeholder="Повторите email"
-                        maxLength={20}
+                        maxLength={40}
                         placeholderTextColor={'#474A51'} />
                     <TextInput style={[styles.codeInputStyle, changeBorder('password')]}
                         onChangeText={(v) => { setPassword(v), resetValidation('password') }}

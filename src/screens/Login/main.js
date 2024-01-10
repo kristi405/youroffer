@@ -141,7 +141,7 @@ export const LoginScreen = ({ navigation }) => {
                         value={email}
                         keyboardType='default'
                         placeholder="Email"
-                        maxLength={20}
+                        maxLength={40}
                         placeholderTextColor={'#474A51'} />
                     <TextInput style={[styles.codeInputStyle, changeBorder('password')]}
                         onChangeText={(v) => { setPassword(v), resetValidation('password') }}
