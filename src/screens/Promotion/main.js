@@ -68,7 +68,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const addToFavorite = (offer) => {
         clearTimeout(timer)
         timer = setTimeout(() => {
-            setOffer({offer, favorite: !offer.favorite})
+            setOffer({...offer, favorite: !offer.favorite})
             PromotionStore.addToFavorite(offer.id, !offer.favorite)
         }, 200)
     }

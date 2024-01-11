@@ -119,12 +119,17 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
     <View style={{ width: '100%', flex: 1, gap: 10, alignItems: 'center' }}>
       {!isCompanyPromotions ?
         <SegmentedControl
+          enabled={!isLoading}
           style={styles.segment}
           backgroundColor='black'
           tintColor='#0EA47A'
           values={['Все акции', 'Мои акции']}
           selectedIndex={isFavoriteList}
-          onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
+          onChange={(event) => {
+            if (isLoading) return;
+            setIsLoading(true)
+            handleValueChange(event.nativeEvent.selectedSegmentIndex)}
+          }
         /> : null}
       {isLoading ? <Loading /> : <Coupons />}
     </View >
