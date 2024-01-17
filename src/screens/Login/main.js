@@ -9,6 +9,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
 import ValidateStore from '../../stores/validate'
 import { VALIDATE_RULES } from '../../services/validate'
+import { observer } from "mobx-react-lite"
 import * as Sentry from 'sentry-expo';
 
 WebBrowser.maybeCompleteAuthSession();
@@ -16,7 +17,7 @@ WebBrowser.maybeCompleteAuthSession();
 const validateStroe = new ValidateStore({
     email: {
         isValid: true,
-        rules: [VALIDATE_RULES.email]
+        rules: [VALIDATE_RULES.required, VALIDATE_RULES.email]
     },
     password: {
         isValid: true,
@@ -24,7 +25,7 @@ const validateStroe = new ValidateStore({
     }
 })
 
-export const LoginScreen = ({ navigation }) => {
+export const LoginScreen = observer(({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const Errors = {
@@ -34,6 +35,13 @@ export const LoginScreen = ({ navigation }) => {
     }
 
     const signIn = async () => {
+        const data = {
+            email,
+            password,
+        }
+
+        if (!validateStroe.validate(data)) return;
+
         const response = await AuthStore.loginByEmail(email, password)
         let isError = false
         let errorText = ''
@@ -167,7 +175,7 @@ export const LoginScreen = ({ navigation }) => {
             </View>
         </TouchableWithoutFeedback>
     );
-}
+})
 
 const styles = StyleSheet.create({
     imageStyle: {
@@ -265,5 +273,11 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         color: '#0EA47A',
         textDecorationLine: 'underline',
+    },
+    validInput: {
+        borderColor: 'gray',
+    },
+    invalidInput: {
+        borderColor: 'red'
     },
 })

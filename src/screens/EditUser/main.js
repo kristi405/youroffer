@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
 import { Keyboard } from 'react-native';
 import ValidateStore from '../../stores/validate'
 import { VALIDATE_RULES } from '../../services/validate'
@@ -26,7 +26,7 @@ const validateStroe = new ValidateStore({
     },
     email: {
         isValid: true,
-        rules: [VALIDATE_RULES.email]
+        rules: [VALIDATE_RULES.required, VALIDATE_RULES.email]
     }
 })
 
@@ -44,6 +44,7 @@ export const EditScreen = observer(({ navigation }) => {
     );
 
     const init = () => {
+        validateStroe.resetValidation()
         setTimeout(async () => {
             let user = await UserStore.getUser()
             setName(user.name)
@@ -66,37 +67,69 @@ export const EditScreen = observer(({ navigation }) => {
 
         const status = await AuthStore.updateUser(data)
         if (status === REQUEST_STATUS.success) {
-            navigation.goBack()
+            Alert.alert(
+                '', 'Данные успешно сохранены',
+                [
+                    {
+                        text: 'Закрыть',
+                        style: 'cancel',
+                    },
+
+                ],
+                { cancelable: true }
+            )
+            init()
+        } else {
+            Alert.alert(
+                '', 'Пользователь с таким Email уже существует',
+                [
+                    {
+                        text: 'Закрыть',
+                        style: 'cancel',
+                    },
+
+                ],
+                { cancelable: true }
+            )
+            init()
         }
+    }
+
+    function changeBorder(key) {
+        return validateStroe.schema[key].isValid ? styles.validInput : styles.invalidInput;
+    }
+
+    function resetValidation(key) {
+        validateStroe.resetValidationByKey(key)
     }
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
                 <View style={styles.createUserBlock}>
-                    <TextInput style={styles.codeInputStyle}
-                        onChangeText={setName}
+                    <TextInput style={[styles.codeInputStyle, changeBorder('name')]}
+                        onChangeText={(v) => {setName(v); resetValidation('name')}}
                         value={name}
                         keyboardType='default'
                         placeholder="Имя"
                         maxLength={20}
                         placeholderTextColor={'#474A51'} />
-                    <TextInput style={styles.codeInputStyle}
-                        onChangeText={setSurname}
+                    <TextInput style={[styles.codeInputStyle, changeBorder('surname')]}
+                        onChangeText={(v) => {setSurname(v); resetValidation('surname')}}
                         value={surname}
                         keyboardType='default'
                         placeholder="Фамилия"
                         maxLength={30}
                         placeholderTextColor={'#474A51'} />
-                    <TextInput style={styles.codeInputStyle}
-                        onChangeText={setBirsday}
+                    <TextInput style={[styles.codeInputStyle, changeBorder('bdate')]}
+                        onChangeText={(v) => {setBirsday(v); resetValidation('bdate')}}
                         value={bdate}
                         keyboardType='number-pad'
                         placeholder="Дата Рождения"
                         maxLength={20}
                         placeholderTextColor={'#474A51'} />
-                    <TextInput style={styles.codeInputStyle}
-                        onChangeText={setEmail}
+                    <TextInput style={[styles.codeInputStyle, changeBorder('email')]}
+                        onChangeText={(v) => {setEmail(v); resetValidation('email')}}
                         value={email}
                         keyboardType='email-address'
                         placeholder="e-mail"
@@ -181,5 +214,11 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         paddingBottom: 10,
         paddingRight: '25%'
-    }
+    },
+    validInput: {
+        borderColor: 'gray',
+    },
+    invalidInput: {
+        borderColor: 'red'
+    },
 })

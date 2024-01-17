@@ -10,7 +10,7 @@ import AuthStore from '../../stores/auth'
 const validateStroe = new ValidateStore({
     email: {
         isValid: true,
-        rules: [VALIDATE_RULES.email]
+        rules: [VALIDATE_RULES.email, VALIDATE_RULES.required]
     },
     password: {
         isValid: true,

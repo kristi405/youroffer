@@ -1,19 +1,68 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, Text, View, Image, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native';
 import ContactUsStore from '../../stores/contactUs'
+import { useFocusEffect } from '@react-navigation/native';
+import ValidateStore from '../../stores/validate'
+import { VALIDATE_RULES } from '../../services/validate'
+import { observer } from "mobx-react-lite"
 
-export const ContactUs = ({ navigation }) => {
+const validateStroe = new ValidateStore({
+    name: {
+        isValid: true,
+        rules: [VALIDATE_RULES.required]
+    },
+    contact: {
+        isValid: true,
+        rules: [VALIDATE_RULES.required]
+    },
+    text:  {
+        isValid: true,
+        rules: [VALIDATE_RULES.required]
+    }
+
+})
+
+export const ContactUs = observer(({ navigation }) => {
     const [name, setName] = useState('');
     const [contact, setContact] = useState('');
     const [text, setText] = useState('');
+
+    useFocusEffect(
+        React.useCallback(() => {
+            validateStroe.resetValidation()
+        }, [])
+    );
 
     const handleScreenPress = () => {
         Keyboard.dismiss();
     };
 
-    const sendRequest = async (props) => {
-        await ContactUsStore.sendMail(name, text, contact)
+    const sendRequest = async () => {
+        const data = { name, text, contact };
+        if (!validateStroe.validate(data)) return;
+
+        ContactUsStore.sendMail(name, text, contact)
+        Alert.alert(
+            '', 'Спасибо, мы свяжемся с вами в ближайшее время',
+            [
+                {
+                    text: 'Закрыть',
+                    onPress: () => { setName('');  setContact(''); setText(''); },
+                    style: 'cancel',
+                },
+
+            ],
+            { cancelable: false }
+        )
     };
+
+    function changeBorder(key) {
+        return validateStroe.schema[key].isValid ? styles.validInput : styles.invalidInput;
+    }
+
+    function resetValidation(key) {
+        validateStroe.resetValidationByKey(key)
+    }
 
     return (
         <TouchableWithoutFeedback onPress={handleScreenPress}>
@@ -26,29 +75,29 @@ export const ContactUs = ({ navigation }) => {
                     <Image source={require('../../../assets/mail.png')} style={styles.image} />
                     <Text style={styles.title}>email: myOffer@gmail.com</Text>
                 </View>
-                <View style={styles.header}>
+                {/* <View style={styles.header}>
                     <Image source={require('../../../assets/web.png')} style={styles.image} />
                     <Text style={styles.title}>сайт: </Text>
-                </View>
+                </View> */}
 
                 <View style={styles.requestBlock}>
                     <Text style={styles.requestTitle}>Оставить заявку: </Text>
-                    <TextInput style={styles.codeInputStyle}
-                        onChangeText={setName}
+                    <TextInput style={[styles.codeInputStyle, changeBorder('name')]}
+                        onChangeText={(val) => { setName(val); resetValidation('name'); }}
                         value={name}
                         keyboardType='default'
                         placeholder="Ваше имя"
                         maxLength={20}
                         placeholderTextColor={'#474A51'} />
-                    <TextInput style={styles.codeInputStyle}
-                        onChangeText={setContact}
+                    <TextInput style={[styles.codeInputStyle, changeBorder('contact')]}
+                        onChangeText={(val) => { setContact(val); resetValidation('contact'); }}
                         value={contact}
                         keyboardType='default'
                         placeholder="Ваши контактные данные"
                         maxLength={50}
                         placeholderTextColor={'#474A51'} />
-                        <TextInput style={styles.messageInputStyle}
-                        onChangeText={setText}
+                    <TextInput style={[styles.messageInputStyle, changeBorder('text')]}
+                        onChangeText={(val) => { setText(val); resetValidation('text'); }}
                         value={text}
                         keyboardType='default'
                         placeholder="Оставьте нам сообщение и мы свяжемся с Вами в ближайшее время"
@@ -62,7 +111,7 @@ export const ContactUs = ({ navigation }) => {
             </View>
         </TouchableWithoutFeedback>
     )
-}
+})
 
 const styles = StyleSheet.create({
     container: {
@@ -130,5 +179,11 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 20,
         color: '#fff'
+    },
+    validInput: {
+        borderColor: 'gray',
+    },
+    invalidInput: {
+        borderColor: 'red'
     },
 })
