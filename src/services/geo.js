@@ -37,7 +37,7 @@ export const distanceBetweenGeoPoints = (pointA, pointB) => {
 
 const getUserLocation = async () => {
     try {
-        const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest, timeout: 2000, maximumAge: 10000 });
+        const location = await Location.getCurrentPositionAsync({});
         CAHCE.latitude = location.coords.latitude;
         CAHCE.longitude = location.coords.longitude;
         return CAHCE;
