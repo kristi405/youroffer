@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "youoffer",
-    "scheme": "youoffer",
-    "slug": "youoffer",
-    "version": "1.0.8",
+    "name": "myoffer",
+    "scheme": "myoffer",
+    "slug": "myoffer",
+    "version": "1.0.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -30,7 +30,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow $(youoffer) to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Allow $(myoffer) to use your location."
         }
       ],
       "@react-native-google-signin/google-signin"
@@ -47,8 +47,8 @@
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.offer.youoffer",
       "infoPlist": {
-        "locationAlwaysAndWhenInUsePermission": "Allow $(youoffer) to use your location.",
-        "locationWhenInUsePermission": "Allow $(youoffer) to use your location.",
+        "locationAlwaysAndWhenInUsePermission": "Allow $(myoffer) to use your location.",
+        "locationWhenInUsePermission": "Allow $(myoffer) to use your location.",
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": [
@@ -59,7 +59,7 @@
       }
     },
     "android": {
-      "versionCode": 8,
+      "versionCode": 9,
       "package": "com.offer.youoffer",
       "config": {
         "googleMaps": {
