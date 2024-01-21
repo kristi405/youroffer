@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "myoffer",
+    "name": "myoffers",
     "scheme": "youoffer",
     "slug": "youoffer",
     "version": "1.0.9",
@@ -30,7 +30,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow $(myoffer) to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Allow $(myoffers) to use your location."
         }
       ],
       "@react-native-google-signin/google-signin"
@@ -47,8 +47,8 @@
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.offer.youoffer",
       "infoPlist": {
-        "locationAlwaysAndWhenInUsePermission": "Allow $(myoffer) to use your location.",
-        "locationWhenInUsePermission": "Allow $(myoffer) to use your location.",
+        "locationAlwaysAndWhenInUsePermission": "Allow $(myoffers) to use your location.",
+        "locationWhenInUsePermission": "Allow $(myoffers) to use your location.",
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": [
