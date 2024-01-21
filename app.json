@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "myoffer",
-    "scheme": "myoffer",
-    "slug": "myoffer",
+    "scheme": "youoffer",
+    "slug": "youoffer",
     "version": "1.0.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
