@@ -15,13 +15,13 @@ export const OnboardingScreen = ({navigation}) => {
       const session = await getSession()
       setTimeout(() => {
         setVisible(false);
-        if (session && session.token) {
+        // if (session && session.token) {
           AuthStore.updateCoord()
           BusinessPointsStore.getAll()
           navigation.replace('CouponScreen')
-        } else {
-          navigation.replace('LoginScreen')
-        }
+        // } else {
+        //   navigation.replace('LoginScreen')
+        // }
       }, 1000);
     }
 

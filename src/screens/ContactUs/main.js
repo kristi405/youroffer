@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native';
 import ContactUsStore from '../../stores/contactUs'
 import { useFocusEffect } from '@react-navigation/native';
@@ -75,10 +75,6 @@ export const ContactUs = observer(({ navigation }) => {
                     <Image source={require('../../../assets/mail.png')} style={styles.image} />
                     <Text style={styles.title}>email: myOffer@gmail.com</Text>
                 </View>
-                {/* <View style={styles.header}>
-                    <Image source={require('../../../assets/web.png')} style={styles.image} />
-                    <Text style={styles.title}>сайт: </Text>
-                </View> */}
 
                 <View style={styles.requestBlock}>
                     <Text style={styles.requestTitle}>Оставить заявку: </Text>

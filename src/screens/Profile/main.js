@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Image, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
-import AuthStore from '../../stores/auth'
 import { getUser } from '../../services/auth'
 
 export const Profile = ({ navigation }) => {
@@ -17,12 +16,9 @@ export const Profile = ({ navigation }) => {
             navigation.navigate('EditScreen')
         } else if (item.id == 1) {
             navigation.navigate('ContactUs')
+        } else if (item.id == 2) {
+            navigation.navigate('InformationScreen')
         }
-    }
-
-    const logout = () => {
-        navigation.navigate('LoginScreen');
-        AuthStore.clearUser()
     }
 
     return (
@@ -52,14 +48,6 @@ export const Profile = ({ navigation }) => {
                     }>
                 </FlatList>
             </View>
-            <TouchableWithoutFeedback onPress={logout}>
-                <View style={styles.item}>
-                    <View style={styles.header}>
-                        <Image source={require('../../../assets/logout.png')} style={styles.logout} />
-                        <Text style={styles.title}>Выход</Text>
-                    </View>
-                </View>
-            </TouchableWithoutFeedback>
         </View>
     )
 }
@@ -138,9 +126,9 @@ const itemData = [
         title: (<Text style={styles.title}>Свяжитесь с нами</Text>),
         image: (<Image source={require('../../../assets/contactUs.png')} style={styles.image} />),
     },
-    // {
-    //     id: 2,
-    //     title: (<Text style={styles.title}>Информация о приложении</Text>),
-    //     image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
-    // }
+    {
+        id: 2,
+        title: (<Text style={styles.title}>Дополнительная информация</Text>),
+        image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
+    }
 ]

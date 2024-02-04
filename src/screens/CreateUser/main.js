@@ -23,7 +23,7 @@ const validateStroe = new ValidateStore({
     },
     bdate: {
         isValid: true,
-        rules: [VALIDATE_RULES.required, VALIDATE_RULES.date]
+        rules: [VALIDATE_RULES.date]
     },
     email: {
         isValid: true,

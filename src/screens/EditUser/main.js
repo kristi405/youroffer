@@ -14,19 +14,19 @@ import dayjs from 'dayjs'
 const validateStroe = new ValidateStore({
     name: {
         isValid: true,
-        rules: [VALIDATE_RULES.required]
+        rules: []
     },
     surname: {
         isValid: true,
-        rules: [VALIDATE_RULES.required]
+        rules: []
     },
     bdate: {
         isValid: true,
-        rules: [VALIDATE_RULES.required, VALIDATE_RULES.date]
+        rules: [VALIDATE_RULES.date]
     },
     email: {
         isValid: true,
-        rules: [VALIDATE_RULES.required, VALIDATE_RULES.email]
+        rules: [VALIDATE_RULES.email]
     }
 })
 
@@ -36,6 +36,7 @@ export const EditScreen = observer(({ navigation }) => {
     const [bdate, setBirsday] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [user, setUser] = useState('')
 
     useFocusEffect(
         React.useCallback(() => {
@@ -47,6 +48,7 @@ export const EditScreen = observer(({ navigation }) => {
         validateStroe.resetValidation()
         setTimeout(async () => {
             let user = await UserStore.getUser()
+            setUser(user)
             setName(user.name)
             setSurname(user.surname)
             setEmail(user.email)
@@ -103,6 +105,22 @@ export const EditScreen = observer(({ navigation }) => {
         validateStroe.resetValidationByKey(key)
     }
 
+    const ChangePassword = () => {
+        if (user.role != 'admin') return null
+        return (
+            <View style={styles.changePasswordBlock}>
+            <Text style={styles.changePasswordText}>Сменить пароль для входа</Text>
+            <TextInput style={styles.passwordInputStyle}
+                onChangeText={setPassword}
+                value={password}
+                keyboardType='default'
+                placeholder="Новый пароль"
+                maxLength={20}
+                placeholderTextColor={'#474A51'} />
+        </View>
+        )
+    }
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
@@ -136,16 +154,7 @@ export const EditScreen = observer(({ navigation }) => {
                         maxLength={30}
                         placeholderTextColor={'#474A51'} />
                 </View>
-                <View style={styles.changePasswordBlock}>
-                    <Text style={styles.changePasswordText}>Сменить пароль для входа</Text>
-                    <TextInput style={styles.passwordInputStyle}
-                        onChangeText={setPassword}
-                        value={password}
-                        keyboardType='default'
-                        placeholder="Новый пароль"
-                        maxLength={20}
-                        placeholderTextColor={'#474A51'} />
-                </View>
+                <ChangePassword />
                 <TouchableOpacity style={[styles.buttonStyle]} onPress={pressHandler}>
                     <Text style={styles.buttonText}>Сохранить</Text>
                 </TouchableOpacity>
