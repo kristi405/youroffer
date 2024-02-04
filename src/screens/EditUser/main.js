@@ -20,22 +20,14 @@ const validateStroe = new ValidateStore({
         isValid: true,
         rules: []
     },
-    bdate: {
-        isValid: true,
-        rules: [VALIDATE_RULES.date]
-    },
-    email: {
-        isValid: true,
-        rules: [VALIDATE_RULES.email]
-    }
 })
 
 export const EditScreen = observer(({ navigation }) => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
-    const [bdate, setBirsday] = useState('');
-    const [email, setEmail] = useState('');
+    // const [bdate, setBirsday] = useState('');
     const [password, setPassword] = useState('');
+    const [login, setLogin] = useState('');
     const [user, setUser] = useState('')
 
     useFocusEffect(
@@ -51,8 +43,8 @@ export const EditScreen = observer(({ navigation }) => {
             setUser(user)
             setName(user.name)
             setSurname(user.surname)
-            setEmail(user.email)
-            setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY') : '')
+            setLogin(user.login)
+            // setBirsday(user?.bdate ? dayjs(user?.bdate).format('DD.MM.YYYY') : '')
         }, 300)
     }
 
@@ -60,8 +52,7 @@ export const EditScreen = observer(({ navigation }) => {
         const data = {
             name,
             surname,
-            bdate,
-            email,
+            login,
             password
         }
 
@@ -83,7 +74,7 @@ export const EditScreen = observer(({ navigation }) => {
             init()
         } else {
             Alert.alert(
-                '', 'Пользователь с таким Email уже существует',
+                '', 'Данные не сохранены',
                 [
                     {
                         text: 'Закрыть',
@@ -105,22 +96,32 @@ export const EditScreen = observer(({ navigation }) => {
         validateStroe.resetValidationByKey(key)
     }
 
-    const ChangePassword = () => {
-        if (user.role != 'admin') return null
-        return (
-            <View style={styles.changePasswordBlock}>
-            <Text style={styles.changePasswordText}>Сменить пароль для входа</Text>
-            <TextInput style={styles.passwordInputStyle}
-                onChangeText={setPassword}
-                value={password}
-                keyboardType='default'
-                placeholder="Новый пароль"
-                maxLength={20}
-                placeholderTextColor={'#474A51'} />
-        </View>
-        )
-    }
+    // function ChangePassword({setPassword, setLogin}) {
+    //     // if (user.role != 'admin') return null
+    //     return (
+    //         <View style={styles.changePasswordBlock}>
+    //             <Text style={styles.changePasswordText}>Данные для входа в админ панель</Text>
+    //             <Text style={styles.changePasswordTextInfo}>Для входа в админ панель создайте логин и пароль</Text>
+    //             <Text style={styles.changePasswordTextInfo}>Если вы забыли пароль, можете создать новый</Text>
+    //             <TextInput style={styles.passwordInputStyle}
+    //                 onChangeText={setLogin}
+    //                 value={login}
+    //                 keyboardType='default'
+    //                 placeholder="Логин"
+    //                 maxLength={20}
+    //                 placeholderTextColor={'#474A51'} />
+    //             <TextInput style={styles.passwordInputStyle}
+    //                 onChangeText={setPassword}
+    //                 value={password}
+    //                 keyboardType='default'
+    //                 placeholder="Пароль"
+    //                 maxLength={20}
+    //                 placeholderTextColor={'#474A51'} />
+    //         </View>
+    //     )
+    // }
 
+    const rolesToSetPassword = ['admin', 'super_admin'];
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
@@ -139,22 +140,36 @@ export const EditScreen = observer(({ navigation }) => {
                         placeholder="Фамилия"
                         maxLength={30}
                         placeholderTextColor={'#474A51'} />
-                    <TextInput style={[styles.codeInputStyle, changeBorder('bdate')]}
+                    {/* <TextInput style={[styles.codeInputStyle, changeBorder('bdate')]}
                         onChangeText={(v) => {setBirsday(v); resetValidation('bdate')}}
                         value={bdate}
                         keyboardType='number-pad'
                         placeholder="Дата Рождения"
                         maxLength={20}
-                        placeholderTextColor={'#474A51'} />
-                    <TextInput style={[styles.codeInputStyle, changeBorder('email')]}
-                        onChangeText={(v) => {setEmail(v); resetValidation('email')}}
-                        value={email}
-                        keyboardType='email-address'
-                        placeholder="e-mail"
-                        maxLength={30}
-                        placeholderTextColor={'#474A51'} />
+                        placeholderTextColor={'#474A51'} /> */}
                 </View>
-                <ChangePassword />
+                {
+                    rolesToSetPassword.includes(user.role) &&
+                    <View style={styles.changePasswordBlock}>
+                        <Text style={styles.changePasswordText}>Данные для входа в админ панель</Text>
+                        <Text style={styles.changePasswordTextInfo}>Для входа в админ панель создайте логин и пароль</Text>
+                        <Text style={styles.changePasswordTextInfo}>Если вы забыли пароль, можете создать новый</Text>
+                        <TextInput style={styles.passwordInputStyle}
+                            onChangeText={setLogin}
+                            value={login}
+                            keyboardType='default'
+                            placeholder="Логин"
+                            maxLength={20}
+                            placeholderTextColor={'#474A51'} />
+                        <TextInput style={styles.passwordInputStyle}
+                            onChangeText={setPassword}
+                            value={password}
+                            keyboardType='default'
+                            placeholder="Пароль"
+                            maxLength={20}
+                            placeholderTextColor={'#474A51'} />
+                    </View>
+                }
                 <TouchableOpacity style={[styles.buttonStyle]} onPress={pressHandler}>
                     <Text style={styles.buttonText}>Сохранить</Text>
                 </TouchableOpacity>
@@ -218,11 +233,16 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     changePasswordText: {
+        textAlign: 'center',
         fontSize: 16,
         color: '#0EA47A',
         paddingTop: 30,
-        paddingBottom: 10,
-        paddingRight: '25%'
+        paddingBottom: 5
+    },
+    changePasswordTextInfo: {
+        textAlign: 'center',
+        fontSize: 12,
+        color: '#0EA47A',
     },
     validInput: {
         borderColor: 'gray',

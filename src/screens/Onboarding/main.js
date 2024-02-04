@@ -5,6 +5,7 @@ import { getSession } from '../../services/auth'
 import AuthStore from '../../stores/auth'
 import BusinessPointsStore from '../../stores/businessPoints'
 
+
 export const OnboardingScreen = ({navigation}) => {
   const [visible, setVisible] = useState(true);
   useEffect(() => {
@@ -13,15 +14,14 @@ export const OnboardingScreen = ({navigation}) => {
 
     const init = async () => {
       const session = await getSession()
+      if (!session) {
+        await AuthStore.createUser()
+      }
       setTimeout(() => {
         setVisible(false);
-        // if (session && session.token) {
-          AuthStore.updateCoord()
-          BusinessPointsStore.getAll()
-          navigation.replace('CouponScreen')
-        // } else {
-        //   navigation.replace('LoginScreen')
-        // }
+        AuthStore.updateCoord()
+        BusinessPointsStore.getAll()
+        navigation.replace('CouponScreen')
       }, 1000);
     }
 

@@ -178,6 +178,23 @@ class AuthStore {
             });
         }
     }
+
+    async createUser() {
+        let status =  REQUEST_STATUS.success
+        try {
+            const resp = await api.post('api/v1/auth/create/client')
+            setSession(resp.data.session)
+            await setUser(resp.data.user)
+        } catch (e) {
+            status =  REQUEST_STATUS.error
+            Sentry.Native.captureException(e, (scope) => {
+                scope.setTransactionName('AuthStore:createUser');
+                return scope;
+            });
+            return e.response.data
+        }
+        return status
+    }
 }
 
 async function userToApi(user) {
