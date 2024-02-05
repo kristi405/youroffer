@@ -11,7 +11,6 @@ import { CompanyProfile } from '../screens/BusinessPoint/main'
 import { EditScreen } from '../screens/EditUser/main';
 import { OnboardingScreen } from '../screens/Onboarding/main';
 import { ContactUs } from '../screens/ContactUs/main'
-import { InformationScreen } from '../screens/Information/main'
 
 const Stack = createNativeStackNavigator();
 
@@ -100,15 +99,6 @@ export const Navigator = () => {
                 component={ContactUs}
                 options={{
                     title: 'Контакты',
-                    headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
-                }}
-            />
-            <Stack.Screen
-                name="InformationScreen"
-                component={InformationScreen}
-                options={{
-                    title: 'Дополнительная информация',
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 }}
