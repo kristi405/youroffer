@@ -47,8 +47,8 @@
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.offer.youoffer",
       "infoPlist": {
-        "locationAlwaysAndWhenInUsePermission": "Allow $(myoffers) to use your location in order to show you the distance to the closest cafes with promotions.",
-        "locationWhenInUsePermission": "Allow $(myoffers) to use your location in order to show you the distance to the closest cafes with promotions.",
+        "locationAlwaysAndWhenInUsePermission": "Разрешите $(myoffers) использовать ваше местоположение для расчета расстояния от вашего местоположения до ближайших кафе с акциями.",
+        "locationWhenInUsePermission": "Разрешите $(myoffers) использовать ваше местоположение для расчета расстояния от вашего местоположения до ближайших кафе с акциями.",
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": [
