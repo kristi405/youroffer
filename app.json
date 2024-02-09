@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "myoffers",
+    "name": "myOffers",
     "scheme": "youoffer",
     "slug": "youoffer",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -30,7 +30,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow $(myoffers) to use your location in order to show you the distance to the closest cafes with promotions."
+          "locationAlwaysAndWhenInUsePermission": "Разрешите $(myoffers) использовать ваше местоположение для расчета расстояния от вашего местоположения до ближайших кафе с акциями."
         }
       ],
       "@react-native-google-signin/google-signin"
@@ -59,7 +59,7 @@
       }
     },
     "android": {
-      "versionCode": 10,
+      "versionCode": 11,
       "package": "com.offer.youoffer",
       "config": {
         "googleMaps": {
