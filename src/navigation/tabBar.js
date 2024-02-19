@@ -126,7 +126,7 @@ export const TabBar = () => {
             {isShowScan && (
                 <Tab.Screen
                     name="Скан"
-                    component={ScanStackScreen}
+                    component={Scan}
                     visible={isShowScan}
                     options={{
                         tabBarIcon: ({ focused }) => (

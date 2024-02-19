@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, View, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
 import UserStore from '../../stores/user'
 
 export const ManagerScreen = ({ navigation }) => {
     const [managers, setManagers] = useState();
 
-    useEffect(() => {
-        setTimeout(async () => {
-            let user = await UserStore.getUser()
-            setManagers(user.managers)
-        }, 300)
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            UserStore.getUser().then(user => {
+                if (user?.managers?.length) {
+                    console.log('1111111111111111111')
+                    setManagers(user.managers)
+                } else {
+                    console.log('22222222222222222')
+                    openSettings()
+                }
+            })
+        }, [])
+    );
+
 
     const openSettings = item => {
         navigation.navigate('Scan')
@@ -19,7 +28,6 @@ export const ManagerScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View>
-                <Text style={styles.navigationTitle}>Выберите менеджера:</Text>
                 <FlatList
                     style={styles.flatList}
                     data={managers}
@@ -45,7 +53,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'black',
-        paddingTop: 70,
+        paddingTop: 40,
         paddingBottom: 10,
         paddingHorizontal: 15,
         justifyContent: 'space-between'
