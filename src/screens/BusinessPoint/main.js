@@ -2,8 +2,9 @@ import React from "react";
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { Coupons } from "../PromotionsList/components/Coupons";
 import { FILE_URL } from '../../services/constants'
+import { observer } from "mobx-react-lite"
 
-export const CompanyProfile = ({ navigation, route }) => {
+export const CompanyProfile = observer(({ navigation, route }) => {
     const item = route?.params?.data
     let workTime = '-'
 
@@ -34,7 +35,7 @@ export const CompanyProfile = ({ navigation, route }) => {
             <Coupons navigation={navigation} isCompanyPromotions={true} businessPointId={item.id} />
         </View>
     )
-}
+})
 
 const styles = StyleSheet.create({
     container: {
@@ -66,9 +67,9 @@ const styles = StyleSheet.create({
         gap: 5
     },
     description: {
-        color: 'white',
+        color: '#FFF',
         fontSize: 13,
-        opacity: 0.5,
+        opacity: 1,
         textAlign: 'left'
     },
     stack: {

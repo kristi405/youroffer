@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         fontSize: 15,
         color: '#fff',
-        opacity: 0.6
+        opacity: 1
     },
     buttonStyle: {
         height: 40,

@@ -91,13 +91,11 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
     }, [])
   );
 
-  const init = (isFavorite) => {
+  const init = async (isFavorite) => {
     setIsLoading(true)
     PromotionStore.resetLists();
-    setTimeout(async () => {
-      await PromotionStore.getList(isFavorite, businessPointId);
-      setIsLoading(false)
-    }, 400)
+    await PromotionStore.getList(isFavorite, businessPointId);
+    setIsLoading(false)
   }
 
   const handleValueChange = async (isFavorite) => {
@@ -146,8 +144,8 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
     <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
   )
 
-  const Coupons = observer(() => (
-    <View style={styles.app}>
+  const Coupons = observer(() => {
+    return <View style={styles.app}>
       <FlatList
         ref={flatListRef}
         style={styles.flatList}
@@ -169,7 +167,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
       >
       </FlatList>
     </View >
-  ));
+  });
 
   return <Component />
 }
