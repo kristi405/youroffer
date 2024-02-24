@@ -18,7 +18,7 @@ eas build --platform android --profile production
 eas build --platform ios --profile production
 
 обновить билд у пользователей
-npx eas update --branch main --message "Updating the app"
+npx eas update --branch production --message "Updating the app"
 
 sha-1 token
 https://expo.dev/accounts/kristina_gyk/projects/youoffer/credentials/android/com.offer.youoffer
