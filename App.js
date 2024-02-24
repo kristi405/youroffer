@@ -22,6 +22,7 @@ export default function App() {
       const update = await Updates.checkForUpdateAsync();
 
       if (update.isAvailable) {
+        alert(`Готово новое обновление`);
         await Updates.fetchUpdateAsync();
         await Updates.reloadAsync();
       }
