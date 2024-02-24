@@ -17,6 +17,9 @@ eas build:configure
 eas build --platform android --profile production
 eas build --platform ios --profile production
 
+обновить билд у пользователей
+npm eas update --branch main --message "Updating the app"
+
 sha-1 token
 https://expo.dev/accounts/kristina_gyk/projects/youoffer/credentials/android/com.offer.youoffer
 npx eas credentials
