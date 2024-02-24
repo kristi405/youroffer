@@ -69,11 +69,11 @@ export const ContactUs = observer(({ navigation }) => {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Image source={require('../../../assets/phone.png')} style={styles.image} />
-                    <Text style={styles.title}>тел. +375 (29) 550-71-51</Text>
+                    <Text style={styles.title}>mob: +375 (29) 550-71-51</Text>
                 </View>
                 <View style={styles.header}>
                     <Image source={require('../../../assets/mail.png')} style={styles.image} />
-                    <Text style={styles.title}>email: myOffer@gmail.com</Text>
+                    <Text style={styles.title}>e-mail: myOffer@gmail.com</Text>
                 </View>
                 <View style={styles.header}>
                     <Image source={require('../../../assets/web.png')} style={styles.image} />
