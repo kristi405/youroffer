@@ -39,32 +39,29 @@ class PromotionStore {
         // если у нас 1 старница - то не нужно пказывать лоадер
         // и если страница 1 то нам не нужна задержка , иначе ставим задержку на 1 секунду
         this.isLoding = !(this.page === 1)
-        setTimeout(async () => {
-            let status = REQUEST_STATUS.success
-            try {
-                const resp = await api.get('/api/v1/offer/list', {
-                    params: {
-                        page: this.page,
-                        favorite: favorite ? favorite : undefined,
-                        businessPointId: businessPointId ? businessPointId : undefined
-                    }
-                })
-                if (resp.data.length < COUNT_PER_ONE_REQUEST) {
-                    this.finishScroll = true
+        let status = REQUEST_STATUS.success
+        try {
+            const resp = await api.get('/api/v1/offer/list', {
+                params: {
+                    page: this.page,
+                    favorite: favorite ? favorite : undefined,
+                    businessPointId: businessPointId ? businessPointId : undefined
                 }
-
-                this.addToList(resp.data || [])
-            } catch (error) {
-                this.isLoding = false
-                console.error(error)
-                status = REQUEST_STATUS.error
-                Sentry.Native.captureException(error, (scope) => {
-                    scope.setTransactionName('PromotionStore:getList');
-                    return scope;
-                });
+            })
+            if (resp.data.length < COUNT_PER_ONE_REQUEST) {
+                this.finishScroll = true
             }
-            return status
-        }, this.page === 1 ? 0 : 1000)
+            this.addToList(resp.data || [])
+        } catch (error) {
+            this.isLoding = false
+            console.error(error)
+            status = REQUEST_STATUS.error
+            Sentry.Native.captureException(error, (scope) => {
+                scope.setTransactionName('PromotionStore:getList');
+                return scope;
+            });
+        }
+        return status
     }
 
     async addToFavorite(id, favorite) {

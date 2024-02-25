@@ -19,6 +19,7 @@ eas build --platform ios --profile production
 
 обновить билд у пользователей
 npx eas update --branch production --message "Updating the app"
+https://u.expo.dev/bf189e94-81ad-4deb-9d3b-3de10662db11?runtime-version=1.0.15&channel-name=production&platform=android
 
 sha-1 token
 https://expo.dev/accounts/kristina_gyk/projects/youoffer/credentials/android/com.offer.youoffer
