@@ -75,10 +75,10 @@ export const ContactUs = observer(({ navigation }) => {
                     <Image source={require('../../../assets/mail.png')} style={styles.image} />
                     <Text style={styles.title}>e-mail: myOffer@gmail.com</Text>
                 </View>
-                {/* <View style={styles.header}>
+                <View style={styles.header}>
                     <Image source={require('../../../assets/web.png')} style={styles.image} />
                     <Text style={styles.title}>web: https://myoffer.life</Text>
-                </View> */}
+                </View>
 
                 <View style={styles.requestBlock}>
                     <Text style={styles.requestTitle}>Оставить заявку: </Text>
