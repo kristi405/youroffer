@@ -83,6 +83,9 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   const [isLoading, setIsLoading] = useState(false);
   const [isFavoriteList, setIsFavoriteList] = useState(0)
 
+  // небольшой костыль чтобы запрос на акции не повторялся 2 раза
+  let firstInit = true;
+
   const flatListRef = useRef(null);
 
   useFocusEffect(
@@ -92,6 +95,8 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   );
 
   const init = async (isFavorite) => {
+    if (!firstInit) return;
+    firstInit = false
     setIsLoading(true)
     PromotionStore.resetLists();
     await PromotionStore.getList(isFavorite, businessPointId);
@@ -99,12 +104,14 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   }
 
   const handleValueChange = async (isFavorite) => {
+    firstInit = true;
     setIsFavoriteList(isFavorite)
     PromotionStore.isFavoriteBlock = !!isFavorite
     init(!!isFavorite)
   };
 
   const handleRefresh = () => {
+    firstInit = true;
     init(!!isFavoriteList)
   }
 
