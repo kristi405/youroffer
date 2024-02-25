@@ -3,9 +3,9 @@ import { Keyboard } from 'react-native'
 import { StyleSheet, Text, View, Image, TouchableHighlight, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
 import AuthStore from '../../stores/auth'
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID, API_URL, FILE_URL } from '../../services/constants'
-import * as AppleAuthentication from 'expo-apple-authentication';
+// import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+// import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
 import ValidateStore from '../../stores/validate'
 import { VALIDATE_RULES } from '../../services/validate'
@@ -26,155 +26,155 @@ const validateStroe = new ValidateStore({
 })
 
 export const LoginScreen = observer(({ navigation }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const Errors = {
-        "password is invalid": "Неверный пароль!",
-        "email is invalid": "Пользователя с таким email не существует!",
-        "body/email must match format \"email\"": "Неверный формат email!"
-    }
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    // const Errors = {
+    //     "password is invalid": "Неверный пароль!",
+    //     "email is invalid": "Пользователя с таким email не существует!",
+    //     "body/email must match format \"email\"": "Неверный формат email!"
+    // }
 
-    const signIn = async () => {
-        const data = {
-            email,
-            password,
-        }
+    // const signIn = async () => {
+    //     const data = {
+    //         email,
+    //         password,
+    //     }
 
-        if (!validateStroe.validate(data)) return;
+    //     if (!validateStroe.validate(data)) return;
 
-        const response = await AuthStore.loginByEmail(email, password)
-        let isError = false
-        let errorText = ''
-        if (response.statusCode == 400) {
-            isError = true
-            errorText += `${Errors[response.message] || response.message} `
-        }
+    //     const response = await AuthStore.loginByEmail(email, password)
+    //     let isError = false
+    //     let errorText = ''
+    //     if (response.statusCode == 400) {
+    //         isError = true
+    //         errorText += `${Errors[response.message] || response.message} `
+    //     }
 
-        if (isError) {
-            Alert.alert('', errorText,
-                [{
-                    text: 'ОК',
-                    style: 'cancel',
-                },])
-        } else {
-            openSettings()
-        }
-    }
+    //     if (isError) {
+    //         Alert.alert('', errorText,
+    //             [{
+    //                 text: 'ОК',
+    //                 style: 'cancel',
+    //             },])
+    //     } else {
+    //         openSettings()
+    //     }
+    // }
 
-    const signUp = async () => {
-        navigation.navigate('Registration')
-    }
+    // const signUp = async () => {
+    //     navigation.navigate('Registration')
+    // }
 
-    function resetValidation(key) {
-        validateStroe.resetValidationByKey(key)
-    }
+    // function resetValidation(key) {
+    //     validateStroe.resetValidationByKey(key)
+    // }
 
-    function changeBorder(key) {
-        return validateStroe.schema[key].isValid ? styles.validInput : styles.invalidInput;
-    }
+    // function changeBorder(key) {
+    //     return validateStroe.schema[key].isValid ? styles.validInput : styles.invalidInput;
+    // }
 
-    GoogleSignin.configure({
-        androidClientId: ANDROID_CLIENT_ID,
-        iosClientId: IOS_CLIENT_ID,
-        forceConsentPrompt: true,
-    });
+    // GoogleSignin.configure({
+    //     androidClientId: ANDROID_CLIENT_ID,
+    //     iosClientId: IOS_CLIENT_ID,
+    //     forceConsentPrompt: true,
+    // });
 
-    const googleSignin = async () => {
-        try {
-            await GoogleSignin.hasPlayServices();
-            const userInfo = await GoogleSignin.signIn();
-            await AuthStore.loginByGoogle(userInfo.user);
-            openSettings()
-        } catch (error) {
-            console.log(error)
-            Sentry.Native.captureException(error, (scope) => {
-                scope.setTransactionName('LoginScreen:googleSignin');
-                return scope;
-            });
-        }
-    }
+    // const googleSignin = async () => {
+    //     try {
+    //         await GoogleSignin.hasPlayServices();
+    //         const userInfo = await GoogleSignin.signIn();
+    //         await AuthStore.loginByGoogle(userInfo.user);
+    //         openSettings()
+    //     } catch (error) {
+    //         console.log(error)
+    //         Sentry.Native.captureException(error, (scope) => {
+    //             scope.setTransactionName('LoginScreen:googleSignin');
+    //             return scope;
+    //         });
+    //     }
+    // }
 
-    const openSettings = () => {
-        navigation.navigate('CreateUserScreen')
-    }
+    // const openSettings = () => {
+    //     navigation.navigate('CreateUserScreen')
+    // }
 
-    const handleAppleSignIn = async () => {
-        try {
-            const userInfo = await AppleAuthentication.signInAsync({
-                requestedScopes: [AppleAuthentication.AppleAuthenticationScope.EMAIL, AppleAuthentication.AppleAuthenticationScope.FULL_NAME],
-            });
-            await AuthStore.loginByApple(userInfo)
-            openSettings()
-        } catch (error) {
-            Sentry.Native.captureException(error, (scope) => {
-                scope.setTransactionName('LoginScreen:handleAppleSignIn');
-                return scope;
-            });
-        }
-    };
+    // const handleAppleSignIn = async () => {
+    //     try {
+    //         const userInfo = await AppleAuthentication.signInAsync({
+    //             requestedScopes: [AppleAuthentication.AppleAuthenticationScope.EMAIL, AppleAuthentication.AppleAuthenticationScope.FULL_NAME],
+    //         });
+    //         await AuthStore.loginByApple(userInfo)
+    //         openSettings()
+    //     } catch (error) {
+    //         Sentry.Native.captureException(error, (scope) => {
+    //             scope.setTransactionName('LoginScreen:handleAppleSignIn');
+    //             return scope;
+    //         });
+    //     }
+    // };
 
-    const GoogleBtn = () => {
-        return (
-            <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => { googleSignin() }}>
-                <View style={styles.containerForGoogleButton}>
-                    <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
-                    <Text style={styles.buttonText}>Вход с Google</Text>
-                </View>
-            </TouchableHighlight>
-        )
-    }
+    // const GoogleBtn = () => {
+    //     return (
+    //         <TouchableHighlight style={styles.googleButton} color={'black'} title="Sign In with Google" onPress={() => { googleSignin() }}>
+    //             <View style={styles.containerForGoogleButton}>
+    //                 <Image source={require('../../../assets/google.png')} style={styles.googleImage} />
+    //                 <Text style={styles.buttonText}>Вход с Google</Text>
+    //             </View>
+    //         </TouchableHighlight>
+    //     )
+    // }
 
-    const AppleBtn = () => {
-        if (Platform.OS === 'android') return null
-        return (
-            <AppleAuthentication.AppleAuthenticationButton
-                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-                cornerRadius={8}
-                style={styles.button}
-                onPress={handleAppleSignIn} />
-        )
-    }
+    // const AppleBtn = () => {
+    //     if (Platform.OS === 'android') return null
+    //     return (
+    //         <AppleAuthentication.AppleAuthenticationButton
+    //             buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+    //             buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+    //             cornerRadius={8}
+    //             style={styles.button}
+    //             onPress={handleAppleSignIn} />
+    //     )
+    // }
 
-    return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={styles.container}>
-            <View style={styles.header}>
-                <Image source={require('../../../assets/logoOnly.png')} style={styles.imageStyle} />
-                <Text style={styles.title}>Все акции</Text>
-                </View>
-                <View style={styles.signUpContainer}>
-                    <TextInput style={[styles.codeInputStyle, changeBorder('email')]}
-                        onChangeText={(v) => { setEmail(v), resetValidation('email') }}
-                        value={email}
-                        keyboardType='default'
-                        placeholder="Email"
-                        maxLength={40}
-                        placeholderTextColor={'#474A51'} />
-                    <TextInput style={[styles.codeInputStyle, changeBorder('password')]}
-                        onChangeText={(v) => { setPassword(v), resetValidation('password') }}
-                        value={password}
-                        keyboardType='default'
-                        placeholder="Пароль"
-                        maxLength={10}
-                        placeholderTextColor={'#474A51'} />
-                    <TouchableOpacity
-                        style={[styles.buttonStyle]}
-                        onPress={signIn}>
-                        <Text style={styles.enterButtonText}>Вход</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <AppleBtn />
-                    <GoogleBtn />
-                </View>
-                <TouchableOpacity
-                        onPress={signUp}>
-                        <Text style={styles.signUpButtonText}>Зарегистрироваться</Text>
-                    </TouchableOpacity>
-            </View>
-        </TouchableWithoutFeedback>
-    );
+    // return (
+    //     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    //         <View style={styles.container}>
+    //         <View style={styles.header}>
+    //             <Image source={require('../../../assets/logoOnly.png')} style={styles.imageStyle} />
+    //             <Text style={styles.title}>Все акции</Text>
+    //             </View>
+    //             <View style={styles.signUpContainer}>
+    //                 <TextInput style={[styles.codeInputStyle, changeBorder('email')]}
+    //                     onChangeText={(v) => { setEmail(v), resetValidation('email') }}
+    //                     value={email}
+    //                     keyboardType='default'
+    //                     placeholder="Email"
+    //                     maxLength={40}
+    //                     placeholderTextColor={'#474A51'} />
+    //                 <TextInput style={[styles.codeInputStyle, changeBorder('password')]}
+    //                     onChangeText={(v) => { setPassword(v), resetValidation('password') }}
+    //                     value={password}
+    //                     keyboardType='default'
+    //                     placeholder="Пароль"
+    //                     maxLength={10}
+    //                     placeholderTextColor={'#474A51'} />
+    //                 <TouchableOpacity
+    //                     style={[styles.buttonStyle]}
+    //                     onPress={signIn}>
+    //                     <Text style={styles.enterButtonText}>Вход</Text>
+    //                 </TouchableOpacity>
+    //             </View>
+    //             <View style={styles.buttonContainer}>
+    //                 <AppleBtn />
+    //                 <GoogleBtn />
+    //             </View>
+    //             <TouchableOpacity
+    //                     onPress={signUp}>
+    //                     <Text style={styles.signUpButtonText}>Зарегистрироваться</Text>
+    //                 </TouchableOpacity>
+    //         </View>
+    //     </TouchableWithoutFeedback>
+    // );
 })
 
 const styles = StyleSheet.create({
