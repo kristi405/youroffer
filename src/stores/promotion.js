@@ -38,7 +38,7 @@ class PromotionStore {
         if (this.finishScroll) return
         // если у нас 1 старница - то не нужно пказывать лоадер
         // и если страница 1 то нам не нужна задержка , иначе ставим задержку на 1 секунду
-        this.isLoding = !(this.page === 1)
+        this.isLoding = true
         let status = REQUEST_STATUS.success
         try {
             const resp = await api.get('/api/v1/offer/list', {
@@ -52,6 +52,7 @@ class PromotionStore {
                 this.finishScroll = true
             }
             this.addToList(resp.data || [])
+            this.isLoding = false
         } catch (error) {
             this.isLoding = false
             console.error(error)
