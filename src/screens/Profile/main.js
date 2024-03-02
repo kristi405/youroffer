@@ -16,6 +16,8 @@ export const Profile = ({ navigation }) => {
             navigation.navigate('EditScreen')
         } else if (item.id == 1) {
             navigation.navigate('ContactUs')
+        } else if (item.id == 2) {
+            navigation.navigate('Region')
         }
     }
 
@@ -124,9 +126,9 @@ const itemData = [
         title: (<Text style={styles.title}>Свяжитесь с нами</Text>),
         image: (<Image source={require('../../../assets/contactUs.png')} style={styles.image} />),
     },
-    // {
-    //     id: 2,
-    //     title: (<Text style={styles.title}>Дополнительная информация</Text>),
-    //     image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
-    // }
+    {
+        id: 2,
+        title: (<Text style={styles.title}>Изменить регион</Text>),
+        image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
+    }
 ]

@@ -11,7 +11,7 @@ import { CompanyProfile } from '../screens/BusinessPoint/main'
 import { EditScreen } from '../screens/EditUser/main';
 import { OnboardingScreen } from '../screens/Onboarding/main';
 import { ContactUs } from '../screens/ContactUs/main';
-import { Scan } from '../screens/QrCodeScan/main'
+import { Region } from '../screens/Region/main';
 
 const Stack = createNativeStackNavigator();
 
@@ -104,11 +104,15 @@ export const Navigator = () => {
                     headerStyle: { backgroundColor: 'black' }
                 }}
             />
-            {/* <Stack.Screen
-                name="Scan"
-                component={TabBar}
-                options={{ headerShown: false }}
-            /> */}
+            <Stack.Screen
+                name="Region"
+                component={Region}
+                options={{
+                    title: '',
+                    headerTintColor: '#0EA47A',
+                    headerStyle: { backgroundColor: 'black' }
+                }}
+            />
         </Stack.Navigator>
     </NavigationContainer>
   );
