@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { observer } from "mobx-react-lite"
 import RegionStore from "../../stores/regions"
 import BusinessPointsStore from '../../stores/businessPoints'
-import {setRegion, getRegion} from "../../services/auth"
+import { setRegion, getRegion } from "../../services/auth"
 
 export const Region = observer(({ navigation }) => {
     const [selectedRegionId, setSelectedRegionId] = useState();
@@ -26,13 +26,12 @@ export const Region = observer(({ navigation }) => {
         <ActivityIndicator style={{ marginVertical: '50%' }} size="large" color="white" />
     )
 
-    const selectRegion = async (item, index) => {
+    const selectRegion = async (item) => {
         await setRegion(item)
         setLoading(true)
         setTimeout(async () => {
             await RegionStore.saveRegion(item.id)
             setSelectedRegionId(item?.id)
-            navigation.navigate('Profile')
             setLoading(false)
             BusinessPointsStore.getAll()
         }, 500)
@@ -41,32 +40,25 @@ export const Region = observer(({ navigation }) => {
 
     const RegionList = () => (
         <View style={styles.container}>
-            <SafeAreaView>
-                <FlatList
-                    ref={flatListRef}
-                    style={styles.flatList}
-                    data={RegionStore.activeList}
-                    numColumns={1}
-                    initialNumToRender={15}
-                    keyExtractor={(item) => item.id}
-                    extraData={selectedRegionId}
-                    renderItem={({ item, index }) =>
-                        <TouchableWithoutFeedback onPress={() => { selectRegion(item, index) }}>
-                            <View style={[styles.item, {backgroundColor: item?.id === selectedRegionId ? '#0EA47A' : '#1A1A1A'}]}>
+            <ScrollView>
+                {RegionStore.activeList.map((item) => {
+                    return (
+                        <TouchableWithoutFeedback onPress={() => { selectRegion(item) }}>
+                            <View style={[styles.item, { backgroundColor: item?.id === selectedRegionId ? '#0EA47A' : '#1A1A1A' }]}>
                                 <View style={styles.header}>
                                     <Text style={styles.title}>{item.name}</Text>
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>
-                    }>
-                </FlatList>
-            </SafeAreaView>
+                    );
+                })}
+            </ScrollView>
         </View>
     )
 
     return (
         <View style={styles.container}>
-            { loading ? <LoadingView /> : <RegionList /> }
+            {loading ? <LoadingView /> : <RegionList />}
         </View>
     )
 })
