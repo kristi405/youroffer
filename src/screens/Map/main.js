@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useEffect} from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import MapView from "react-native-map-clustering";
 import { Marker } from 'react-native-maps';
 import { useState } from 'react';
 import Modal from 'react-native-modal';
 import BusinessPointsStore from "../../stores/businessPoints";
-import { MAP_STYLE } from "../../services/geo"
-import { getLocation } from '../../services/geo'
+import { MAP_STYLE, getLocation } from '../../services/geo'
+import { getRegion } from '../../services/auth'
 import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 
@@ -20,6 +20,22 @@ getCurrentCoordinates()
 export const Map = observer(({ navigation }) => {
     const [selectedBp, setSelectedBp] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [regionCoord, setRegionCoord] = useState({
+        latitude: 52.08943642679975,
+        longitude: 23.72369655950971,
+    });
+
+    useEffect(() => {
+        init()
+    }, []);
+
+    const init = async () => {
+        const region = await getRegion()
+        setRegionCoord({
+            latitude: Number(region.lat),
+            longitude: Number(region.lng),
+        })
+    }
 
 
     const openDetail = (item) => {
@@ -42,8 +58,8 @@ export const Map = observer(({ navigation }) => {
                 tracksViewChanges={false}
                 region={{
                     // TODO: добавить регионы (пока только брест)
-                    latitude: CURRENT_COORD ? CURRENT_COORD.latitude : 52.08943642679975,
-                    longitude: CURRENT_COORD ? CURRENT_COORD.longitude : 23.72369655950971,
+                    latitude: CURRENT_COORD ? CURRENT_COORD.latitude : regionCoord.latitude,
+                    longitude: CURRENT_COORD ? CURRENT_COORD.longitude : regionCoord.longitude,
                     latitudeDelta: 0.15,
                     longitudeDelta: 0.15,
                 }}

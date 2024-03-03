@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet } from 'react-native';
 import AnimatedLoader from "react-native-animated-loader";
-import { getSession } from '../../services/auth'
+import { getSession, getRegion } from '../../services/auth'
 import AuthStore from '../../stores/auth'
 import BusinessPointsStore from '../../stores/businessPoints'
 
@@ -17,11 +17,17 @@ export const OnboardingScreen = ({navigation}) => {
       if (!session) {
         await AuthStore.createUser()
       }
+
+      let navigateTo = 'CouponScreen'
+      const currentRegion = await getRegion()
+      if (!currentRegion) {
+        navigateTo = 'Region'
+      }
       setTimeout(() => {
         setVisible(false);
         AuthStore.updateCoord()
         BusinessPointsStore.getAll()
-        navigation.replace('CouponScreen')
+        navigation.replace(navigateTo)
       }, 1000);
     }
 

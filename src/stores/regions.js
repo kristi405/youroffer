@@ -11,12 +11,8 @@ class RegionStore {
         makeAutoObservable(this)
     }
 
-    get optionsList() {
-        return this.list.map(item => ({
-            id: item.id,
-            lable: item.name,
-            value: item.id
-        }))
+    get activeList() {
+        return this.list.filter(v => v.active)
     }
 
     async getRegions() {
@@ -33,6 +29,23 @@ class RegionStore {
             });
         }
         this.loading = false
+        return status;
+    }
+
+    async saveRegion(regionId) {
+        let status =  REQUEST_STATUS.success
+        try {
+            await api.patch('/api/v1/user/save_region', {
+                id_region: regionId
+            });
+        } catch (e) {
+            status =  REQUEST_STATUS.error
+            Sentry.Native.captureException(e, (scope) => {
+                scope.setTransactionName('UserStore:saveRegion');
+                return scope;
+            });
+        }
+
         return status;
     }
 }

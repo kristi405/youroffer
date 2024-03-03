@@ -24,26 +24,6 @@ class UserStore {
             });
         }
     }
-
-    async saveRegion(userId, regionId) {
-        let status =  REQUEST_STATUS.success
-        try {
-            await apiClient.patch('/api/v1/user/save_region', {
-                id: userId,
-                id_region: regionId
-            });
-        } catch (e) {
-            status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('UserStore:saveRegion');
-                return scope;
-            });
-        }
-
-        return status;
-    }
-
-
 }
 
 export default new UserStore()

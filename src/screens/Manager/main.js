@@ -10,10 +10,8 @@ export const ManagerScreen = ({ navigation }) => {
         React.useCallback(() => {
             UserStore.getUser().then(user => {
                 if (user?.managers?.length) {
-                    console.log('1111111111111111111')
                     setManagers(user.managers)
                 } else {
-                    console.log('22222222222222222')
                     openSettings()
                 }
             })

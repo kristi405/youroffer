@@ -90,7 +90,7 @@ export const getRegion = async () => {
         if (CAHCE[key]) return CAHCE[key];
         const region = await AsyncStorage.getItem(key);
         CAHCE[key] = JSON.parse(region)
-        return CAHCE[region]
+        return CAHCE[key]
     } catch (error) {
         Sentry.Native.captureException(error, (scope) => {
             scope.setTransactionName('service:auth:getRegion');

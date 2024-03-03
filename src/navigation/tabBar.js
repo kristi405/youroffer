@@ -7,7 +7,7 @@ import { Map } from "../screens/Map/main";
 import { Profile } from "../screens/Profile/main";
 import { Scan } from "../screens/QrCodeScan/main";
 import UserStore from '../stores/user'
-import { ManagerScreen } from '../screens/Menager/main';
+import { ManagerScreen } from '../screens/Manager/main';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Tab = createBottomTabNavigator();
