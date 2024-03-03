@@ -8,7 +8,7 @@ import { setRegion, getRegion } from "../../services/auth"
 export const Region = observer(({ navigation }) => {
     const [selectedRegionId, setSelectedRegionId] = useState();
     const [loading, setLoading] = useState(false);
-    const flatListRef = useRef(null);
+    const [curregion, setCurregion] = useState();
 
     useEffect(() => {
         init()
@@ -17,6 +17,7 @@ export const Region = observer(({ navigation }) => {
     const init = async () => {
         setLoading(true)
         const currentRegion = await getRegion()
+        setCurregion(currentRegion)
         setSelectedRegionId(currentRegion?.id)
         await RegionStore.getRegions()
         setLoading(false)
@@ -32,6 +33,10 @@ export const Region = observer(({ navigation }) => {
         setTimeout(async () => {
             await RegionStore.saveRegion(item.id)
             setSelectedRegionId(item?.id)
+            if (!curregion) {
+                navigation.navigate('Profile')
+            }
+            setCurregion(item)
             setLoading(false)
             BusinessPointsStore.getAll()
         }, 500)
