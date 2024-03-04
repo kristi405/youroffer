@@ -34,7 +34,7 @@ export const Region = observer(({ navigation }) => {
             await RegionStore.saveRegion(item.id)
             setSelectedRegionId(item?.id)
             if (!curregion) {
-                navigation.navigate('Profile')
+                navigation.replace('Profile')
             }
             setCurregion(item)
             setLoading(false)
