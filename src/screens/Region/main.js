@@ -48,7 +48,7 @@ export const Region = observer(({ navigation }) => {
             <ScrollView>
                 {RegionStore.activeList.map((item) => {
                     return (
-                        <TouchableWithoutFeedback onPress={() => { selectRegion(item) }}>
+                        <TouchableWithoutFeedback key={item?.id} onPress={() => { selectRegion(item) }}>
                             <View style={[styles.item, { backgroundColor: item?.id === selectedRegionId ? '#0EA47A' : '#1A1A1A' }]}>
                                 <View style={styles.header}>
                                     <Text style={styles.title}>{item.name}</Text>
