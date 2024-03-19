@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator, FlatList, TouchableWithoutFeedback } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import { observer } from "mobx-react-lite"
 import RegionStore from "../../stores/regions"
 import BusinessPointsStore from '../../stores/businessPoints'
@@ -40,7 +40,6 @@ export const Region = observer(({ navigation }) => {
             setLoading(false)
             BusinessPointsStore.getAll()
         }, 500)
-
     }
 
     const RegionList = () => (
@@ -71,28 +70,11 @@ export const Region = observer(({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'black',
-        paddingTop: 100,
-        gap: 10,
-        alignItems: 'center'
-    },
-    text: {
-        color: '#FFF'
-    },
-    container: {
-        flex: 1,
         flexDirection: 'column',
         backgroundColor: 'black',
-        paddingTop: 0,
+        paddingTop: 3,
         paddingBottom: 10,
         paddingHorizontal: 10,
-        justifyContent: 'space-between'
-    },
-    flatList: {
-        width: '100%',
-        flexGrow: 0,
-        backgroundColor: 'black',
-        paddingTop: 0,
     },
     title: {
         fontSize: 19,

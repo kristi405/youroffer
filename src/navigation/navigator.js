@@ -108,7 +108,7 @@ export const Navigator = () => {
                 name="Region"
                 component={Region}
                 options={{
-                    title: '',
+                    title: 'Выберите ваш регион',
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 }}
