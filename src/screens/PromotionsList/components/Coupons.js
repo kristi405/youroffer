@@ -75,6 +75,31 @@ const styles = StyleSheet.create({
   touch: {
     paddingHorizontal: 10,
     paddingVertical: 10
+  },
+  emptyView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 600
+  },
+  emptyViewInCompany: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    color: '#fff',
+    fontSize: 16
+  },
+  emptyImg: {
+    marginTop: 10,
+    paddingStart: 10,
+    paddingRight: 10
+  },
+  emptyTextWithIcon: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
 
@@ -143,12 +168,35 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
     <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
   )
 
+  const EmptyComponent = () => {
+    if (isFavoriteList) {
+      return (
+        <View style={styles.emptyView}>
+          <Text style={styles.emptyText}>Чтобы добавить в "Мои акции"</Text>
+          <Text style={styles.emptyText}>{"нажмите на иконку  "}
+            <Image style={styles.emptyImg} source={require('../../../../assets/save.png')} />
+          </Text>
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.emptyViewInCompany}>
+          <Text style={styles.emptyText}>Для загрузки сделайте свайп вниз</Text>
+          <Text></Text>
+          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.png')} />
+        </View>
+      )
+    }
+
+  }
+
   const Coupons = observer(() => {
     return <View style={styles.app}>
       <FlatList
         ref={flatListRef}
         style={styles.flatList}
         data={PromotionStore.list}
+        ListEmptyComponent={EmptyComponent}
         numColumns={2}
         refreshControl={
           <RefreshControl

@@ -97,6 +97,26 @@ const styles = StyleSheet.create({
   touch: {
     paddingHorizontal: 10,
     paddingVertical: 10
+  },
+  emptyView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 600
+  },
+  emptyText: {
+    color: '#fff',
+    fontSize: 16
+  },
+  emptyImg: {
+    marginTop: 10,
+    paddingStart: 10,
+    paddingRight: 10
+  },
+  emptyTextWithIcon: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
 
@@ -136,9 +156,21 @@ export const BusinessPoints = observer(({ navigation }) => {
     <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
   )
 
+  const EmptyComponent = () => {
+    return (
+      <View style={styles.emptyView}>
+        <Text style={styles.emptyText}>Чтобы добавить в "Мои компании"</Text>
+        <Text style={styles.emptyText}>{"нажмите на иконку  "}
+          <Image style={styles.emptyImg} source={require('../../../../assets/save.png')} />
+        </Text>
+      </View>
+    )
+  }
+
   const BusinessPoints = () => (
     <View style={styles.app}>
       <FlatList
+        ListEmptyComponent={EmptyComponent}
         style={styles.flatList}
         data={list}
         numColumns={1}
