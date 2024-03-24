@@ -108,10 +108,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16
   },
-  emptyImg: {
-    marginTop: 10,
-    paddingStart: 10,
-    paddingRight: 10
+  emptyRow: {
+    paddingVertical: 10,
+    flexDirection: 'row',
+    gap: 10
   },
   emptyTextWithIcon: {
     flex: 1,
@@ -160,9 +160,10 @@ export const BusinessPoints = observer(({ navigation }) => {
     return (
       <View style={styles.emptyView}>
         <Text style={styles.emptyText}>Чтобы добавить в "Мои компании"</Text>
-        <Text style={styles.emptyText}>{"нажмите на иконку  "}
-          <Image style={styles.emptyImg} source={require('../../../../assets/save.png')} />
-        </Text>
+        <View style={styles.emptyRow}>
+          <Text style={styles.emptyText}>нажмите на иконку</Text>
+          <Image source={require('../../../../assets/save.png')} />
+        </View>
       </View>
     )
   }
@@ -217,7 +218,7 @@ const Item = ({ navigation, item }) => {
             <Text style={styles.title}>{company.name}</Text>
             <View style={styles.row}>
               <Image source={require('../../../../assets/time.png')} style={styles.clock} />
-              <Text style={styles.time}>{ workTime }</Text>
+              <Text style={styles.time}>{workTime}</Text>
             </View>
           </View>
         </View>

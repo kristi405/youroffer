@@ -91,10 +91,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16
   },
-  emptyImg: {
-    marginTop: 10,
-    paddingStart: 10,
-    paddingRight: 10
+  emptyRow: {
+    paddingVertical: 10,
+    flexDirection: 'row',
+    gap: 10
   },
   emptyTextWithIcon: {
     flex: 1,
@@ -173,10 +173,11 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
       return (
         <View style={styles.emptyView}>
           <Text style={styles.emptyText}>Чтобы добавить в "Мои акции"</Text>
-          <Text style={styles.emptyText}>{"нажмите на иконку  "}
-            <Image style={styles.emptyImg} source={require('../../../../assets/save.png')} />
-          </Text>
-        </View>
+          <View style={styles.emptyRow}>
+            <Text style={styles.emptyText}>нажмите на иконку</Text>
+            <Image source={require('../../../../assets/save.png')} />
+          </View>
+        </View >
       )
     } else {
       return (
