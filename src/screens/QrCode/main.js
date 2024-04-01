@@ -7,7 +7,8 @@ export const QrCodeScreen = ({navigation, route}) => {
     const json = JSON.stringify({
         id_offer: data.itemId,
         id_user: data.userId,
-        name_offer: data.name
+        name_offer: data.name,
+        type: data.type
     })  
 
     return (

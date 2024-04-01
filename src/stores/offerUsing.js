@@ -8,10 +8,10 @@ class OfferUsingStore {
         makeAutoObservable(this)
     }
 
-    async useOffer(ids, id_user, id_waiter) {
+    async useOffer(ids, id_user, id_waiter, count) {
         let status = REQUEST_STATUS.success
         try {
-            const resp = await api.patch('api/v1/offer/using', {ids, id_user, id_waiter })
+            const resp = await api.patch('api/v1/offer/using', {ids, id_user, id_waiter, count })
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error

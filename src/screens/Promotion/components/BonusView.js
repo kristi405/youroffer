@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, FlatList, Image } from 'react-native';
 
-export const PromotionView = (route) => {
+export const BonusView = (route) => {
     const item = route?.data
 
     const CircleView = ({source}) => {
@@ -22,12 +22,11 @@ export const PromotionView = (route) => {
     return (
         <View style={styles.container}>
             {
-                Array.from({ length: item.max_count + 1 }).map((_, index) => (
+                Array.from({ length: 8 }).map((_, index) => (
                     <Circle
                         key={index}
-                        source={index == item.max_count ? require('../../../../assets/gift.png') : null}
+                        source={require('../../../../assets/bonus.png')}
                         size={40}
-                        color={index < item.use_count ? '#0EA47A' : 'white' && index == item.max_count ? 'clear' : 'white'}
                     />
                 ))
             }
@@ -40,11 +39,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#333333',
         borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        width: '100%'
+        width: '100%',
+        paddingHorizontal: 20
     },
     containerForRow: {
         paddingHorizontal: '1.5%',
@@ -57,8 +56,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     image: {
-        width: 46,
-        height: 46,
+        width: 25,
+        height: 25,
     },
     flatList: {
         width: '100%'

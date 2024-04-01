@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback } from 'react-native';
 import { PromotionView } from "./components/PromotionView";
+import { BonusView } from "./components/BonusView";
 import { getUser } from "../../services/auth"
 import OfferUsingStore from '../../stores/offerUsing'
 import { FILE_URL } from '../../services/constants'
@@ -38,13 +39,20 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const openQr = async (props) => {
         const user = await getUser()
-        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name } })
+        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name, type: item.type} })
     }
 
     const AccumulativePromotionView = () => {
         if (item.type != 'accumulative') return null
         return (
             <PromotionView data={item} />
+        )
+    }
+
+    const AccumulativeBonusView = () => {
+        if (item.type != 'accumulative') return null
+        return (
+            <BonusView/>
         )
     }
 
@@ -105,6 +113,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 </View>
                 <View style={styles.circle}>
                     <AccumulativePromotionView />
+                    <AccumulativeBonusView />
                     <QuantitativePromotionView />
                 </View>
             </ScrollView>
@@ -126,6 +135,7 @@ const styles = StyleSheet.create({
     },
     circle: {
         paddingTop: 20,
+        gap: 20
     },
     imageContainer: {
         width: '100%',

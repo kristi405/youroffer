@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Image, Alert, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, StyleSheet, Image, Alert, FlatList, TouchableWithoutFeedback, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import OfferUsingStore from "../../stores/offerUsing"
 import { useFocusEffect } from '@react-navigation/native';
 import UserStore from '../../stores/user'
+import Modal from "react-native-modal"
 
 export const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState('waiting');
@@ -11,6 +12,12 @@ export const Scan = ({ navigation }) => {
     const [isManagerView, setIsManagerView] = useState(false);
     const [idManager, setIdManager] = useState(null);
     const [managers, setManagers] = useState();
+    const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const [currentOfferType, setCurrentOfferType] = React.useState('')
+    const [currentOfferName, setCurrentOfferName] = React.useState('')
+    const [currentUserId, setCurrentUserId] = React.useState('')
+    const [currentOfferId, setCurrentOfferId] = React.useState('')
+    const [currentNumber, setCurrentNumber] = React.useState(1)
     const Errors = {
         "permission": "Текущий менеджер не может пробить данную акцию!",
         "type": "Данный тип акции не подходит для пробития сейчас это только тип default!",
@@ -52,38 +59,42 @@ export const Scan = ({ navigation }) => {
     //     return unsubscribe;
     // }, [navigation])
 
-
-
     const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
         const jsonData = JSON.parse(data.trim())
-        Alert.alert('', `Применить акцию "${jsonData.name_offer}"?`,
-            [
-                {
-                    text: 'Отменить',
-                    onPress: () => setScanned(false),
-                    style: 'cancel',
-                },
-                {
-                    text: 'Применить',
-                    onPress: () => { useOffer(jsonData.id_offer, jsonData.id_user, idManager) },
-                },
-            ],
-            { cancelable: false }
-        )
+        setIsModalVisible(true)
+        setCurrentOfferName(jsonData.name_offer)
+        setCurrentUserId(jsonData.id_user)
+        setCurrentOfferId(jsonData.id_offer)
+        setCurrentOfferType(jsonData.type)
     };
 
-    const useOffer = async (id_offer, id_user, id_manager) => {
-        const response = await OfferUsingStore.useOffer(id_offer, id_user, id_manager)
+    const cancelAction = () => {
+        setScanned(false)
+        setIsModalVisible(false)
+    }
+
+    const plusOne = () => {
+        setCurrentNumber(currentNumber + 1)
+    }
+
+    const minusOne = () => {
+        if (currentNumber > 1) {
+            setCurrentNumber(currentNumber - 1)
+        }
+    }
+
+    const useOffer = async (id_offer, id_user, id_manager, count) => {
+        const response = await OfferUsingStore.useOffer(id_offer, id_user, id_manager, count)
         if (!response?.length) {
             Alert.alert('', "Произошла ошибка",
-            [
-                {
-                    text: 'ОК',
-                    onPress: () => setScanned(false),
-                    style: 'cancel',
-                },
-            ])
+                [
+                    {
+                        text: 'ОК',
+                        onPress: () => setScanned(false),
+                        style: 'cancel',
+                    },
+                ])
             return;
         }
         let isError = false
@@ -108,6 +119,7 @@ export const Scan = ({ navigation }) => {
                     },
                 ])
         }
+        setIsModalVisible(false)
     }
 
     const managersView = () => {
@@ -137,6 +149,9 @@ export const Scan = ({ navigation }) => {
         )
     }
 
+    const countView = () => {
+
+    }
 
     const scanView = () => {
         if (hasPermission === 'waiting') {
@@ -152,8 +167,42 @@ export const Scan = ({ navigation }) => {
                     onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                     style={StyleSheet.absoluteFillObject}
                 />
+                <Modal isVisible={isModalVisible}
+                    animationType="slide"
+                    transparent={true}>
+                    <View style={styles.modalView}>
+                        <Text style={{ color: 'black', fontSize: 16, fontWeight: '600' }}>Применить акцию "{currentOfferName}"?</Text>
+                        <View style={styles.countStyle}>
+                            <TouchableWithoutFeedback onPress={minusOne}>
+                                <Image source={require('../../../assets/minus.png')} />
+                            </TouchableWithoutFeedback>
+                            <Text style={styles.countText}>{currentNumber}</Text>
+                            <TouchableWithoutFeedback onPress={plusOne}>
+                                <Image source={require('../../../assets/plus.png')} />
+                            </TouchableWithoutFeedback>
+                        </View>
+                        <View style={styles.buttonStyle}>
+                            <Button onPress={cancelAction}
+                                title="Отмена"
+                                color='red' />
+                            <Button onPress={() => { useOffer(currentOfferId, currentUserId, idManager, currentNumber) }}
+                                title="Применить"
+                                color='#0EA47A' />
+                        </View>
+                    </View>
+                </Modal>
             </View>
         );
+    }
+
+    const ModalView = () => {
+        <Modal isVisible={isModalVisible}
+            animationType="slide"
+            transparent={true}>
+            <View style={styles.modalView}>
+                <Text style={{ color: 'red', fontSize: 20 }}>I am the modal content!</Text>
+            </View>
+        </Modal>
     }
 
     const view = () => {
@@ -236,5 +285,40 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 15,
         borderRadius: 10,
+    },
+    buttonStyle: {
+        flexDirection: 'row',
+        paddingTop: 25,
+        gap: 20,
+    },
+    countText: {
+        color: 'black',
+        fontSize: 26,
+        fontWeight: '600',
+        paddingTop: 5,
+        paddingLeft: 4
+    },
+    countStyle: {
+        flexDirection: 'row',
+        paddingTop: 20,
+        gap: 15,
+    },
+    modalView: {
+        flexDirection: 'column',
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        paddingTop: 15,
+        paddingBottom: 25,
+        paddingHorizontal: 15,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
 });
