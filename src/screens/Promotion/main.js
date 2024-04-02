@@ -28,6 +28,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const init = () => {
         setTimeout(async () => {
             let offer = await OfferUsingStore.getOfferById(item.id)
+            console.log('22222222222222222', offer.bonuses)
             if (offer) {
                 setOffer(offer)
                 setItem(offer)
@@ -50,10 +51,12 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     }
 
     const AccumulativeBonusView = () => {
-        if (item.type != 'accumulative') return null
-        return (
-            <BonusView/>
-        )
+        if (item.type == 'accumulative' && item.bonuses)  {
+            return (
+                <BonusView data={item}/>
+            )
+        }
+        return null
     }
 
     const DefaultPromotionView = () => {

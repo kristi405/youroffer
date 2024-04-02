@@ -172,6 +172,7 @@ export const BusinessPoints = observer(({ navigation }) => {
     <View style={styles.app}>
       <FlatList
         ListEmptyComponent={EmptyComponent}
+        contentContainerStyle={{ paddingBottom: 20 }}
         style={styles.flatList}
         data={list}
         numColumns={1}

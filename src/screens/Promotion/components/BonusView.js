@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, FlatList, Image } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 
 export const BonusView = (route) => {
     const item = route?.data
@@ -20,21 +20,30 @@ export const BonusView = (route) => {
     }
 
     return (
-        <View style={styles.container}>
-            {
-                Array.from({ length: 8 }).map((_, index) => (
-                    <Circle
-                        key={index}
-                        source={require('../../../../assets/bonus.png')}
-                        size={40}
-                    />
-                ))
-            }
+        <View>
+            <Text style={styles.text}>* при покупке сообщите что у вас есть бонусы</Text>
+            <View style={styles.container}>
+
+                {
+                    Array.from({ length: item.bonuses }).map((_, index) => (
+                        <Circle
+                            key={index}
+                            source={require('../../../../assets/bonus.png')}
+                            size={35}
+                        />
+                    ))
+                }
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    text: {
+        fontSize: 13,
+        color: '#fff',
+        paddingBottom: 5,
+    },
     container: {
         flex: 1,
         backgroundColor: '#333333',
@@ -56,8 +65,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     image: {
-        width: 25,
-        height: 25,
+        width: 40,
+        height: 40,
     },
     flatList: {
         width: '100%'

@@ -109,12 +109,16 @@ export const Scan = ({ navigation }) => {
         if (isError) {
             Alert.alert('', errorText);
             setScanned(false)
+            setCurrentNumber(1)
         } else {
             Alert.alert('', "Акция успешно применена!",
                 [
                     {
                         text: 'ОК',
-                        onPress: () => setScanned(false),
+                        onPress: () => {
+                            setScanned(false)
+                            setCurrentNumber(1)
+                        },
                         style: 'cancel',
                     },
                 ])
@@ -130,6 +134,7 @@ export const Scan = ({ navigation }) => {
                     <FlatList
                         style={styles.flatList}
                         data={managers}
+                        contentContainerStyle={{ paddingBottom: 20 }}
                         numColumns={1}
                         keyExtractor={(item) => item.id_waiter}
                         renderItem={({ item }) =>
@@ -263,6 +268,7 @@ const styles = StyleSheet.create({
         flexGrow: 0,
         backgroundColor: 'black',
         paddingTop: 15,
+        marginBottom: 50
     },
     header: {
         flexDirection: 'row',

@@ -198,6 +198,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
         style={styles.flatList}
         data={PromotionStore.list}
         ListEmptyComponent={EmptyComponent}
+        contentContainerStyle={{ paddingBottom: 20 }}
         numColumns={2}
         refreshControl={
           <RefreshControl
