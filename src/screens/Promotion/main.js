@@ -28,7 +28,6 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const init = () => {
         setTimeout(async () => {
             let offer = await OfferUsingStore.getOfferById(item.id)
-            console.log('22222222222222222', offer.bonuses)
             if (offer) {
                 setOffer(offer)
                 setItem(offer)
@@ -40,7 +39,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const openQr = async (props) => {
         const user = await getUser()
-        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name, type: item.type} })
+        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name, type: item.type, bonuses: offer.bonuses} })
     }
 
     const AccumulativePromotionView = () => {

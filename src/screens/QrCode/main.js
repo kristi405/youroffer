@@ -8,8 +8,9 @@ export const QrCodeScreen = ({navigation, route}) => {
         id_offer: data.itemId,
         id_user: data.userId,
         name_offer: data.name,
-        type: data.type
-    })  
+        type: data.type,
+        bonuses: data.bonuses
+    })
 
     return (
         <View style={styles.container}>
