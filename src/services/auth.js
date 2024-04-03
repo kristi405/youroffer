@@ -4,6 +4,34 @@ import * as Sentry from 'sentry-expo';
 const CAHCE = {}
 const keyPrefix = '$$MYOFFER$$:'
 
+export const setCamerAccess = async (status) => {
+    try {
+        const key = keyPrefix + 'CAMERA'
+        CAHCE[key] = status
+        await AsyncStorage.setItem(key, status);
+    } catch (error) {
+        Sentry.Native.captureException(error, (scope) => {
+            scope.setTransactionName('service:auth:setCamerAccess');
+            return scope;
+        });
+    }
+}
+
+export const getCamerAccess = async () => {
+    try {
+        const key = keyPrefix + 'CAMERA'
+        if (CAHCE[key]) return CAHCE[key];
+        const status = await AsyncStorage.getItem(key);
+        CAHCE[key] = status
+        return CAHCE[key]
+    } catch (error) {
+        Sentry.Native.captureException(error, (scope) => {
+            scope.setTransactionName('service:auth:getCamerAccess');
+            return scope;
+        });
+    }
+}
+
 export const setUser = async (user) => {
     try {
         const key = keyPrefix + 'USER'

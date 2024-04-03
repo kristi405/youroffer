@@ -103,6 +103,9 @@ const styles = StyleSheet.create({
   }
 })
 
+//Переменная означает что мы перешли на экран акции
+let fromPromotionPage = false
+
 export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFavoriteList, setIsFavoriteList] = useState(0)
@@ -116,6 +119,10 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   );
 
   const init = async (isFavorite) => {
+    if (fromPromotionPage) {
+      fromPromotionPage = false;
+      return;
+    }
     setIsLoading(true)
     PromotionStore.resetLists();
     await PromotionStore.getList(isFavorite, businessPointId);
@@ -225,6 +232,7 @@ const Item = ({ navigation, item }) => {
   const [offer, setOffer] = useState(item)
 
   const openDetail = (item) => {
+    fromPromotionPage = true;
     navigation.navigate('CouponDetailScreen', { data: item })
   }
 

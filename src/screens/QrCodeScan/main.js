@@ -5,6 +5,7 @@ import OfferUsingStore from "../../stores/offerUsing"
 import { useFocusEffect } from '@react-navigation/native';
 import UserStore from '../../stores/user'
 import Modal from "react-native-modal"
+import { setCamerAccess, getCamerAccess } from "../../services/auth"
 
 export const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState('waiting');
@@ -43,7 +44,13 @@ export const Scan = ({ navigation }) => {
         setIsManagerView(false);
         setScanned(false);
         setHasPermission('waiting');
+        const currentStatus = await getCamerAccess()
+        if (currentStatus === 'granted') {
+            setHasPermission('access');
+            return;
+        }
         const { status } = await BarCodeScanner.requestPermissionsAsync();
+        setCamerAccess(status);
         setHasPermission(status === 'granted' ? 'access' : 'noAccess');
     }
 
