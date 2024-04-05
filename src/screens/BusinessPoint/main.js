@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, Image, Text } from 'react-native';
+import React, { useCallback } from "react";
+import { StyleSheet, View, Image, Text, TouchableWithoutFeedback, Linking, Button, Alert } from 'react-native';
 import { Coupons } from "../PromotionsList/components/Coupons";
 import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
@@ -14,6 +14,21 @@ export const CompanyProfile = observer(({ navigation, route }) => {
         workTime = `${start_h}:${start_m} - ${end_h}:${end_m}`
     }
 
+    const OpenURLButton = ({ url, item }) => {
+        const handlePress = useCallback(async () => {
+            const supported = await Linking.canOpenURL(url);
+
+            if (supported) {
+                await Linking.openURL(url);
+            } else {
+                Alert.alert(`Don't know how to open this URL: ${url}`);
+            }
+        }, [url]);
+
+        return <TouchableWithoutFeedback onPress={handlePress}>
+            <Text style={styles.link}>Перейти в Instagram</Text>
+        </TouchableWithoutFeedback>
+    };
 
     return (
         <View style={styles.container}>
@@ -29,6 +44,10 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                         <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
                         <Text style={styles.time}> {item.dist / 1000} км </Text>
                     </View>}
+                    <View style={styles.stack}>
+                        <Image source={require('../../../assets/instagram.png')} style={styles.instagram} />
+                        <OpenURLButton url={`instagram://${item.instagram}`} item={item} />
+                    </View>
                 </View>
             </View>
             <Text style={styles.description}>{item.description}</Text>
@@ -95,5 +114,16 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingTop: 3,
         opacity: 0.5
+    },
+    link: {
+        color: '#0096FF',
+        paddingLeft: 5,
+        paddingTop: 3,
+        opacity: 0.6
+    },
+    instagram: {
+        width: 21,
+        height: 21,
+        opacity: 0.7
     },
 })
