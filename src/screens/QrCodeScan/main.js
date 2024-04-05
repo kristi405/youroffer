@@ -6,6 +6,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import UserStore from '../../stores/user'
 import Modal from "react-native-modal"
 import { setCamerAccess, getCamerAccess } from "../../services/auth"
+import { ModalPromotion } from "./components/ModalPromotion";
+import { ModalBonuses } from "./components/ModalBonuses";
+
 
 export const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState('waiting');
@@ -13,12 +16,16 @@ export const Scan = ({ navigation }) => {
     const [isManagerView, setIsManagerView] = useState(false);
     const [idManager, setIdManager] = useState(null);
     const [managers, setManagers] = useState();
-    const [isModalVisible, setIsModalVisible] = React.useState(false);
-    const [currentOfferType, setCurrentOfferType] = React.useState('')
+    const [isModalSelect, setIsModalSelect] = React.useState(false);
+    const [isModalPromo, setIsModalPromo] = React.useState(false);
+    const [isModalBonuses, setIsModalBonuses] = React.useState(false);
+    const [isModalDefault, setIsModalDefault] = React.useState(false);
     const [currentOfferName, setCurrentOfferName] = React.useState('')
     const [currentUserId, setCurrentUserId] = React.useState('')
     const [currentOfferId, setCurrentOfferId] = React.useState('')
     const [currentNumber, setCurrentNumber] = React.useState(1)
+    const [bonuses, setBonuses] = React.useState(0)
+
     const Errors = {
         "permission": "Текущий менеджер не может пробить данную акцию!",
         "type": "Данный тип акции не подходит для пробития сейчас это только тип default!",
@@ -54,44 +61,37 @@ export const Scan = ({ navigation }) => {
         setHasPermission(status === 'granted' ? 'access' : 'noAccess');
     }
 
-    // useEffect(() => {
-    //     const unsubscribe = navigation.addListener('focus', () => {
-    //         setScanned(false);
-    //         setHasPermission('waiting');
-    //         (async () => {
-    //             const { status } = await BarCodeScanner.requestPermissionsAsync();
-    //             setHasPermission(status === 'granted' ? 'access' : 'noAccess');
-    //         })();
-    //     });
-    //     return unsubscribe;
-    // }, [navigation])
-
     const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
         const jsonData = JSON.parse(data.trim())
-        setIsModalVisible(true)
+        console.log('11111111111', type)
+        console.log('22222222222', jsonData)
         setCurrentOfferName(jsonData.name_offer)
         setCurrentUserId(jsonData.id_user)
         setCurrentOfferId(jsonData.id_offer)
-        setCurrentOfferType(jsonData.type)
+        setBonuses(jsonData.bonuses)
+        if (jsonData.type === 'accumulative') {
+            setIsModalSelect(true)
+        } else {
+            setIsModalDefault(true)
+        }
     };
 
     const cancelAction = () => {
         setScanned(false)
-        setIsModalVisible(false)
+        closeAllModal()
     }
 
-    const plusOne = () => {
-        setCurrentNumber(currentNumber + 1)
-    }
-
-    const minusOne = () => {
-        if (currentNumber > 1) {
-            setCurrentNumber(currentNumber - 1)
-        }
+    const closeAllModal = () => {
+        setIsModalBonuses(false)
+        setIsModalPromo(false)
+        setIsModalSelect(false)
+        setIsModalDefault(false)
     }
 
     const useOffer = async (id_offer, id_user, id_manager, count) => {
+        console.log('5555555555555555')
+        console.log(id_offer, id_user, id_manager, count)
         const response = await OfferUsingStore.useOffer(id_offer, id_user, id_manager, count)
         if (!response?.length) {
             Alert.alert('', "Произошла ошибка",
@@ -130,7 +130,7 @@ export const Scan = ({ navigation }) => {
                     },
                 ])
         }
-        setIsModalVisible(false)
+        closeAllModal()
     }
 
     const managersView = () => {
@@ -161,8 +161,44 @@ export const Scan = ({ navigation }) => {
         )
     }
 
-    const countView = () => {
+    const ModalSelect = () => {
+        return (<Modal isVisible={isModalSelect}
+            animationType="slide"
+            transparent={true}>
+            <View style={styles.modalView}>
+                <View style={styles.buttonStyleSelect}>
+                    <Button onPress={() => { setIsModalPromo(true); setIsModalSelect(false)}}
+                        title="Применить акцию"
+                        color='#0EA47A' />
+                    <Button onPress={() => { setIsModalBonuses(true); setIsModalSelect(false)}}
+                        title="Списать бонусы"
+                        disabled={!bonuses}
+                        color='#0EA47A' />
+                     <Button onPress={cancelAction}
+                        title="Отмена"
+                        color='red' />
+                </View>
+            </View>
+        </Modal>)
+    }
 
+    const ModalDefault = () => {
+        return (<Modal isVisible={isModalDefault}
+            animationType="slide"
+            transparent={true}>
+            <View style={styles.modalView}>
+                <Text style={{ color: 'black', fontSize: 20, fontWeight: '600' }}>Применить акцию</Text>
+                <Text style={{ color: 'black', fontSize: 16, fontWeight: '600' }}>Aкция: "{currentOfferName}"</Text>
+                <View style={styles.buttonStyle}>
+                    <Button onPress={cancelAction}
+                        title="Отмена"
+                        color='red' />
+                    <Button onPress={() => { useOffer(currentOfferId, currentUserId, idManager) }}
+                        title="Применить"
+                        color='#0EA47A' />
+                </View>
+            </View>
+        </Modal>)
     }
 
     const scanView = () => {
@@ -179,42 +215,29 @@ export const Scan = ({ navigation }) => {
                     onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                     style={StyleSheet.absoluteFillObject}
                 />
-                <Modal isVisible={isModalVisible}
-                    animationType="slide"
-                    transparent={true}>
-                    <View style={styles.modalView}>
-                        <Text style={{ color: 'black', fontSize: 16, fontWeight: '600' }}>Применить акцию "{currentOfferName}"?</Text>
-                        <View style={styles.countStyle}>
-                            <TouchableWithoutFeedback onPress={minusOne}>
-                                <Image source={require('../../../assets/minus.png')} />
-                            </TouchableWithoutFeedback>
-                            <Text style={styles.countText}>{currentNumber}</Text>
-                            <TouchableWithoutFeedback onPress={plusOne}>
-                                <Image source={require('../../../assets/plus.png')} />
-                            </TouchableWithoutFeedback>
-                        </View>
-                        <View style={styles.buttonStyle}>
-                            <Button onPress={cancelAction}
-                                title="Отмена"
-                                color='red' />
-                            <Button onPress={() => { useOffer(currentOfferId, currentUserId, idManager, currentNumber) }}
-                                title="Применить"
-                                color='#0EA47A' />
-                        </View>
-                    </View>
-                </Modal>
+                <ModalSelect/>
+                <ModalPromotion
+                    isVisible={isModalPromo}
+                    useOffer={useOffer}
+                    currentOfferId={currentOfferId}
+                    currentUserId={currentUserId}
+                    idManager={idManager}
+                    currentOfferName={currentOfferName}
+                    cancelAction={cancelAction}
+                />
+                <ModalBonuses
+                    isVisible={isModalBonuses}
+                    useOffer={useOffer}
+                    currentOfferId={currentOfferId}
+                    currentUserId={currentUserId}
+                    idManager={idManager}
+                    currentOfferName={currentOfferName}
+                    cancelAction={cancelAction}
+                    bonuses={bonuses}
+                />
+                <ModalDefault/>
             </View>
         );
-    }
-
-    const ModalView = () => {
-        <Modal isVisible={isModalVisible}
-            animationType="slide"
-            transparent={true}>
-            <View style={styles.modalView}>
-                <Text style={{ color: 'red', fontSize: 20 }}>I am the modal content!</Text>
-            </View>
-        </Modal>
     }
 
     const view = () => {
@@ -301,6 +324,11 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         flexDirection: 'row',
+        paddingTop: 25,
+        gap: 20,
+    },
+    buttonStyleSelect: {
+        flexDirection: 'column',
         paddingTop: 25,
         gap: 20,
     },
