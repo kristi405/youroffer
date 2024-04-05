@@ -2,11 +2,11 @@ import React from "react";
 import {StyleSheet, Text, View, Image, TouchableWithoutFeedback, Button } from 'react-native';
 import Modal from "react-native-modal"
 
-export const ModalBonuses = ({isVisible, useOffer, currentOfferName, currentOfferId, currentUserId, idManager, cancelAction, bonuses}) => {
+export const ModalBonuses = ({isVisible, useBonuses, currentOfferName, currentOfferId, currentUserId, idManager, cancelAction, bonuses}) => {
     const [currentNumber, setCurrentNumber] = React.useState(1)
 
     const plusOne = () => {
-        if (bonuses < currentNumber) {
+        if (currentNumber < bonuses) {
             setCurrentNumber(currentNumber + 1)
         }
     }
@@ -20,6 +20,7 @@ export const ModalBonuses = ({isVisible, useOffer, currentOfferName, currentOffe
     return (
         <Modal isVisible={isVisible}
             animationType="slide"
+            onShow={() => {setCurrentNumber(1)}}
             transparent={true}>
             <View style={styles.modalView}>
                 <Text style={{ color: 'black', fontSize: 20, fontWeight: '600' }}>Списать бонусы</Text>
@@ -38,7 +39,7 @@ export const ModalBonuses = ({isVisible, useOffer, currentOfferName, currentOffe
                     <Button onPress={cancelAction}
                         title="Отмена"
                         color='red' />
-                    <Button onPress={() => { useOffer(currentOfferId, currentUserId, idManager, currentNumber) }}
+                    <Button onPress={() => { useBonuses(currentOfferId[0], currentUserId, idManager, currentNumber); }}
                         title="Применить"
                         color='#0EA47A' />
                 </View>

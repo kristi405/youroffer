@@ -23,7 +23,6 @@ export const Scan = ({ navigation }) => {
     const [currentOfferName, setCurrentOfferName] = React.useState('')
     const [currentUserId, setCurrentUserId] = React.useState('')
     const [currentOfferId, setCurrentOfferId] = React.useState('')
-    const [currentNumber, setCurrentNumber] = React.useState(1)
     const [bonuses, setBonuses] = React.useState(0)
 
     const Errors = {
@@ -64,8 +63,6 @@ export const Scan = ({ navigation }) => {
     const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
         const jsonData = JSON.parse(data.trim())
-        console.log('11111111111', type)
-        console.log('22222222222', jsonData)
         setCurrentOfferName(jsonData.name_offer)
         setCurrentUserId(jsonData.id_user)
         setCurrentOfferId(jsonData.id_offer)
@@ -90,8 +87,6 @@ export const Scan = ({ navigation }) => {
     }
 
     const useOffer = async (id_offer, id_user, id_manager, count) => {
-        console.log('5555555555555555')
-        console.log(id_offer, id_user, id_manager, count)
         const response = await OfferUsingStore.useOffer(id_offer, id_user, id_manager, count)
         if (!response?.length) {
             Alert.alert('', "Произошла ошибка",
@@ -116,7 +111,6 @@ export const Scan = ({ navigation }) => {
         if (isError) {
             Alert.alert('', errorText);
             setScanned(false)
-            setCurrentNumber(1)
         } else {
             Alert.alert('', "Акция успешно применена!",
                 [
@@ -124,12 +118,38 @@ export const Scan = ({ navigation }) => {
                         text: 'ОК',
                         onPress: () => {
                             setScanned(false)
-                            setCurrentNumber(1)
                         },
                         style: 'cancel',
                     },
                 ])
         }
+        closeAllModal()
+    }
+
+    const useBonuses = async (id_offer, id_user, id_manager, count) => {
+        const response = await OfferUsingStore.useBonuses(id_offer, id_user, id_manager, count)
+        if (!response || response.error) {
+            Alert.alert('', "Произошла ошибка",
+                [
+                    {
+                        text: 'ОК',
+                        onPress: () => setScanned(false),
+                        style: 'cancel',
+                    },
+                ])
+            return;
+        }
+
+        Alert.alert('', "Бонусы успешно списаны!",
+        [
+            {
+                text: 'ОК',
+                onPress: () => {
+                    setScanned(false)
+                },
+                style: 'cancel',
+            },
+        ])
         closeAllModal()
     }
 
@@ -227,7 +247,7 @@ export const Scan = ({ navigation }) => {
                 />
                 <ModalBonuses
                     isVisible={isModalBonuses}
-                    useOffer={useOffer}
+                    useBonuses={useBonuses}
                     currentOfferId={currentOfferId}
                     currentUserId={currentUserId}
                     idManager={idManager}

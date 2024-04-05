@@ -18,6 +18,7 @@ export const ModalPromotion = ({isVisible, useOffer, currentOfferName, currentOf
     return (
         <Modal isVisible={isVisible}
             animationType="slide"
+            onShow={() => {setCurrentNumber(1)}}
             transparent={true}>
             <View style={styles.modalView}>
                 <Text style={{ color: 'black', fontSize: 20, fontWeight: '600' }}>Применить акцию</Text>
@@ -35,7 +36,7 @@ export const ModalPromotion = ({isVisible, useOffer, currentOfferName, currentOf
                     <Button onPress={cancelAction}
                         title="Отмена"
                         color='red' />
-                    <Button onPress={() => { useOffer(currentOfferId, currentUserId, idManager, currentNumber) }}
+                    <Button onPress={() => { useOffer(currentOfferId, currentUserId, idManager, currentNumber); }}
                         title="Применить"
                         color='#0EA47A' />
                 </View>
