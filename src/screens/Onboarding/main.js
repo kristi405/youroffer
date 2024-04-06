@@ -23,7 +23,7 @@ export const OnboardingScreen = ({navigation}) => {
       if (!currentRegion) {
         navigateTo = 'Region'
       }
-      setTimeout(() => {
+      setTimeout(() => { 
         setVisible(false);
         AuthStore.updateCoord()
         BusinessPointsStore.getAll()

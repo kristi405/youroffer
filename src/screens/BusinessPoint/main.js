@@ -1,11 +1,16 @@
 import React, { useCallback } from "react";
-import { StyleSheet, View, Image, Text, TouchableWithoutFeedback, Linking, Button, Alert } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableWithoutFeedback, Linking, Share, Alert } from 'react-native';
 import { Coupons } from "../PromotionsList/components/Coupons";
 import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 
 export const CompanyProfile = observer(({ navigation, route }) => {
     const item = route?.params?.data
+    const isInstagramInstalled =
+      Platform.OS === "ios"
+        ? Linking.canOpenURL("instagram://app")
+        : (Share.isPackageInstalled("com.instagram.android"))
+            ?.isInstalled
     let workTime = '-'
 
     if (item.start_time && item.end_time) {
@@ -16,13 +21,14 @@ export const CompanyProfile = observer(({ navigation, route }) => {
 
     const OpenURLButton = ({ url, item }) => {
         const handlePress = useCallback(async () => {
-            const supported = await Linking.canOpenURL(url);
-
-            if (supported) {
+            // const supported = await Linking.canOpenURL(url);
+            console.log('111111', isInstagramInstalled)
+            // if (supported) {
                 await Linking.openURL(url);
-            } else {
-                Alert.alert(`Don't know how to open this URL: ${url}`);
-            }
+            // } else {
+            //     await Linking.openURL(url);
+            //     Alert.alert(`Don't know how to open this URL: ${url}`);
+            // }
         }, [url]);
 
         return <TouchableWithoutFeedback onPress={handlePress}>
@@ -46,7 +52,7 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                     </View>}
                     <View style={styles.stack}>
                         <Image source={require('../../../assets/instagram.png')} style={styles.instagram} />
-                        <OpenURLButton url={`instagram://${item.instagram}`} item={item} />
+                        <OpenURLButton url={'instagram://user?username=apple'} item={item} />
                     </View>
                 </View>
             </View>
