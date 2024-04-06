@@ -6,35 +6,59 @@ import { observer } from "mobx-react-lite"
 
 export const CompanyProfile = observer(({ navigation, route }) => {
     const item = route?.params?.data
-    const isInstagramInstalled =
-      Platform.OS === "ios"
-        ? Linking.canOpenURL("instagram://app")
-        : (Share.isPackageInstalled("com.instagram.android"))
-            ?.isInstalled
-    let workTime = '-'
 
+    let workTime = '-'
     if (item.start_time && item.end_time) {
         const [start_h, start_m] = item.start_time.split(':')
         const [end_h, end_m] = item.end_time.split(':')
         workTime = `${start_h}:${start_m} - ${end_h}:${end_m}`
     }
 
-    const OpenURLButton = ({ url, item }) => {
-        const handlePress = useCallback(async () => {
-            // const supported = await Linking.canOpenURL(url);
-            console.log('111111', isInstagramInstalled)
-            // if (supported) {
-                await Linking.openURL(url);
-            // } else {
-            //     await Linking.openURL(url);
-            //     Alert.alert(`Don't know how to open this URL: ${url}`);
-            // }
-        }, [url]);
-
-        return <TouchableWithoutFeedback onPress={handlePress}>
-            <Text style={styles.link}>Перейти в Instagram</Text>
-        </TouchableWithoutFeedback>
+    const openInstagram = async (url) => {
+        instagram = url.split('?')[0];
+        instagram = instagram.replace("https://", '')
+        instagram = instagram.replace("www.", '')
+        instagram = instagram.replace("instagram.com/", '')
+        instagram = instagram.replace("/", '')
+        if (instagram) {
+            try {
+                await Linking.openURL(`instagram://user?username=${instagram}`)
+            } catch (e) {
+                await Linking.openURL(url)
+            }
+        }
     };
+    const OpenInstagramButton = ({ instagram }) => {
+        if (instagram) {
+            return (
+                <TouchableWithoutFeedback onPress={() => {openInstagram(instagram)}}>
+                    <View style={styles.instagramBtn}>
+                        <Image source={require('../../../assets/instagram3.png')} style={styles.instagramIcon} />
+                        <Text style={styles.link}>Перейти в Instagram</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        }
+    };
+
+
+    const openWebsite = async (url) => {
+        await Linking.openURL(url)
+    };
+    const OpenURLButton = ({ website }) => {
+        if (website) {
+            return (
+                <TouchableWithoutFeedback onPress={() => {openWebsite(website)}}>
+                    <View style={styles.websiteBtn}>
+                        <Image source={require('../../../assets/website2.png')} style={styles.websiteIcon} />
+                        <Text style={styles.link}>Перейти на сайт</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        }
+    };
+
+
 
     return (
         <View style={styles.container}>
@@ -46,14 +70,16 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                         <Image source={require('../../../assets/time.png')} style={styles.clock} />
                         <Text style={styles.time}>{workTime}</Text>
                     </View>
+                    {item.instagram && <View style={styles.stack}>
+                        <OpenInstagramButton instagram={item.instagram} />
+                    </View>}
                     {item.dist && <View style={styles.stack}>
                         <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
                         <Text style={styles.time}> {item.dist / 1000} км </Text>
                     </View>}
-                    <View style={styles.stack}>
-                        <Image source={require('../../../assets/instagram.png')} style={styles.instagram} />
-                        <OpenURLButton url={'instagram://user?username=apple'} item={item} />
-                    </View>
+                    {item.website &&  <View style={styles.stack}>
+                        <OpenURLButton website={item.website}/>
+                    </View>}
                 </View>
             </View>
             <Text style={styles.description}>{item.description}</Text>
@@ -122,14 +148,32 @@ const styles = StyleSheet.create({
         opacity: 0.5
     },
     link: {
-        color: '#0096FF',
+        color: '#FFF',
+        textDecorationLine: 'underline',
         paddingLeft: 5,
         paddingTop: 3,
         opacity: 0.6
     },
-    instagram: {
-        width: 21,
-        height: 21,
-        opacity: 0.7
+    instagramBtn: {
+        marginLeft: -3,
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
     },
+    websiteBtn: {
+        marginLeft: -2,
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+    },
+    instagramIcon: {
+        width: 20,
+        height: 20,
+        opacity: 0.8
+    },
+    websiteIcon: {
+        width: 20,
+        height: 20,
+        opacity: 0.5
+    }
 })

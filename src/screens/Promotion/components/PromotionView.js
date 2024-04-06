@@ -25,8 +25,8 @@ export const PromotionView = (route) => {
                 Array.from({ length: item.max_count + 1 }).map((_, index) => (
                     <Circle
                         key={index}
-                        source={index == item.max_count ? require('../../../../assets/gift.png') : null}
-                        size={40}
+                        source={index == item.max_count ? require('../../../../assets/bonus1.png') : null}
+                        size={25}
                         color={index < item.use_count ? '#0EA47A' : 'white' && index == item.max_count ? 'clear' : 'white'}
                     />
                 ))
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     image: {
-        width: 46,
-        height: 46,
+        width: 35,
+        height: 35,
     },
     flatList: {
         width: '100%'

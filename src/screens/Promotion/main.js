@@ -99,8 +99,15 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                     </TouchableWithoutFeedback>
                 </View>
                 <Text style={styles.descriptionText}>Описание акции:</Text>
-
                 <Text style={styles.contentText}>{item.description}</Text>
+                <View style={styles.button}>
+                    <DefaultPromotionView />
+                </View>
+                <View style={styles.circle}>
+                    <AccumulativePromotionView />
+                    <AccumulativeBonusView />
+                    <QuantitativePromotionView />
+                </View>
                 <Text style={styles.addressTitle}>Акция доступна по адресу:</Text>
                 {item.business_points?.map(bp => {
                     return (
@@ -110,14 +117,6 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                     </View>
                     )
                 })}
-                <View style={styles.button}>
-                    <DefaultPromotionView />
-                </View>
-                <View style={styles.circle}>
-                    <AccumulativePromotionView />
-                    <AccumulativeBonusView />
-                    <QuantitativePromotionView />
-                </View>
             </ScrollView>
         </View>
     )
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
         paddingBottom: 15
     },
     button: {
-        paddingTop: 30,
+        paddingTop: 10,
     },
     circle: {
         paddingTop: 20,

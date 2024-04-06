@@ -28,7 +28,7 @@ export const BonusView = (route) => {
                     Array.from({ length: item.bonuses }).map((_, index) => (
                         <Circle
                             key={index}
-                            source={require('../../../../assets/bonus.png')}
+                            source={require('../../../../assets/bonus1.png')}
                             size={35}
                         />
                     ))
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         width: '100%',
-        paddingHorizontal: 20
+        paddingHorizontal: 10
     },
     containerForRow: {
         paddingHorizontal: '1.5%',
