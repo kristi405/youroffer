@@ -4,6 +4,7 @@ import { getLocation } from '../services/geo'
 import { REQUEST_STATUS } from '../services/constants'
 import { setSession, setUser, getUser, cleanAuthData } from '../services/auth'
 import * as Sentry from 'sentry-expo';
+import Constants from "expo-constants"
 
 class AuthStore {
     phone = null
@@ -194,6 +195,27 @@ class AuthStore {
             return e.response.data
         }
         return status
+    }
+
+    async checkVersion({ os, osVersion, model }) {
+        let status =  REQUEST_STATUS.success
+        try {
+            const resp = await api.get(`/api/v1/version/check`, {
+                params: {
+                    version: Constants.easConfig.version,
+                    osVersion,
+                    os,
+                    model: model
+                }
+            })
+            return resp.data;
+        } catch (e) {
+            status =  REQUEST_STATUS.error
+            Sentry.Native.captureException(e, (scope) => {
+                scope.setTransactionName('UserStore:getUser');
+                return scope;
+            });
+        }
     }
 }
 
