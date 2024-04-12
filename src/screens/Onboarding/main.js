@@ -52,7 +52,9 @@ export const OnboardingScreen = ({navigation}) => {
 
     const closeModal = () => {
       setisVisibleModal(false)
-      navigation.replace(navigateTo)
+      setTimeout(() => {
+        navigation.replace(navigateTo)
+      }, 500);
     }
 
     return (
