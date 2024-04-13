@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Text, View, StyleSheet, Image, Alert, FlatList, TouchableWithoutFeedback, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import OfferUsingStore from "../../stores/offerUsing"
@@ -8,7 +8,7 @@ import Modal from "react-native-modal"
 import { setCamerAccess, getCamerAccess } from "../../services/auth"
 import { ModalPromotion } from "./components/ModalPromotion";
 import { ModalBonuses } from "./components/ModalBonuses";
-
+import { Camera } from "expo-camera";
 
 export const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState('waiting');
@@ -55,7 +55,7 @@ export const Scan = ({ navigation }) => {
             setHasPermission('access');
             return;
         }
-        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        const { status } = await Camera.requestCameraPermissionsAsync();
         setCamerAccess(status);
         setHasPermission(status === 'granted' ? 'access' : 'noAccess');
     }
@@ -231,7 +231,11 @@ export const Scan = ({ navigation }) => {
 
         return (
             <View style={styles.containerCamera}>
-                <BarCodeScanner
+                <Camera
+                    barcodeScannerSettings={{
+                        barcodeTypes: ["qr"],
+                    }}
+                    zoom={0.1}
                     onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                     style={StyleSheet.absoluteFillObject}
                 />

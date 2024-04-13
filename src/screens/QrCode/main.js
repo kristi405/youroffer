@@ -15,7 +15,7 @@ export const QrCodeScreen = ({navigation, route}) => {
     return (
         <View style={styles.container}>
             <View style={styles.qrCode}>
-                <SvgQRCode value={json} size={290} />
+                <SvgQRCode value={json} size={250} />
             </View>
             <Text style={styles.acseptPromotion}> * Для применения акции менеджер должен отсканировать ваш QR code</Text>
         </View>

@@ -3,7 +3,7 @@
     "name": "myOffers",
     "scheme": "youoffer",
     "slug": "youoffer",
-    "version": "1.0.22",
+    "version": "1.0.23",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -39,6 +39,14 @@
           "username": "kristina_gyk"
         }
       ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow MyOffers to access your camera",
+          "microphonePermission": "Allow MyOffers to access your microphone",
+          "recordAudioAndroid": false
+        }
+      ],
       "@react-native-google-signin/google-signin"
     ],
     "updates": {
@@ -65,7 +73,7 @@
       }
     },
     "android": {
-      "versionCode": 22,
+      "versionCode": 23,
       "package": "com.offer.youoffer",
       "config": {
         "googleMaps": {

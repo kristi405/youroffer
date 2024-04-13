@@ -4,6 +4,7 @@ import Modal from "react-native-modal"
 
 export const ModalBonuses = ({isVisible, useBonuses, currentOfferName, currentOfferId, currentUserId, idManager, cancelAction, bonuses}) => {
     const [currentNumber, setCurrentNumber] = React.useState(1)
+    const [disabledBtn, setDisabledBtn] = React.useState(false)
 
     const plusOne = () => {
         if (currentNumber < bonuses) {
@@ -20,7 +21,7 @@ export const ModalBonuses = ({isVisible, useBonuses, currentOfferName, currentOf
     return (
         <Modal isVisible={isVisible}
             animationType="slide"
-            onShow={() => {setCurrentNumber(1)}}
+            onShow={() => {setCurrentNumber(1); setDisabledBtn(false)}}
             transparent={true}>
             <View style={styles.modalView}>
                 <Text style={{ color: 'black', fontSize: 20, fontWeight: '600' }}>Списать бонусы</Text>
@@ -39,9 +40,11 @@ export const ModalBonuses = ({isVisible, useBonuses, currentOfferName, currentOf
                     <Button onPress={cancelAction}
                         title="Отмена"
                         color='red' />
-                    <Button onPress={() => { useBonuses(currentOfferId[0], currentUserId, idManager, currentNumber); }}
+                    <Button onPress={() => { setDisabledBtn(true); useBonuses(currentOfferId[0], currentUserId, idManager, currentNumber);}}
                         title="Применить"
-                        color='#0EA47A' />
+                        color='#0EA47A'
+                        disabled={disabledBtn}
+                    />
                 </View>
             </View>
         </Modal>

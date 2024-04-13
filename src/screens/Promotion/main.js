@@ -8,25 +8,45 @@ import OfferUsingStore from '../../stores/offerUsing'
 import { FILE_URL } from '../../services/constants'
 import PromotionStore from "../../stores/promotion"
 
+let fromQR = false;
+let timers = []
 export const CouponDetailScreen = ({ navigation, route }) => {
     const [item, setItem] = useState(route?.params?.data)
     const [offer, setOffer] = useState('');
     const [ids, setIds] = useState(null)
 
     useEffect(() => {
-        const newIds = item.related
-        newIds.push(item.id)
+        const newIds = [...item.related] || []
+        if (!newIds.includes(item.id)) {
+            newIds.push(item.id);
+        }
         setIds(newIds)
     }, []);
 
     useFocusEffect(
         React.useCallback(() => {
             init()
+            // если у нас есть незакрыте таймеры - очищаем их
+            if (timers.length) {
+                for (timer of timers) {
+                    clearTimeout(timer)
+                }
+                timers = []
+            }
+            // если мы вернулись из QR делаем еще несколько запросов
+            if (fromQR && item.type === 'accumulative') {
+                fromQR = false
+                timers.push(init(3000))
+                timers.push(init(6000))
+                timers.push(init(12000))
+                timers.push(init(24000))
+                timers.push(init(40000))
+            }
         }, [])
     );
 
-    const init = () => {
-        setTimeout(async () => {
+    const init = (time) => {
+        return setTimeout(async () => {
             let offer = await OfferUsingStore.getOfferById(item.id)
             if (offer) {
                 setOffer(offer)
@@ -34,11 +54,12 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             } else {
                 Alert.alert('', 'Акция была удалена');
             }
-        }, 300)
+        }, time || 300)
     }
 
     const openQr = async (props) => {
         const user = await getUser()
+        fromQR = true
         navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name, type: item.type, bonuses: offer.bonuses} })
     }
 
