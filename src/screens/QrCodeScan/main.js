@@ -60,20 +60,6 @@ export const Scan = ({ navigation }) => {
         setHasPermission(status === 'granted' ? 'access' : 'noAccess');
     }
 
-    const handleBarCodeScanned = async ({ type, data }) => {
-        setScanned(true);
-        const jsonData = JSON.parse(data.trim())
-        setCurrentOfferName(jsonData.name_offer)
-        setCurrentUserId(jsonData.id_user)
-        setCurrentOfferId(jsonData.id_offer)
-        setBonuses(jsonData.bonuses)
-        if (jsonData.type === 'accumulative') {
-            setIsModalSelect(true)
-        } else {
-            setIsModalDefault(true)
-        }
-    };
-
     const cancelAction = () => {
         setScanned(false)
         closeAllModal()
@@ -221,6 +207,26 @@ export const Scan = ({ navigation }) => {
         </Modal>)
     }
 
+    let isCanScan = true;
+    const handleBarCodeScanned = async ({ type, data }) => {
+        if(!isCanScan) return;
+        isCanScan = false;
+        setScanned(true);
+        const jsonData = JSON.parse(data.trim())
+        setCurrentOfferName(jsonData.name_offer)
+        setCurrentUserId(jsonData.id_user)
+        setCurrentOfferId(jsonData.id_offer)
+        setBonuses(jsonData.bonuses)
+        if (jsonData.type === 'accumulative') {
+            setIsModalSelect(true)
+        } else {
+            setIsModalDefault(true)
+        }
+        setTimeout(() => {
+            isCanScan = true;
+        }, 2000)
+    };
+
     const scanView = () => {
         if (hasPermission === 'waiting') {
             return <View style={styles.waiting}><Text style={styles.waitingText}>Ожидание доступа к камере.</Text></View>;
@@ -235,7 +241,11 @@ export const Scan = ({ navigation }) => {
                     barcodeScannerSettings={{
                         barcodeTypes: ["qr"],
                     }}
-                    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                    onBarCodeScanned={(e) => {
+                        if (!scanned) {
+                            handleBarCodeScanned(e)
+                        }
+                    }}
                     style={StyleSheet.absoluteFillObject}
                 />
                 <ModalSelect/>
