@@ -235,7 +235,6 @@ export const Scan = ({ navigation }) => {
                     barcodeScannerSettings={{
                         barcodeTypes: ["qr"],
                     }}
-                    zoom={0.1}
                     onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                     style={StyleSheet.absoluteFillObject}
                 />
