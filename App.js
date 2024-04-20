@@ -12,6 +12,7 @@ Sentry.init({
   debug: false
 });
 
+
 export default function App() {
   if (Platform.OS == 'android') {
     NavigationBar.setBackgroundColorAsync("black");

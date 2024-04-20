@@ -82,8 +82,8 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                     </View>}
                 </View>
             </View>
-            <Text style={styles.description}>{item.description}</Text>
-            <Coupons navigation={navigation} isCompanyPromotions={true} businessPointId={item.id} />
+            {item.description && (<Text style={styles.description}>{item.description}</Text>)}
+            <Coupons style={styles.listView} navigation={navigation} isCompanyPromotions={true} businessPointId={item.id} />
         </View>
     )
 })
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 13,
         opacity: 1,
-        textAlign: 'left'
+        textAlign: 'left',
     },
     stack: {
         flexDirection: 'row',
