@@ -58,9 +58,10 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     }
 
     const openQr = async (props) => {
+        console.log('3333333', item)
         const user = await getUser()
         fromQR = true
-        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name, type: item.type, bonuses: offer.bonuses} })
+        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name, type: item.type, bonuses: offer.bonuses, max_count: item.max_count} })
     }
 
     const AccumulativePromotionView = () => {
@@ -79,11 +80,20 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         return null
     }
 
-    const DefaultPromotionView = () => {
+    const SubscriptionPromotionView = () => {
+        if (item.type == 'subscription' && item.is_active_for_user)  {
+            return (
+                <PromotionView data={item} />
+            )
+        }
+        return null
+    }
+
+    const ButtonView = ({buttonTitle}) => {
         if (item.type == 'default' && !item.generate_qr) return null
         return (
             <TouchableOpacity style={styles.buttonStyle} onPress={openQr}>
-                <Text style={styles.showPromotionText}>Воспользоваться акцией</Text>
+                <Text style={styles.showPromotionText}> {buttonTitle} </Text>
             </TouchableOpacity>
         )
     }
@@ -122,12 +132,13 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.descriptionText}>Описание акции:</Text>
                 <Text style={styles.contentText}>{item.description}</Text>
                 <View style={styles.button}>
-                    <DefaultPromotionView />
+                    <ButtonView buttonTitle = {!item.is_active_for_user ? 'Активировать подписку' : 'Воспользоваться акцией'} />
                 </View>
                 <View style={styles.circle}>
                     <AccumulativePromotionView />
                     <AccumulativeBonusView />
                     <QuantitativePromotionView />
+                    <SubscriptionPromotionView />
                 </View>
                 <Text style={styles.addressTitle}>Акция доступна по адресу:</Text>
                 {item.business_points?.map(bp => {

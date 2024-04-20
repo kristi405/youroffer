@@ -6,6 +6,7 @@ export const PromotionView = (route) => {
 
     const CircleView = ({source}) => {
         if (source) {
+            console.log('222222', item)
             return (<Image source={source} style={styles.image} />)
         }
         return (<View style={styles.image}></View>);
@@ -25,7 +26,7 @@ export const PromotionView = (route) => {
                 Array.from({ length: item.max_count + 1 }).map((_, index) => (
                     <Circle
                         key={index}
-                        source={index == item.max_count ? require('../../../../assets/bonus1.png') : null}
+                        source={index == item.max_count && item.type == 'accumulative' ? require('../../../../assets/bonus1.png') : null}
                         size={25}
                         color={index < item.use_count ? '#0EA47A' : 'white' && index == item.max_count ? 'clear' : 'white'}
                     />
