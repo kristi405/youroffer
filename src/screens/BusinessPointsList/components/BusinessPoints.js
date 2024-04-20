@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     paddingTop: 10,
+    width: 180
   },
   touch: {
     paddingHorizontal: 10,
@@ -216,7 +217,7 @@ const Item = ({ navigation, item }) => {
         <View style={styles.item}>
           <Image source={{ uri: `${FILE_URL}${company.img}.${company.img_ext}` }} style={styles.icon} />
           <View style={styles.column}>
-            <Text style={styles.title}>{company.name}</Text>
+            <Text style={styles.title}>{company.name} sdssdsdsd sdsdsdds</Text>
             <View style={styles.row}>
               <Image source={require('../../../../assets/time.png')} style={styles.clock} />
               <Text style={styles.time}>{workTime}</Text>

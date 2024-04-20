@@ -84,8 +84,14 @@ const styles = StyleSheet.create({
   },
   emptyViewInCompany: {
     flex: 1,
+    marginTop: 100,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  emptyImg: {
+    height: 35,
+    width: 35,
+    opacity: 0.6
   },
   emptyText: {
     color: '#fff',
@@ -189,9 +195,10 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
     } else {
       return (
         <View style={styles.emptyViewInCompany}>
+          <Text style={styles.emptyText}>Нет доступных акций</Text>
           <Text style={styles.emptyText}>Для загрузки сделайте свайп вниз</Text>
           <Text></Text>
-          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.png')} />
+          <Image style={styles.emptyImg}  source={require('../../../../assets/swipe-down.png')} />
         </View>
       )
     }

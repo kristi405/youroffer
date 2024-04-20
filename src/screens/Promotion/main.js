@@ -34,7 +34,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 timers = []
             }
             // если мы вернулись из QR делаем еще несколько запросов
-            if (fromQR && item.type === 'accumulative') {
+            if (fromQR && ['accumulative', 'subscription',  'discount'].includes(item.type)) {
                 fromQR = false
                 timers.push(init(3000))
                 timers.push(init(6000))
@@ -100,6 +100,13 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const ButtonView = ({buttonTitle}) => {
         if (item.type == 'default' && !item.generate_qr) return null
         if (item.type == 'discount' && item.is_active_for_user) return buttonTitle
+        if (offer.type == 'subscription' && offer.use_count === offer.max_count) {
+            return (
+                <TouchableOpacity style={styles.buttonStyleDisabed} disabled={true}>
+                    <Text style={styles.showPromotionText}> {buttonTitle} </Text>
+                </TouchableOpacity>
+            )
+        }
         return (
             <TouchableOpacity style={styles.buttonStyle} onPress={openQr}>
                 <Text style={styles.showPromotionText}> {buttonTitle} </Text>
@@ -118,6 +125,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const addToFavorite = (offer) => {
         clearTimeout(timer)
         timer = setTimeout(() => {
+            item.favorite = !offer.favorite
             setOffer({...offer, favorite: !offer.favorite})
             PromotionStore.addToFavorite(offer.id, !offer.favorite)
         }, 200)
@@ -198,11 +206,11 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                         <Image source={{ uri: `${FILE_URL}${item.business_points[0].img}.${item.business_points[0].img_ext}` }} style={styles.avatar} />
                         <Text style={styles.headerText}>{item.name}</Text>
                     </View>
-                    <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>
+                    {/* <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>
                         <View style={styles.touch}>
                             <Image source={offer.favorite ? require('../../../assets/saveSelected.png') : require('../../../assets/save.png')} />
                         </View>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
                 </View>
                 <Text style={styles.descriptionText}>Описание акции:</Text>
                 <Text style={styles.contentText}>{item.description}</Text>
@@ -270,6 +278,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
+        marginBottom: 10,
     },
     headerView: {
         flexDirection: 'row',
@@ -328,6 +337,14 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: '#0EA47A',
         opacity: 0.8,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonStyleDisabed: {
+        height: 40,
+        borderRadius: 8,
+        backgroundColor: 'grey',
+        opacity: 0.5,
         justifyContent: 'center',
         alignItems: 'center',
     },

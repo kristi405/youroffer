@@ -47,6 +47,17 @@ export const Map = observer(({ navigation }) => {
         })
     }
 
+    const workTime = (item) => {
+        let workTime = '-'
+        if (item.start_time && item.end_time) {
+            const [start_h, start_m] = item.start_time.split(':')
+            const [end_h, end_m] = item.end_time.split(':')
+            workTime = `${start_h}:${start_m} - ${end_h}:${end_m}`
+        }
+
+        return workTime;
+    }
+
     return (
         <View style={styles.container}>
             <MapView
@@ -57,7 +68,6 @@ export const Map = observer(({ navigation }) => {
                 customMapStyle={MAP_STYLE}
                 tracksViewChanges={false}
                 region={{
-                    // TODO: добавить регионы (пока только брест)
                     latitude: CURRENT_COORD ? CURRENT_COORD.latitude : regionCoord.latitude,
                     longitude: CURRENT_COORD ? CURRENT_COORD.longitude : regionCoord.longitude,
                     latitudeDelta: 0.15,
@@ -92,7 +102,10 @@ export const Map = observer(({ navigation }) => {
                                         <Image source={require('../../../assets/mapIcon.png')} style={styles.mapIcon} />
                                         <Text style={styles.distans}>{selectedBp.dist / 1000} км</Text>
                                     </View>}
-                                    <View style={styles.separator} />
+                                    {selectedBp.dist && <View style={styles.stack}>
+                                        <Image source={require('../../../assets/time.png')} style={styles.timeIcon} />
+                                        <Text style={styles.distans}>{workTime(selectedBp)}</Text>
+                                    </View>}
                                 </View>
                             </View>
                             <TouchableOpacity style={styles.buttonStyle} onPress={() => openDetail(selectedBp)}>
@@ -128,9 +141,10 @@ const styles = StyleSheet.create({
     },
     name: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: 'bold',
-        paddingTop: 7
+        paddingTop: 7,
+        marginBottom: 10,
     },
     stackWithButton: {
         alignItems: 'center',
@@ -184,6 +198,12 @@ const styles = StyleSheet.create({
         height: 25,
         tintColor: '#0EA47A',
     },
+    timeIcon: {
+        marginTop: 5,
+        width: 15,
+        height: 15,
+        tintColor: '#0EA47A',
+    },
     marker: {
     },
     showPromotionText: {
@@ -199,6 +219,7 @@ const styles = StyleSheet.create({
         opacity: 0.8,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 10
     },
 })
 
