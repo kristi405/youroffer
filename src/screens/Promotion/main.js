@@ -169,6 +169,26 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         return 'Воспользоваться акцией'
     }
 
+    const TimeToText = () => {
+        if (item.type === 'subscription' && item.is_active_for_user && item.reset_after_days && item.days_to_reset) {
+            const date = new Date(item.start_offer_time);
+            date.setDate(date.getDate() + item.days_to_reset);
+            return (
+                <View style={styles.button}>
+                    <Text style={styles.timeToText}>Действует до: {date.toLocaleString('Ru', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        year: 'numeric',
+                        month: "long",
+                        day: 'numeric'
+                    })}</Text>
+                </View>
+            )
+        }
+
+        return null
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -189,6 +209,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <View style={styles.button}>
                     <ButtonView buttonTitle = {btnText()} />
                 </View>
+                <TimeToText />
                 <View style={styles.circle}>
                     <AccumulativePromotionView />
                     <AccumulativeBonusView />
@@ -213,6 +234,12 @@ const styles = StyleSheet.create({
     activeDiscountText: {
         fontSize: 20,
         fontWeight: '700',
+        color: '#0EA47A',
+        textAlign: 'center'
+    },
+    timeToText: {
+        fontSize: 15,
+        fontWeight: '500',
         color: '#0EA47A',
         textAlign: 'center'
     },

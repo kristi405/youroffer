@@ -105,7 +105,7 @@ export const Scan = ({ navigation }) => {
             Alert.alert('', errorText);
             setScanned(false)
         } else {
-            Alert.alert('', "Акция успешно применена!",
+            Alert.alert('', "Готово! Вы успешно отсканировали QR код",
                 [
                     {
                         text: 'ОК',
