@@ -9,7 +9,10 @@ export const QrCodeScreen = ({navigation, route}) => {
         id_user: data.userId,
         name_offer: data.name,
         type: data.type,
-        bonuses: data.bonuses
+        bonuses: data.bonuses,
+        is_active_for_user: data.is_active_for_user,
+        max_count: data.max_count,
+        use_count: data.use_count
     })
 
     return (

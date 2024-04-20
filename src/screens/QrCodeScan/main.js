@@ -23,13 +23,20 @@ export const Scan = ({ navigation }) => {
     const [currentOfferName, setCurrentOfferName] = React.useState('')
     const [currentUserId, setCurrentUserId] = React.useState('')
     const [currentOfferId, setCurrentOfferId] = React.useState('')
+    const [currentOfferType, setCurrentOfferType] = React.useState('')
+    const [isActiveForUser, setisActiveForUser] = React.useState(false)
+    const [maxCount, setMaxCount] = React.useState(0)
     const [bonuses, setBonuses] = React.useState(0)
+    const [useCount, setUseCount] = React.useState(0)
+
 
     const Errors = {
         "permission": "Вы не можете использовать данную акцию!",
         "type": "Данный тип акции не подходит для использования сейчас это только тип default!",
         "offer_count": "Количество акций уже закончилось!",
-        "user_count": "Пользователь уже использовал эту акцию!"
+        "user_count": "Пользователь уже использовал эту акцию!",
+        "subscription_is_already_active": "Подписка уже активна, пользователь должен назжать кнопку 'Воспользоваться подписку'",
+        "discount_is_already_active": "Скидка уже активна",
     }
 
     useFocusEffect(
@@ -86,7 +93,7 @@ export const Scan = ({ navigation }) => {
             return;
         }
         let isError = false
-        let errorText = ''
+        let errorText = 'Ошибка: '
         for (resp of response) {
             if (resp.error) {
                 isError = true
@@ -188,13 +195,37 @@ export const Scan = ({ navigation }) => {
         </Modal>)
     }
 
+    const modalDefaultTitle = () => {
+        if (currentOfferType === 'discount') {
+            return 'Активировать скидку'
+        }
+
+        if (currentOfferType === 'subscription') {
+            return 'Активировать подписку'
+        }
+
+        return 'Применить акцию'
+    }
+
+    const modalDefaultText = () => {
+        if (currentOfferType === 'discount') {
+            return currentOfferName
+        }
+
+        if (currentOfferType === 'subscription') {
+            return currentOfferName
+        }
+
+        return `Aкция: "${currentOfferName}"`
+    }
+
     const ModalDefault = () => {
         return (<Modal isVisible={isModalDefault}
             animationType="slide"
             transparent={true}>
             <View style={styles.modalView}>
-                <Text style={{ color: 'black', fontSize: 20, fontWeight: '600' }}>Применить акцию</Text>
-                <Text style={{ color: 'black', fontSize: 16, fontWeight: '600' }}>Aкция: "{currentOfferName}"</Text>
+                <Text style={{ color: 'black', fontSize: 20, fontWeight: '600' }}>{ modalDefaultTitle() }</Text>
+                <Text style={{ color: 'black', fontSize: 16, fontWeight: '600' }}>{ modalDefaultText() }</Text>
                 <View style={styles.buttonStyle}>
                     <Button onPress={cancelAction}
                         title="Отмена"
@@ -217,11 +248,18 @@ export const Scan = ({ navigation }) => {
         setCurrentUserId(jsonData.id_user)
         setCurrentOfferId(jsonData.id_offer)
         setBonuses(jsonData.bonuses)
+        setCurrentOfferType(jsonData.type)
+        setisActiveForUser(!!jsonData.is_active_for_user)
+        setMaxCount(jsonData.max_count)
+        setUseCount(jsonData.use_count)
         if (jsonData.type === 'accumulative') {
             setIsModalSelect(true)
+        }  else if (jsonData.type === 'subscription' && jsonData.is_active_for_user) {
+            setIsModalPromo(true)
         } else {
             setIsModalDefault(true)
         }
+
         setTimeout(() => {
             isCanScan = true;
         }, 2000)
@@ -256,6 +294,9 @@ export const Scan = ({ navigation }) => {
                     currentUserId={currentUserId}
                     idManager={idManager}
                     currentOfferName={currentOfferName}
+                    currentOfferType={currentOfferType}
+                    maxCount={maxCount}
+                    useCount={useCount}
                     cancelAction={cancelAction}
                 />
                 <ModalBonuses

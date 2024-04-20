@@ -2,12 +2,19 @@ import React from "react";
 import {StyleSheet, Text, View, Image, TouchableWithoutFeedback, Button } from 'react-native';
 import Modal from "react-native-modal"
 
-export const ModalPromotion = ({isVisible, useOffer, currentOfferName, currentOfferId, currentUserId, idManager, cancelAction}) => {
+export const ModalPromotion = ({isVisible, useOffer, currentOfferName, currentOfferId,
+    currentUserId, idManager, cancelAction, currentOfferType, maxCount, useCount}) => {
     const [currentNumber, setCurrentNumber] = React.useState(1)
     const [disabledBtn, setDisabledBtn] = React.useState(false)
 
     const plusOne = () => {
-        setCurrentNumber(currentNumber + 1)
+        if (currentOfferType === 'subscription') {
+            if (currentNumber < maxCount - useCount) {
+                setCurrentNumber(currentNumber + 1)
+            }
+        } else {
+            setCurrentNumber(currentNumber + 1)
+        }
     }
 
     const minusOne = () => {
@@ -16,14 +23,21 @@ export const ModalPromotion = ({isVisible, useOffer, currentOfferName, currentOf
         }
     }
 
+    const title = () => {
+        if (currentOfferType === 'subscription') {
+            return 'Использовать подписку'
+        }
+        return 'Применить акцию'
+    }
+
     return (
         <Modal isVisible={isVisible}
             animationType="slide"
             onShow={() => {setCurrentNumber(1); setDisabledBtn(false)}}
             transparent={true}>
             <View style={styles.modalView}>
-                <Text style={{ color: 'black', fontSize: 20, fontWeight: '600' }}>Применить акцию</Text>
-                <Text style={{ color: 'black', fontSize: 16, fontWeight: '600' }}>Aкция: "{currentOfferName}"</Text>
+                <Text style={{ color: 'black', fontSize: 20, fontWeight: '600', marginBottom: 10 }}>{title()}</Text>
+                <Text style={{ color: 'black', fontSize: 17, fontWeight: '600' }}>{currentOfferName}</Text>
                 <View style={styles.countStyle}>
                     <TouchableWithoutFeedback onPress={minusOne}>
                         <Image source={require('../../../../assets/minus.png')} />

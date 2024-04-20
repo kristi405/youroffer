@@ -6,7 +6,6 @@ export const PromotionView = (route) => {
 
     const CircleView = ({source}) => {
         if (source) {
-            console.log('222222', item)
             return (<Image source={source} style={styles.image} />)
         }
         return (<View style={styles.image}></View>);
@@ -20,10 +19,18 @@ export const PromotionView = (route) => {
         )
     }
 
+    const countOfCircle = () => {
+        if (item.type === 'accumulative') {
+            return item.max_count + 1
+        }
+
+        return item.max_count
+    }
+
     return (
         <View style={styles.container}>
             {
-                Array.from({ length: item.max_count + 1 }).map((_, index) => (
+                Array.from({ length: countOfCircle() }).map((_, index) => (
                     <Circle
                         key={index}
                         source={index == item.max_count && item.type == 'accumulative' ? require('../../../../assets/bonus1.png') : null}

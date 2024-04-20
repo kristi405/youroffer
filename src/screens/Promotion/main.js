@@ -58,10 +58,18 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     }
 
     const openQr = async (props) => {
-        console.log('3333333', item)
         const user = await getUser()
         fromQR = true
-        navigation.navigate('QrCodeScreen', { data: { userId: user.id, itemId: ids, name: item.name, type: item.type, bonuses: offer.bonuses, max_count: item.max_count} })
+        navigation.navigate('QrCodeScreen', { data: {
+            userId: user.id,
+            itemId: ids,
+            name: item.name,
+            type: item.type,
+            bonuses: offer.bonuses,
+            max_count: item.max_count,
+            use_count: item.use_count || 0,
+            is_active_for_user:  item.is_active_for_user
+        }})
     }
 
     const AccumulativePromotionView = () => {
@@ -91,6 +99,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const ButtonView = ({buttonTitle}) => {
         if (item.type == 'default' && !item.generate_qr) return null
+        if (item.type == 'discount' && item.is_active_for_user) return buttonTitle
         return (
             <TouchableOpacity style={styles.buttonStyle} onPress={openQr}>
                 <Text style={styles.showPromotionText}> {buttonTitle} </Text>
@@ -114,6 +123,52 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         }, 200)
     }
 
+
+    const btnText = () => {
+        if (item.type === 'subscription' && !item.is_active_for_user)  {
+            return 'Активировать подписку'
+        }
+
+        if (item.type === 'subscription' && item.is_active_for_user)  {
+            return 'Воспользоваться подпиской'
+        }
+
+        if (item.type === 'discount' && !item.is_active_for_user)  {
+            return 'Активировать скидку'
+        }
+
+        if (item.type === 'discount' &&
+            item.is_active_for_user &&
+            item.reset_after_days &&
+            item.days_to_reset)  {
+            const date = new Date(item.start_offer_time);
+            date.setDate(date.getDate() + item.days_to_reset);
+            return (
+                <View style={styles.activeDiscountText}>
+                    <Text style={styles.activeDiscountText}>Ваша скидка активна</Text>
+                    <Text style={styles.activeDiscountText}>до: {date.toLocaleString('Ru', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        year: 'numeric',
+                        month: "long",
+                        day: 'numeric'
+
+                    })}</Text>
+                </View>
+            )
+        }
+
+        if (item.type === 'discount' && item.is_active_for_user)  {
+            return (
+                <View style={styles.activeDiscountText}>
+                    <Text style={styles.activeDiscountText}>Ваша скидка активна</Text>
+                </View>
+            )
+        }
+
+        return 'Воспользоваться акцией'
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -132,7 +187,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.descriptionText}>Описание акции:</Text>
                 <Text style={styles.contentText}>{item.description}</Text>
                 <View style={styles.button}>
-                    <ButtonView buttonTitle = {!item.is_active_for_user ? 'Активировать подписку' : 'Воспользоваться акцией'} />
+                    <ButtonView buttonTitle = {btnText()} />
                 </View>
                 <View style={styles.circle}>
                     <AccumulativePromotionView />
@@ -155,6 +210,12 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 }
 
 const styles = StyleSheet.create({
+    activeDiscountText: {
+        fontSize: 20,
+        fontWeight: '700',
+        color: '#0EA47A',
+        textAlign: 'center'
+    },
     container: {
         flex: 1,
         justifyContent: 'space-between',
