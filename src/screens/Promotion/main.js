@@ -194,6 +194,22 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             )
         }
 
+        if (item.type === 'accumulative' && item.reset_after_days && item.days_to_reset) {
+            const date = new Date(item.start_offer_time);
+            date.setDate(date.getDate() + item.days_to_reset);
+            return (
+                <View style={styles.button}>
+                    <Text style={styles.timeToText}>Действует до: {date.toLocaleString('Ru', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        year: 'numeric',
+                        month: "long",
+                        day: 'numeric'
+                    })}</Text>
+                </View>
+            )
+        }
+
         return null
     }
 
