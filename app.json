@@ -3,7 +3,7 @@
     "name": "myOffers",
     "scheme": "youoffer",
     "slug": "youoffer",
-    "version": "1.0.28",
+    "version": "1.0.29",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -73,7 +73,7 @@
       }
     },
     "android": {
-      "versionCode": 28,
+      "versionCode": 29,
       "package": "com.offer.youoffer",
       "config": {
         "googleMaps": {
