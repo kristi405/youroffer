@@ -194,7 +194,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             )
         }
 
-        if (item.type === 'accumulative' && item.reset_after_days && item.days_to_reset) {
+        if (item.type === 'accumulative' && item.reset_after_days && item.days_to_reset && item.use_count > 0) {
             const date = new Date(item.start_offer_time);
             date.setDate(date.getDate() + item.days_to_reset);
             return (
