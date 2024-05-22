@@ -12,6 +12,7 @@ import { EditScreen } from '../screens/EditUser/main';
 import { OnboardingScreen } from '../screens/Onboarding/main';
 import { ContactUs } from '../screens/ContactUs/main';
 import { Region } from '../screens/Region/main';
+import { BusinessPointOnMap } from '../screens/BusinessPointOnMap/main';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,15 @@ export const Navigator = () => {
                 name="CodeScreen"
                 component={CodeScreen}
                 options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="BusinessPointOnMap"
+                component={BusinessPointOnMap}
+                options={{
+                    title: '',
+                    headerTintColor: '#0EA47A',
+                    headerStyle: { backgroundColor: 'black' }
+                }}
             />
             <Stack.Screen
                 name="CreateUserScreen"

@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import MapView from "react-native-map-clustering";
 import { Marker } from 'react-native-maps';
 import { useState } from 'react';
 import Modal from 'react-native-modal';
-import BusinessPointsStore from "../../stores/businessPoints";
 import { MAP_STYLE, getLocation } from '../../services/geo'
 import { getRegion } from '../../services/auth'
 import { FILE_URL } from '../../services/constants'
@@ -17,8 +16,8 @@ async function getCurrentCoordinates() {
 
 getCurrentCoordinates()
 
-export const Map = observer(({ navigation, route }) => {
-    const [item, setItem] = useState(route?.params?.data)
+export const BusinessPointOnMap = observer(({ navigation, route }) => {
+    const [bp, setBp] = useState(route?.params?.data)
     const [selectedBp, setSelectedBp] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [regionCoord, setRegionCoord] = useState({
@@ -65,32 +64,31 @@ export const Map = observer(({ navigation, route }) => {
                 mapType="standard"
                 userInterfaceStyle="dark"
                 style={styles.map}
-                showsUserLocation={ CURRENT_COORD?.latitude ?  true : false }
+                showsUserLocation={CURRENT_COORD?.latitude ? true : false}
                 customMapStyle={MAP_STYLE}
                 tracksViewChanges={false}
                 region={{
-                    latitude: CURRENT_COORD ? CURRENT_COORD.latitude : regionCoord.latitude,
-                    longitude: CURRENT_COORD ? CURRENT_COORD.longitude : regionCoord.longitude,
-                    latitudeDelta: 0.15,
-                    longitudeDelta: 0.15,
+                    latitude: parseFloat(bp.lat),
+                    longitude: parseFloat(bp.lng),
+                    latitudeDelta: 0.02,
+                    longitudeDelta: 0.02,
                 }}
                 clusterColor='red'
                 cluster={true}
                 clusterRadius={80}
                 minimumClusterSize={10}>
-                    {BusinessPointsStore.all.map((bp) => {
-                        return (<Marker
-                            key={bp.id}
-                            coordinate={{ latitude: parseFloat(bp.lat), longitude: parseFloat(bp.lng) }}
-                            pinColor={'red'}
-                            onPress={(e) => {
-                                setSelectedBp(bp)
-                                setIsModalVisible(true)
-                            }}
-                            tracksViewChanges={false}
-                        />)
-                        })}
-                </MapView>
+                <Marker
+                    key={bp.id}
+                    coordinate={{ latitude: parseFloat(bp.lat), longitude: parseFloat(bp.lng) }}
+                    pinColor={'red'}
+                    onPress={(e) => {
+                        setSelectedBp(bp)
+                        console.log('666666666', selectedBp)
+                        setIsModalVisible(true)
+                    }}
+                    tracksViewChanges={false}
+                />
+            </MapView>
             {selectedBp && <View style={styles.modal}>
                 <Modal isVisible={isModalVisible} onBackdropPress={() => setIsModalVisible(false)} style={styles.modal}>
                     <View style={styles.modalContainer}>
@@ -223,8 +221,3 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
 })
-
-
-
-
-

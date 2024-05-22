@@ -34,7 +34,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 timers = []
             }
             // если мы вернулись из QR делаем еще несколько запросов
-            if (fromQR && ['accumulative', 'subscription',  'discount'].includes(item.type)) {
+            if (fromQR && ['accumulative', 'subscription', 'discount'].includes(item.type)) {
                 fromQR = false
                 timers.push(init(3000))
                 timers.push(init(6000))
@@ -60,16 +60,18 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const openQr = async (props) => {
         const user = await getUser()
         fromQR = true
-        navigation.navigate('QrCodeScreen', { data: {
-            userId: user.id,
-            itemId: ids,
-            name: item.name,
-            type: item.type,
-            bonuses: offer.bonuses,
-            max_count: item.max_count,
-            use_count: item.use_count || 0,
-            is_active_for_user:  item.is_active_for_user
-        }})
+        navigation.navigate('QrCodeScreen', {
+            data: {
+                userId: user.id,
+                itemId: ids,
+                name: item.name,
+                type: item.type,
+                bonuses: offer.bonuses,
+                max_count: item.max_count,
+                use_count: item.use_count || 0,
+                is_active_for_user: item.is_active_for_user
+            }
+        })
     }
 
     const AccumulativePromotionView = () => {
@@ -80,16 +82,16 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     }
 
     const AccumulativeBonusView = () => {
-        if (item.type == 'accumulative' && item.bonuses)  {
+        if (item.type == 'accumulative' && item.bonuses) {
             return (
-                <BonusView data={item}/>
+                <BonusView data={item} />
             )
         }
         return null
     }
 
     const SubscriptionPromotionView = () => {
-        if (item.type == 'subscription' && item.is_active_for_user)  {
+        if (item.type == 'subscription' && item.is_active_for_user) {
             return (
                 <PromotionView data={item} />
             )
@@ -97,7 +99,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         return null
     }
 
-    const ButtonView = ({buttonTitle}) => {
+    const ButtonView = ({ buttonTitle }) => {
         if (item.type == 'default' && !item.generate_qr) return null
         if (item.type == 'discount' && item.is_active_for_user) return buttonTitle
         if (offer.type == 'subscription' && offer.use_count === offer.max_count) {
@@ -126,29 +128,32 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         clearTimeout(timer)
         timer = setTimeout(() => {
             item.favorite = !offer.favorite
-            setOffer({...offer, favorite: !offer.favorite})
+            setOffer({ ...offer, favorite: !offer.favorite })
             PromotionStore.addToFavorite(offer.id, !offer.favorite)
         }, 200)
     }
 
+    const openMap = bp => {
+        navigation.navigate('BusinessPointOnMap', { data: bp })
+    }
 
     const btnText = () => {
-        if (item.type === 'subscription' && !item.is_active_for_user)  {
+        if (item.type === 'subscription' && !item.is_active_for_user) {
             return 'Активировать подписку'
         }
 
-        if (item.type === 'subscription' && item.is_active_for_user)  {
+        if (item.type === 'subscription' && item.is_active_for_user) {
             return 'Воспользоваться подпиской'
         }
 
-        if (item.type === 'discount' && !item.is_active_for_user)  {
+        if (item.type === 'discount' && !item.is_active_for_user) {
             return 'Активировать скидку'
         }
 
         if (item.type === 'discount' &&
             item.is_active_for_user &&
             item.reset_after_days &&
-            item.days_to_reset)  {
+            item.days_to_reset) {
             const date = new Date(item.start_offer_time);
             date.setDate(date.getDate() + item.days_to_reset);
             return (
@@ -166,7 +171,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             )
         }
 
-        if (item.type === 'discount' && item.is_active_for_user)  {
+        if (item.type === 'discount' && item.is_active_for_user) {
             return (
                 <View style={styles.activeDiscountText}>
                     <Text style={styles.activeDiscountText}>Ваша скидка активна</Text>
@@ -231,7 +236,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.descriptionText}>Описание акции:</Text>
                 <Text style={styles.contentText}>{item.description}</Text>
                 <View style={styles.button}>
-                    <ButtonView buttonTitle = {btnText()} />
+                    <ButtonView buttonTitle={btnText()} />
                 </View>
                 <TimeToText />
                 <View style={styles.circle}>
@@ -243,10 +248,12 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.addressTitle}>Акция доступна по адресу:</Text>
                 {item.business_points?.map(bp => {
                     return (
-                    <View style={styles.addressList} key={bp.id}>
-                        <Image source={require('../../../assets/mapIcon.png')} />
-                        <Text style={styles.address}>{bp.name}: {bp.address}</Text>
-                    </View>
+                        <TouchableWithoutFeedback style={styles.addressList} onPress={() => { openMap(bp) }}>
+                            <View style={styles.addressList} key={bp.id}>
+                                <Image style={styles.mapIcon} source={require('../../../assets/mapIcon.png')} />
+                                <Text style={styles.address}>{bp.name}: {bp.address}</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     )
                 })}
             </ScrollView>
@@ -328,13 +335,19 @@ const styles = StyleSheet.create({
     addressList: {
         flexDirection: 'row',
         paddingHorizontal: 10,
+        gap: 3
     },
     address: {
-        fontSize: 13,
-        color: '#fff',
-        paddingTop: 5,
+        fontSize: 14,
+        color: 'white',
         paddingHorizontal: 10,
-        opacity: 0.6
+        opacity: 0.6,
+        textDecorationLine: 'underline',
+    },
+    mapIcon: {
+        height: 27,
+        width: 27,
+        tintColor: '#0EA47A',
     },
     descriptionText: {
         fontSize: 16,

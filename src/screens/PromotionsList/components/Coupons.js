@@ -13,6 +13,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#434343',
   },
+  headerView: {
+    flexDirection: 'row',
+    paddingTop: 10,
+    gap: 8,
+    paddingHorizontal: 10
+  },
+  avatar: {
+    width: 20,
+    height: 20,
+    borderRadius: 10
+  },
   textStyle: {
     fontSize: 24,
     textAlign: 'center',
@@ -64,10 +75,9 @@ const styles = StyleSheet.create({
   },
   businessPointsName: {
     fontSize: 14,
-    color: 'gray',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 5,
+    fontWeight: '500',
+    color: '#0EA47A',
+    paddingRight: 15
   },
   save: {
     alignItems: 'flex-end',
@@ -163,7 +173,8 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
           onChange={(event) => {
             if (isLoading) return;
             setIsLoading(true)
-            handleValueChange(event.nativeEvent.selectedSegmentIndex)}
+            handleValueChange(event.nativeEvent.selectedSegmentIndex)
+          }
           }
         /> : null}
       {isLoading ? <Loading /> : <Coupons />}
@@ -198,7 +209,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
           <Text style={styles.emptyText}>Нет доступных акций</Text>
           <Text style={styles.emptyText}>Для загрузки сделайте свайп вниз</Text>
           <Text></Text>
-          <Image style={styles.emptyImg}  source={require('../../../../assets/swipe-down.png')} />
+          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.png')} />
         </View>
       )
     }
@@ -257,7 +268,10 @@ const Item = ({ navigation, item }) => {
       <View style={styles.coupon}>
         <View style={styles.item}>
           <Image source={{ uri: `${FILE_URL}${offer.img}.${offer.img_ext}` }} style={styles.icon} />
-          <Text style={styles.businessPointsName}>{offer.business_points[0].name}</Text>
+          <View style={styles.headerView}>
+            <Image source={{ uri: `${FILE_URL}${offer.business_points[0].img}.${offer.business_points[0].img_ext}` }} style={styles.avatar} />
+            <Text style={styles.businessPointsName}>{offer.business_points[0].name}</Text>
+          </View>
           <Text style={styles.title}>{offer.name}</Text>
         </View>
         <View style={styles.save}>
