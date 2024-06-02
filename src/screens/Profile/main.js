@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Image, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { getUser } from '../../services/auth'
+import Constants from "expo-constants"
 
 export const Profile = ({ navigation }) => {
     const [id, setId] = useState('')
@@ -28,6 +29,7 @@ export const Profile = ({ navigation }) => {
                 <TouchableWithoutFeedback>
                     <View style={styles.item}>
                         <Text style={styles.idStyle}>Ваш ID: {id}</Text>
+                        <Text style={styles.versionStyle}>Версия: {Constants.easConfig.version}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <FlatList
@@ -64,6 +66,12 @@ const styles = StyleSheet.create({
     },
     idStyle: {
         fontSize: 20,
+        color: 'white',
+        opacity: 0.6,
+        fontWeight: '700',
+    },
+    versionStyle: {
+        fontSize: 12,
         color: 'white',
         opacity: 0.6,
         fontWeight: '700',

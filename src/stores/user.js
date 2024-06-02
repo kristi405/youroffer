@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
 import * as Sentry from 'sentry-expo';
+import { setUser } from '../services/auth'
 
 class UserStore {
     role;
@@ -15,6 +16,7 @@ class UserStore {
         try {
             const resp = await api.get(`/api/v1/user/`)
             this.role = resp.data.role
+            setUser(resp.data)
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error

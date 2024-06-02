@@ -99,14 +99,14 @@ export const Map = observer(({ navigation, route }) => {
                                 <Image source={{ uri: `${FILE_URL}${selectedBp.img}.${selectedBp.img_ext}` }} style={styles.image} />
                                 <View style={styles.vetricalStack}>
                                     <Text style={styles.name}>{selectedBp.name}</Text>
-                                    {selectedBp.dist && <View style={styles.stack}>
+                                    <View style={styles.stack}>
                                         <Image source={require('../../../assets/mapIcon.png')} style={styles.mapIcon} />
-                                        <Text style={styles.distans}>{selectedBp.dist / 1000} км</Text>
-                                    </View>}
-                                    {selectedBp.dist && <View style={styles.stack}>
+                                        <Text style={styles.distans}>{selectedBp.dist ? selectedBp.dist / 1000 : '-'} {selectedBp.dist ? 'км' : ''}</Text>
+                                    </View>
+                                    <View style={styles.stack}>
                                         <Image source={require('../../../assets/time.png')} style={styles.timeIcon} />
                                         <Text style={styles.distans}>{workTime(selectedBp)}</Text>
-                                    </View>}
+                                    </View>
                                 </View>
                             </View>
                             <TouchableOpacity style={styles.buttonStyle} onPress={() => openDetail(selectedBp)}>

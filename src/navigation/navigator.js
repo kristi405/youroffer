@@ -43,11 +43,11 @@ export const Navigator = () => {
             <Stack.Screen
                 name="BusinessPointOnMap"
                 component={BusinessPointOnMap}
-                options={{
-                    title: '',
+                options={({ route }) => ({
+                    title: route.params.name,
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
-                }}
+                })}
             />
             <Stack.Screen
                 name="CreateUserScreen"

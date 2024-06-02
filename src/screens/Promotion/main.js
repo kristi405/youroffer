@@ -134,7 +134,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     }
 
     const openMap = bp => {
-        navigation.navigate('BusinessPointOnMap', { data: bp })
+        navigation.navigate('BusinessPointOnMap', { data: bp, name: bp.name })
     }
 
     const btnText = () => {
@@ -248,7 +248,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.addressTitle}>Акция доступна по адресу:</Text>
                 {item.business_points?.map(bp => {
                     return (
-                        <TouchableWithoutFeedback style={styles.addressList} onPress={() => { openMap(bp) }}>
+                        <TouchableWithoutFeedback key={bp.id} style={styles.addressList} onPress={() => { openMap(bp) }}>
                             <View style={styles.addressList} key={bp.id}>
                                 <Image style={styles.mapIcon} source={require('../../../assets/mapIcon.png')} />
                                 <Text style={styles.address}>{bp.name}: {bp.address}</Text>
@@ -335,11 +335,13 @@ const styles = StyleSheet.create({
     addressList: {
         flexDirection: 'row',
         paddingHorizontal: 10,
-        gap: 3
+        alignItems: 'center',
+        gap: 3,
+        marginBottom: 15
     },
     address: {
         fontSize: 14,
-        color: 'white',
+        color: '#0EA47A',
         paddingHorizontal: 10,
         opacity: 0.6,
         textDecorationLine: 'underline',

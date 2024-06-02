@@ -17,7 +17,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingTop: 10,
     gap: 8,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    width: '95%',
+    alignItems:'center'
   },
   avatar: {
     width: 20,

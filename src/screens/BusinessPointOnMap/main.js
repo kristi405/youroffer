@@ -4,10 +4,11 @@ import MapView from "react-native-map-clustering";
 import { Marker } from 'react-native-maps';
 import { useState } from 'react';
 import Modal from 'react-native-modal';
-import { MAP_STYLE, getLocation } from '../../services/geo'
+import { MAP_STYLE, getLocation, distanceBetweenGeoPoints } from '../../services/geo'
 import { getRegion } from '../../services/auth'
 import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
+
 
 let CURRENT_COORD;
 async function getCurrentCoordinates() {
@@ -35,12 +36,18 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
             latitude: Number(region.lat),
             longitude: Number(region.lng),
         })
+        setSelectedBp({
+            ...bp,
+            dist: CURRENT_COORD?.latitude && bp.lat ? distanceBetweenGeoPoints(
+                {latitude: bp.lat, longitude: bp.lng},
+                CURRENT_COORD
+            ) : null
+        })
     }
 
 
     const openDetail = (item) => {
         setIsModalVisible(false)
-        setSelectedBp(null)
         // для того чтобы окно перерисовалось и модальное окно скрылось
         setTimeout(() => {
             navigation.navigate('CompanyProfile', { data: item })
@@ -82,8 +89,6 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
                     coordinate={{ latitude: parseFloat(bp.lat), longitude: parseFloat(bp.lng) }}
                     pinColor={'red'}
                     onPress={(e) => {
-                        setSelectedBp(bp)
-                        console.log('666666666', selectedBp)
                         setIsModalVisible(true)
                     }}
                     tracksViewChanges={false}
@@ -97,14 +102,14 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
                                 <Image source={{ uri: `${FILE_URL}${selectedBp.img}.${selectedBp.img_ext}` }} style={styles.image} />
                                 <View style={styles.vetricalStack}>
                                     <Text style={styles.name}>{selectedBp.name}</Text>
-                                    {selectedBp.dist && <View style={styles.stack}>
+                                    <View style={styles.stack}>
                                         <Image source={require('../../../assets/mapIcon.png')} style={styles.mapIcon} />
-                                        <Text style={styles.distans}>{selectedBp.dist / 1000} км</Text>
-                                    </View>}
-                                    {selectedBp.dist && <View style={styles.stack}>
+                                        <Text style={styles.distans}>{selectedBp.dist ? selectedBp.dist / 1000 : '-'} {selectedBp.dist ? 'км' : ''}</Text>
+                                    </View>
+                                    <View style={styles.stack}>
                                         <Image source={require('../../../assets/time.png')} style={styles.timeIcon} />
                                         <Text style={styles.distans}>{workTime(selectedBp)}</Text>
-                                    </View>}
+                                    </View>
                                 </View>
                             </View>
                             <TouchableOpacity style={styles.buttonStyle} onPress={() => openDetail(selectedBp)}>

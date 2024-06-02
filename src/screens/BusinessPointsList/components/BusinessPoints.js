@@ -228,7 +228,7 @@ const Item = ({ navigation, item }) => {
         <View style={styles.header}>
           <View style={styles.row}>
             <Image source={require('../../../../assets/mapIcon.png')} style={styles.map} />
-            <Text style={styles.time}>{company.dist ? company.dist / 1000 + ' км' : ''}</Text>
+            <Text style={styles.time}>{company.dist ? company.dist / 1000 + ' км' : '-'}</Text>
           </View>
           <View style={styles.save}>
             <TouchableWithoutFeedback style={styles.save} onPress={() => { addToFavorite(company) }}>
