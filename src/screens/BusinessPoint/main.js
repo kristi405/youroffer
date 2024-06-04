@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite"
 
 export const CompanyProfile = observer(({ navigation, route }) => {
     const item = route?.params?.data
+    console.log('222222222', item)
 
     let workTime = '-'
     if (item.start_time && item.end_time) {

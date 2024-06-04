@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
 })
 
 //Переменная означает что мы перешли на экран акции
+// для того чтобы не перезгружать страницу и чтобы не потерялась прокрутка
 let fromPromotionPage = false
 
 export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) => {
@@ -137,10 +138,15 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   );
 
   const init = async (isFavorite) => {
-    if (fromPromotionPage) {
+    if (fromPromotionPage && !businessPointId)  {
       fromPromotionPage = false;
       return;
     }
+
+    if (businessPointId) {
+      fromPromotionPage = false;
+    }
+
     setIsLoading(true)
     PromotionStore.resetLists();
     await PromotionStore.getList(isFavorite, businessPointId);
@@ -235,7 +241,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
             progressViewOffset={5}
           />
         }
-        renderItem={({ item }) => <Item item={item} navigation={navigation} />}
+        renderItem={({ item }) => <Item item={item} navigation={navigation} businessPointId={businessPointId} />}
         keyExtractor={(item) => item.id}
         onEndReached={() => { handleOnEndReached() }}
         onEndReachedThreshold={0.1}
@@ -248,11 +254,11 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   return <Component />
 }
 
-const Item = ({ navigation, item }) => {
+const Item = ({ navigation, item, businessPointId }) => {
   const [offer, setOffer] = useState(item)
 
   const openDetail = (item) => {
-    fromPromotionPage = true;
+    if (!businessPointId) fromPromotionPage = true;
     navigation.navigate('CouponDetailScreen', { data: item })
   }
 
