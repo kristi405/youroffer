@@ -68,9 +68,9 @@ export const Scan = ({ navigation }) => {
     }
 
     const cancelAction = () => {
+        closeAllModal()
         setTimeout(() => {
             setScanned(false)
-            closeAllModal()
         }, 300)
     }
 
