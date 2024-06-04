@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     color: '#fff',
-    paddingTop: 10,
+    paddingTop: 0,
     width: 180
   },
   touch: {
@@ -118,6 +118,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  address: {
+    width: '80%',
   }
 })
 

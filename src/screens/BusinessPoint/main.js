@@ -59,6 +59,9 @@ export const CompanyProfile = observer(({ navigation, route }) => {
     };
 
 
+    const openMap = () => {
+        navigation.navigate('BusinessPointOnMap', { data: item, name: item.name })
+    }
 
     return (
         <View style={styles.container}>
@@ -82,6 +85,13 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                     </View>}
                 </View>
             </View>
+            <TouchableWithoutFeedback onPress={() => { openMap() }}>
+                <View style={styles.stack}>
+                    <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
+                    <Text style={styles.address}>{item.address}</Text>
+                </View>
+            </TouchableWithoutFeedback>
+
             {item.description && (<Text style={styles.description}>{item.description}</Text>)}
             <Coupons style={styles.listView} navigation={navigation} isCompanyPromotions={true} businessPointId={item.id} />
         </View>
@@ -122,6 +132,13 @@ const styles = StyleSheet.create({
         fontSize: 13,
         opacity: 1,
         textAlign: 'left',
+    },
+    address: {
+        fontSize: 14,
+        color: '#0EA47A',
+        paddingHorizontal: 10,
+        textDecorationLine: 'underline',
+        opacity: 0.9,
     },
     stack: {
         flexDirection: 'row',

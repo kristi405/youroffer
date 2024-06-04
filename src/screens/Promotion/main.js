@@ -328,7 +328,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#fff',
         paddingTop: 5,
-        opacity: 0.6,
         marginBottom: 10,
         marginTop: 10
     },
@@ -343,8 +342,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#0EA47A',
         paddingHorizontal: 10,
-        opacity: 0.6,
         textDecorationLine: 'underline',
+        opacity: 0.9,
     },
     mapIcon: {
         height: 27,

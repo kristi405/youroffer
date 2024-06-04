@@ -68,8 +68,10 @@ export const Scan = ({ navigation }) => {
     }
 
     const cancelAction = () => {
-        setScanned(false)
-        closeAllModal()
+        setTimeout(() => {
+            setScanned(false)
+            closeAllModal()
+        }, 300)
     }
 
     const closeAllModal = () => {
@@ -253,11 +255,17 @@ export const Scan = ({ navigation }) => {
         setMaxCount(jsonData.max_count)
         setUseCount(jsonData.use_count)
         if (jsonData.type === 'accumulative') {
-            setIsModalSelect(true)
+            setTimeout(() => {
+                setIsModalSelect(true)
+            }, 100)
         }  else if (jsonData.type === 'subscription' && jsonData.is_active_for_user) {
-            setIsModalPromo(true)
+            setTimeout(() => {
+                setIsModalPromo(true)
+            }, 100)
         } else {
-            setIsModalDefault(true)
+            setTimeout(() => {
+                setIsModalDefault(true)
+            }, 100)
         }
 
         setTimeout(() => {
