@@ -12,42 +12,44 @@ let fromQR = false;
 let timers = []
 export const CouponDetailScreen = ({ navigation, route }) => {
     const [item, setItem] = useState(route?.params?.data)
+
     const [offer, setOffer] = useState('');
     const [ids, setIds] = useState(null)
 
     useEffect(() => {
         const newIds = [...item.related] || []
         if (!newIds.includes(item.id)) {
-            newIds.push(item.id);
+            newIds.unshift(item.id);
         }
         setIds(newIds)
-    }, []);
+    }, [item]);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            init()
-            // если у нас есть незакрыте таймеры - очищаем их
-            if (timers.length) {
-                for (timer of timers) {
-                    clearTimeout(timer)
-                }
-                timers = []
+    const handler = React.useCallback(() => {
+        setItem(route?.params?.data)
+        init()
+        // если у нас есть незакрыте таймеры - очищаем их
+        if (timers.length) {
+            for (timer of timers) {
+                clearTimeout(timer)
             }
-            // если мы вернулись из QR делаем еще несколько запросов
-            if (fromQR && ['accumulative', 'subscription', 'discount'].includes(item.type)) {
-                fromQR = false
-                timers.push(init(3000))
-                timers.push(init(6000))
-                timers.push(init(12000))
-                timers.push(init(24000))
-                timers.push(init(40000))
-            }
-        }, [])
-    );
+            timers = []
+        }
+        // если мы вернулись из QR делаем еще несколько запросов
+        if (fromQR && ['accumulative', 'subscription', 'discount'].includes(item?.type)) {
+            fromQR = false
+            timers.push(init(3000))
+            timers.push(init(6000))
+            timers.push(init(12000))
+            timers.push(init(24000))
+            timers.push(init(40000))
+        }
+    }, [route?.params?.data])
+
+    useFocusEffect(handler);
 
     const init = (time) => {
         return setTimeout(async () => {
-            let offer = await OfferUsingStore.getOfferById(item.id)
+            let offer = await OfferUsingStore.getOfferById(route?.params?.data.id)
             if (offer) {
                 setOffer(offer)
                 setItem(offer)
@@ -135,6 +137,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const openMap = bp => {
         navigation.navigate('BusinessPointOnMap', { data: bp, name: bp.name })
+
     }
 
     const btnText = () => {
