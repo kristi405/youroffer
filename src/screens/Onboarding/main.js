@@ -29,12 +29,6 @@ export const OnboardingScreen = ({navigation}) => {
       if (!currentRegion) {
         navigateTo = 'Region'
       }
-
-      const user = await getUser()
-      if (['admin', 'manager'].includes(user?.role) && navigateTo === 'CouponScreen' ) {
-        showScan = true;
-      }
-
       const stauts = await AuthStore.checkVersion({
         os: Platform?.OS,
         osVersion: Platform?.Version || Platform?.osVersion,
@@ -53,18 +47,14 @@ export const OnboardingScreen = ({navigation}) => {
         setVisible(false);
         AuthStore.updateCoord()
         BusinessPointsStore.getAll()
-        navigation.replace(navigateTo, { screen: showScan ? 'Скан' : 'Акции' })
+        navigation.replace(navigateTo, { screen: 'Акции' })
       });
     }
 
     const closeModal = () => {
       setisVisibleModal(false)
       setTimeout(async () => {
-        const user = await getUser()
-        if (['admin', 'manager'].includes(user?.role) && navigateTo === 'CouponScreen') {
-          showScan = true;
-        }
-        navigation.replace(navigateTo, { screen: showScan ? 'Скан' : 'Акции' })
+        navigation.replace(navigateTo, { screen: 'Акции' })
       }, 500);
     }
 

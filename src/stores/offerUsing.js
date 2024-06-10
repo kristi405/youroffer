@@ -8,10 +8,10 @@ class OfferUsingStore {
         makeAutoObservable(this)
     }
 
-    async useOffer(ids, id_user, id_waiter, count) {
+    async useOffer({number_client, id_offer, id_waiter, count}) {
         let status = REQUEST_STATUS.success
         try {
-            const resp = await api.patch('api/v1/offer/using', {ids, id_user, id_waiter, count })
+            const resp = await api.patch('api/v2/offer/using', {number_client, id_offer, id_waiter, count})
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
@@ -23,10 +23,10 @@ class OfferUsingStore {
         return [];
     }
 
-    async useBonuses(id_offer, id_user, id_waiter, bonuses) {
+    async useBonuses({id_offer, number_client, id_waiter, bonuses}) {
         let status = REQUEST_STATUS.success
         try {
-            const resp = await api.patch('api/v1/offer/using_bonusess', {id_user, id_offer, id_waiter, bonuses })
+            const resp = await api.patch('api/v2/offer/using_bonusess', {number_client, id_offer, id_waiter, bonuses })
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
@@ -48,6 +48,23 @@ class OfferUsingStore {
             console.log(e)
             Sentry.Native.captureException(e, (scope) => {
                 scope.setTransactionName('OfferUsingStore:getOfferById');
+                return scope;
+            });
+        }
+    }
+
+    async getOfferToScan({user_number, offer_number}) {
+        let status =  REQUEST_STATUS.success
+        try {
+            const resp = await api.get('/api/v2/offer/offer_to_scan', {
+                params: { user_number, offer_number }
+            })
+            return resp.data
+        } catch (e) {
+            status =  REQUEST_STATUS.error
+            console.log(e)
+            Sentry.Native.captureException(e, (scope) => {
+                scope.setTransactionName('OfferUsingStore:getOfferToScan');
                 return scope;
             });
         }

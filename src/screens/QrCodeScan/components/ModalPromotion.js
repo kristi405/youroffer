@@ -51,7 +51,7 @@ export const ModalPromotion = ({isVisible, useOffer, currentOfferName, currentOf
                     <Button onPress={cancelAction}
                         title="Отмена"
                         color='red' />
-                    <Button onPress={() => { useOffer(currentOfferId, currentUserId, idManager, currentNumber); }}
+                    <Button onPress={() => { setDisabledBtn(true); useOffer(currentNumber); }}
                         title="Применить"
                         disabled={disabledBtn}
                         color='#0EA47A' />

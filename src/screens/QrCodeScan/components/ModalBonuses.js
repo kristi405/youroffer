@@ -40,7 +40,7 @@ export const ModalBonuses = ({isVisible, useBonuses, currentOfferName, currentOf
                     <Button onPress={cancelAction}
                         title="Отмена"
                         color='red' />
-                    <Button onPress={() => { setDisabledBtn(true); useBonuses(currentOfferId[0], currentUserId, idManager, currentNumber);}}
+                    <Button onPress={() => { setDisabledBtn(true); useBonuses(currentNumber);}}
                         title="Применить"
                         color='#0EA47A'
                         disabled={disabledBtn}

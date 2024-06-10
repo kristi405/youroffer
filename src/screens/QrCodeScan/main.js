@@ -15,6 +15,7 @@ export const Scan = ({ navigation }) => {
     const [scanned, setScanned] = useState(false);
     const [isManagerView, setIsManagerView] = useState(false);
     const [idManager, setIdManager] = useState(null);
+    const [isUsing, setIsUsing] = useState(false);
     const [managers, setManagers] = useState();
     const [isModalSelect, setIsModalSelect] = React.useState(false);
     const [isModalPromo, setIsModalPromo] = React.useState(false);
@@ -24,7 +25,6 @@ export const Scan = ({ navigation }) => {
     const [currentUserId, setCurrentUserId] = React.useState('')
     const [currentOfferId, setCurrentOfferId] = React.useState('')
     const [currentOfferType, setCurrentOfferType] = React.useState('')
-    const [isActiveForUser, setisActiveForUser] = React.useState(false)
     const [maxCount, setMaxCount] = React.useState(0)
     const [bonuses, setBonuses] = React.useState(0)
     const [useCount, setUseCount] = React.useState(0)
@@ -81,14 +81,23 @@ export const Scan = ({ navigation }) => {
         setIsModalDefault(false)
     }
 
-    const useOffer = async (id_offer, id_user, id_manager, count) => {
-        const response = await OfferUsingStore.useOffer(id_offer, id_user, id_manager, count)
+    const useOffer = async (count) => {
+        if (isUsing) return;
+        setIsUsing(true)
+        const response = await OfferUsingStore.useOffer({
+            number_client: currentUserId,
+            id_offer: currentOfferId,
+            id_waiter: idManager,
+            count
+        })
         if (!response?.length) {
             Alert.alert('', "Произошла ошибка",
                 [
                     {
                         text: 'ОК',
-                        onPress: () => setScanned(false),
+                        onPress: () => {
+                            setScanned(false)
+                        },
                         style: 'cancel',
                     },
                 ])
@@ -116,13 +125,19 @@ export const Scan = ({ navigation }) => {
                         },
                         style: 'cancel',
                     },
-                ])
+                ]
+            )
         }
         closeAllModal()
     }
 
-    const useBonuses = async (id_offer, id_user, id_manager, count) => {
-        const response = await OfferUsingStore.useBonuses(id_offer, id_user, id_manager, count)
+    const useBonuses = async (bonuses) => {
+        const response = await OfferUsingStore.useBonuses({
+            number_client: currentUserId,
+            id_offer: currentOfferId,
+            id_waiter: idManager,
+            bonuses
+        })
         if (!response || response.error) {
             Alert.alert('', "Произошла ошибка",
                 [
@@ -232,7 +247,8 @@ export const Scan = ({ navigation }) => {
                     <Button onPress={cancelAction}
                         title="Отмена"
                         color='red' />
-                    <Button onPress={() => { useOffer(currentOfferId, currentUserId, idManager) }}
+                    <Button onPress={() => { useOffer() }}
+                        disabled={isUsing}
                         title="Применить"
                         color='#0EA47A' />
                 </View>
@@ -240,25 +256,50 @@ export const Scan = ({ navigation }) => {
         </Modal>)
     }
 
+    const showAccessModal = () => {
+        Alert.alert('Нет доступа', "Пожалуйста, проверьте акцию, которую показывает вам клиент.",
+            [
+                {
+                    text: 'ОК',
+                    onPress: () => {
+                        setScanned(false)
+                    },
+                    style: 'cancel',
+                },
+            ]
+        )
+    }
+
     let isCanScan = true;
     const handleBarCodeScanned = async ({ type, data }) => {
         if(!isCanScan) return;
         isCanScan = false;
+        setIsUsing(false)
         setScanned(true);
         const jsonData = JSON.parse(data.trim())
-        setCurrentOfferName(jsonData.name_offer)
-        setCurrentUserId(jsonData.id_user)
-        setCurrentOfferId(jsonData.id_offer)
-        setBonuses(jsonData.bonuses)
-        setCurrentOfferType(jsonData.type)
-        setisActiveForUser(!!jsonData.is_active_for_user)
-        setMaxCount(jsonData.max_count)
-        setUseCount(jsonData.use_count)
-        if (jsonData.type === 'accumulative') {
+
+        const offer = await OfferUsingStore.getOfferToScan({
+            user_number: jsonData[0],
+            offer_number: jsonData[1],
+        });
+
+        if (!offer) {
+            showAccessModal();
+            return;
+        }
+
+        setCurrentOfferName(offer.name)
+        setCurrentUserId(jsonData[0])
+        setCurrentOfferId(offer.id)
+        setBonuses(offer.bonuses)
+        setCurrentOfferType(offer.type)
+        setMaxCount(offer.max_count)
+        setUseCount(offer.use_count || 0)
+        if (offer.type === 'accumulative') {
             setTimeout(() => {
                 setIsModalSelect(true)
             }, 100)
-        }  else if (jsonData.type === 'subscription' && jsonData.is_active_for_user) {
+        }  else if (offer.type === 'subscription' && offer.is_active_for_user) {
             setTimeout(() => {
                 setIsModalPromo(true)
             }, 100)
@@ -305,6 +346,7 @@ export const Scan = ({ navigation }) => {
                     currentOfferType={currentOfferType}
                     maxCount={maxCount}
                     useCount={useCount}
+                    isUsing={isUsing}
                     cancelAction={cancelAction}
                 />
                 <ModalBonuses
@@ -315,6 +357,7 @@ export const Scan = ({ navigation }) => {
                     idManager={idManager}
                     currentOfferName={currentOfferName}
                     cancelAction={cancelAction}
+                    isUsing={isUsing}
                     bonuses={bonuses}
                 />
                 <ModalDefault/>

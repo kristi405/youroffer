@@ -64,6 +64,8 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         fromQR = true
         navigation.navigate('QrCodeScreen', {
             data: {
+                user_number: user.number,
+                offer_number: offer.number,
                 userId: user.id,
                 itemId: ids,
                 name: item.name,

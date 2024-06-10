@@ -4,21 +4,25 @@ import SvgQRCode from 'react-native-qrcode-svg';
 
 export const QrCodeScreen = ({navigation, route}) => {
     const data = route?.params?.data
-    const json = JSON.stringify({
-        id_offer: data.itemId,
-        id_user: data.userId,
-        name_offer: data.name,
-        type: data.type,
-        bonuses: data.bonuses,
-        is_active_for_user: data.is_active_for_user,
-        max_count: data.max_count,
-        use_count: data.use_count
-    })
+    // const json = JSON.stringify({
+    //     id_offer: data.itemId,
+    //     id_user: data.userId,
+    //     name_offer: data.name,
+    //     type: data.type,
+    //     bonuses: data.bonuses,
+    //     is_active_for_user: data.is_active_for_user,
+    //     max_count: data.max_count,
+    //     use_count: data.use_count
+    // })
+
+    const newJson = JSON.stringify(
+        [data.user_number, data.offer_number]
+    )
 
     return (
         <View style={styles.container}>
             <View style={styles.qrCode}>
-                <SvgQRCode value={json} size={250} />
+                <SvgQRCode value={newJson} size={250} />
             </View>
             <Text style={styles.acseptPromotion}> * Для применения акции менеджер должен отсканировать ваш QR code</Text>
         </View>

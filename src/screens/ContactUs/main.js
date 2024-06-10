@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Image, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, Linking, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native';
 import ContactUsStore from '../../stores/contactUs'
 import { useFocusEffect } from '@react-navigation/native';
 import ValidateStore from '../../stores/validate'
@@ -64,6 +64,27 @@ export const ContactUs = observer(({ navigation }) => {
         validateStroe.resetValidationByKey(key)
     }
 
+    const OpenInstagramButton = () => {
+        // https://www.instagram.com/myoffersapp/
+        return (
+            <TouchableWithoutFeedback onPress={() => {openInstagram()}}>
+                <View style={styles.header}>
+                    <Image source={require('../../../assets/instagram3.png')} style={styles.instagramImg} />
+                    <Text style={styles.title}>Перейти в Instagram</Text>
+                </View>
+            </TouchableWithoutFeedback>
+        )
+
+    };
+
+    const openInstagram = async () => {
+        try {
+            await Linking.openURL('instagram://user?username=myoffersapp')
+        } catch (e) {
+            await Linking.openURL('https://www.instagram.com/myoffersapp/')
+        }
+    };
+
     return (
         <TouchableWithoutFeedback onPress={handleScreenPress}>
             <View style={styles.container}>
@@ -79,6 +100,7 @@ export const ContactUs = observer(({ navigation }) => {
                     <Image source={require('../../../assets/web.png')} style={styles.image} />
                     <Text style={styles.title}>web: https://myoffer.life</Text>
                 </View>
+                <OpenInstagramButton/>
 
                 <View style={styles.requestBlock}>
                     <Text style={styles.requestTitle}>Оставить заявку: </Text>
@@ -122,7 +144,7 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         paddingLeft: 20,
         gap: 10
     },
@@ -141,6 +163,12 @@ const styles = StyleSheet.create({
         tintColor: '#0EA47A',
         width: 20,
         height: 20,
+        borderRadius: 5
+    },
+    instagramImg:  {
+        tintColor: '#0EA47A',
+        width: 25,
+        height: 25,
         borderRadius: 5
     },
     codeInputStyle: {

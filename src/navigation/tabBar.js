@@ -56,7 +56,7 @@ const TabBarImage = ({ focused, imgName }) => {
 }
 
 export const TabBar = () => {
-    const [isShowScan, setIsShowScan] = useState(true);
+    const [isShowScan, setIsShowScan] = useState(false);
 
     useEffect(() => {
         setTimeout(async () => {

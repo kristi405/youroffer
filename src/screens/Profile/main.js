@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image, Text, FlatList, TouchableWithoutFeedback, Linking } from 'react-native';
 import { getUser } from '../../services/auth'
 import Constants from "expo-constants"
 
@@ -19,8 +19,18 @@ export const Profile = ({ navigation }) => {
             navigation.navigate('ContactUs')
         } else if (item.id == 2) {
             navigation.navigate('Region')
+        }  else if (item.id == 3) {
+            openInstagram()
         }
     }
+
+    const openInstagram = async () => {
+        try {
+            await Linking.openURL('instagram://user?username=myoffersapp')
+        } catch (e) {
+            await Linking.openURL('https://www.instagram.com/myoffersapp/')
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -138,5 +148,10 @@ const itemData = [
         id: 2,
         title: (<Text style={styles.title}>Изменить регион</Text>),
         image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
+    },
+    {
+        id: 3,
+        title: (<Text style={styles.title}>Instagram</Text>),
+        image: (<Image source={require('../../../assets/instagram3.png')} style={styles.image} />),
     }
 ]
