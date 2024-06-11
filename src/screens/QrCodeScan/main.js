@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Text, View, StyleSheet, Image, Alert, FlatList, TouchableWithoutFeedback, Button } from 'react-native';
+import { Text, View, StyleSheet, Image, Alert, FlatList, TouchableWithoutFeedback, Button, ActivityIndicator } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import OfferUsingStore from "../../stores/offerUsing"
 import { useFocusEffect } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import { setCamerAccess, getCamerAccess } from "../../services/auth"
 import { ModalPromotion } from "./components/ModalPromotion";
 import { ModalBonuses } from "./components/ModalBonuses";
 import { Camera } from "expo-camera";
+
 
 export const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState('waiting');
@@ -28,6 +29,8 @@ export const Scan = ({ navigation }) => {
     const [maxCount, setMaxCount] = React.useState(0)
     const [bonuses, setBonuses] = React.useState(0)
     const [useCount, setUseCount] = React.useState(0)
+    const [isLoading, setIsLoading] = React.useState(false)
+
 
 
     const Errors = {
@@ -273,6 +276,7 @@ export const Scan = ({ navigation }) => {
     let isCanScan = true;
     const handleBarCodeScanned = async ({ type, data }) => {
         if(!isCanScan) return;
+        setIsLoading(true)
         isCanScan = false;
         setIsUsing(false)
         setScanned(true);
@@ -285,6 +289,7 @@ export const Scan = ({ navigation }) => {
 
         if (!offer) {
             showAccessModal();
+            setIsLoading(false)
             return;
         }
 
@@ -312,6 +317,7 @@ export const Scan = ({ navigation }) => {
         setTimeout(() => {
             isCanScan = true;
         }, 2000)
+        setIsLoading(false)
     };
 
     const scanView = () => {
@@ -327,6 +333,10 @@ export const Scan = ({ navigation }) => {
                 <Camera
                     barcodeScannerSettings={{
                         barcodeTypes: ["qr"],
+                        BarcodeSize: {
+                            height: 180,
+                            width: 180
+                        }
                     }}
                     onBarCodeScanned={(e) => {
                         if (!scanned) {
@@ -335,6 +345,7 @@ export const Scan = ({ navigation }) => {
                     }}
                     style={StyleSheet.absoluteFillObject}
                 />
+                <ActivityIndicator  animating={isLoading} style={styles.loader} color="#0EA47A"  size="large"/>
                 <ModalSelect/>
                 <ModalPromotion
                     isVisible={isModalPromo}
@@ -382,7 +393,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        paddingBottom: 50,
+        paddingBottom: "100%",
         backgroundColor: '#000000',
         color: '#FFF'
     },
@@ -396,6 +407,9 @@ const styles = StyleSheet.create({
     },
     waitingText: {
         color: '#FFF',
+    },
+    loader: {
+
     },
     container: {
         flex: 1,

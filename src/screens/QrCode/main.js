@@ -22,7 +22,7 @@ export const QrCodeScreen = ({navigation, route}) => {
     return (
         <View style={styles.container}>
             <View style={styles.qrCode}>
-                <SvgQRCode value={newJson} size={250} />
+                <SvgQRCode value={newJson} size={180} />
             </View>
             <Text style={styles.acseptPromotion}> * Для применения акции менеджер должен отсканировать ваш QR code</Text>
         </View>
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
         paddingTop: 70,
     },
     qrCode: {
-        width: 300,
-        height: 300,
+        width: 210,
+        height: 210,
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center'

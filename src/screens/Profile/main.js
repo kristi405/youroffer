@@ -151,7 +151,7 @@ const itemData = [
     },
     {
         id: 3,
-        title: (<Text style={styles.title}>Instagram</Text>),
+        title: (<Text style={styles.title}>Подпишись на нас 😉🙏👻</Text>),
         image: (<Image source={require('../../../assets/instagram3.png')} style={styles.image} />),
     }
 ]
