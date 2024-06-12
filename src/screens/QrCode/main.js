@@ -16,7 +16,13 @@ export const QrCodeScreen = ({navigation, route}) => {
     // })
 
     const newJson = JSON.stringify(
-        [data.user_number, data.offer_number]
+        [
+            parseInt(data.user_number),
+            parseInt(data.offer_number),
+            data.is_active_for_user ? 1 : 0,
+            parseInt(data.bonuses) || 0,
+            parseInt(data.use_count) || 0
+        ]
     )
 
     return (

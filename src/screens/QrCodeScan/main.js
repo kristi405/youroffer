@@ -18,6 +18,7 @@ export const Scan = ({ navigation }) => {
     const [idManager, setIdManager] = useState(null);
     const [isUsing, setIsUsing] = useState(false);
     const [managers, setManagers] = useState();
+    const [offers, setOffers] = useState([]);
     const [isModalSelect, setIsModalSelect] = React.useState(false);
     const [isModalPromo, setIsModalPromo] = React.useState(false);
     const [isModalBonuses, setIsModalBonuses] = React.useState(false);
@@ -29,9 +30,6 @@ export const Scan = ({ navigation }) => {
     const [maxCount, setMaxCount] = React.useState(0)
     const [bonuses, setBonuses] = React.useState(0)
     const [useCount, setUseCount] = React.useState(0)
-    const [isLoading, setIsLoading] = React.useState(false)
-
-
 
     const Errors = {
         "permission": "Вы не можете использовать данную акцию!",
@@ -45,6 +43,9 @@ export const Scan = ({ navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             UserStore.getUser().then(user => {
+                if (user?.offers?.length) {
+                    setOffers(user?.offers)
+                }
                 if (user?.managers?.length) {
                     setIsManagerView(true)
                     setManagers(user.managers)
@@ -260,7 +261,8 @@ export const Scan = ({ navigation }) => {
     }
 
     const showAccessModal = () => {
-        Alert.alert('Нет доступа', "Пожалуйста, проверьте акцию, которую показывает вам клиент.",
+        Alert.alert('Нет доступа',
+            "Проверьте акцию, которую вам показывает клиент. Если это акция вашей компании - то перейдите на любую другую вкалдку и вернитесь обранто на экран сканирования.",
             [
                 {
                     text: 'ОК',
@@ -276,35 +278,34 @@ export const Scan = ({ navigation }) => {
     let isCanScan = true;
     const handleBarCodeScanned = async ({ type, data }) => {
         if(!isCanScan) return;
-        setIsLoading(true)
         isCanScan = false;
         setIsUsing(false)
         setScanned(true);
-        const jsonData = JSON.parse(data.trim())
-
-        const offer = await OfferUsingStore.getOfferToScan({
-            user_number: jsonData[0],
-            offer_number: jsonData[1],
-        });
+        // 0 - user_number
+        // 1 - offer_number
+        // 2 - is_active_for_user
+        // 3 - bonusess
+        // 4 - use_count
+        const qrData = JSON.parse(data.trim())
+        const offer = offers.find(o => o.number == qrData[1])
 
         if (!offer) {
             showAccessModal();
-            setIsLoading(false)
             return;
         }
 
         setCurrentOfferName(offer.name)
-        setCurrentUserId(jsonData[0])
+        setCurrentUserId(qrData[0]) // не id а number
         setCurrentOfferId(offer.id)
         setBonuses(offer.bonuses)
         setCurrentOfferType(offer.type)
         setMaxCount(offer.max_count)
-        setUseCount(offer.use_count || 0)
+        setUseCount(qrData[4] || 0)
         if (offer.type === 'accumulative') {
             setTimeout(() => {
                 setIsModalSelect(true)
             }, 100)
-        }  else if (offer.type === 'subscription' && offer.is_active_for_user) {
+        }  else if (offer.type === 'subscription' && qrData[2]) {
             setTimeout(() => {
                 setIsModalPromo(true)
             }, 100)
@@ -317,7 +318,6 @@ export const Scan = ({ navigation }) => {
         setTimeout(() => {
             isCanScan = true;
         }, 2000)
-        setIsLoading(false)
     };
 
     const scanView = () => {
@@ -345,7 +345,6 @@ export const Scan = ({ navigation }) => {
                     }}
                     style={StyleSheet.absoluteFillObject}
                 />
-                <ActivityIndicator  animating={isLoading} style={styles.loader} color="#0EA47A"  size="large"/>
                 <ModalSelect/>
                 <ModalPromotion
                     isVisible={isModalPromo}
@@ -392,8 +391,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-end',
-        paddingBottom: "100%",
+        justifyContent: 'center',
         backgroundColor: '#000000',
         color: '#FFF'
     },
