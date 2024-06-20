@@ -100,7 +100,9 @@ export const Scan = ({ navigation }) => {
                     {
                         text: 'ОК',
                         onPress: () => {
-                            setScanned(false)
+                            setTimeout(() => {
+                                setScanned(false)
+                            }, 300)
                         },
                         style: 'cancel',
                     },
@@ -118,14 +120,18 @@ export const Scan = ({ navigation }) => {
 
         if (isError) {
             Alert.alert('', errorText);
-            setScanned(false)
+            setTimeout(() => {
+                setScanned(false)
+            }, 300)
         } else {
             Alert.alert('', "Готово! Вы успешно отсканировали QR код",
                 [
                     {
                         text: 'ОК',
                         onPress: () => {
-                            setScanned(false)
+                            setTimeout(() => {
+                                setScanned(false)
+                            }, 300)
                         },
                         style: 'cancel',
                     },
@@ -147,7 +153,11 @@ export const Scan = ({ navigation }) => {
                 [
                     {
                         text: 'ОК',
-                        onPress: () => setScanned(false),
+                        onPress: () => {
+                            setTimeout(() => {
+                                setScanned(false)
+                            }, 300)
+                        },
                         style: 'cancel',
                     },
                 ])
@@ -159,7 +169,9 @@ export const Scan = ({ navigation }) => {
             {
                 text: 'ОК',
                 onPress: () => {
-                    setScanned(false)
+                    setTimeout(() => {
+                        setScanned(false)
+                    }, 300)
                 },
                 style: 'cancel',
             },
@@ -267,7 +279,9 @@ export const Scan = ({ navigation }) => {
                 {
                     text: 'ОК',
                     onPress: () => {
-                        setScanned(false)
+                        setTimeout(() => {
+                            setScanned(false)
+                        }, 300)
                     },
                     style: 'cancel',
                 },
@@ -304,15 +318,15 @@ export const Scan = ({ navigation }) => {
         if (offer.type === 'accumulative') {
             setTimeout(() => {
                 setIsModalSelect(true)
-            }, 100)
+            }, 300)
         }  else if (offer.type === 'subscription' && qrData[2]) {
             setTimeout(() => {
                 setIsModalPromo(true)
-            }, 100)
+            }, 300)
         } else {
             setTimeout(() => {
                 setIsModalDefault(true)
-            }, 100)
+            }, 300)
         }
 
         setTimeout(() => {
