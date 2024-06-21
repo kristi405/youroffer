@@ -16,7 +16,6 @@ export const Scan = ({ navigation }) => {
     const [scanned, setScanned] = useState(false);
     const [isManagerView, setIsManagerView] = useState(false);
     const [idManager, setIdManager] = useState(null);
-    const [isUsing, setIsUsing] = useState(false);
     const [managers, setManagers] = useState();
     const [offers, setOffers] = useState([]);
     const [isModalSelect, setIsModalSelect] = React.useState(false);
@@ -36,7 +35,7 @@ export const Scan = ({ navigation }) => {
         "type": "Данный тип акции не подходит для использования сейчас это только тип default!",
         "offer_count": "Количество акций уже закончилось!",
         "user_count": "Пользователь уже использовал эту акцию!",
-        "subscription_is_already_active": "Подписка уже активна, пользователь должен назжать кнопку 'Воспользоваться подписку'",
+        "subscription_is_already_active": "Подписка уже активна, пользователь должен назжать кнопку 'Воспользоваться подпиской'",
         "discount_is_already_active": "Скидка уже активна",
     }
 
@@ -75,7 +74,7 @@ export const Scan = ({ navigation }) => {
         closeAllModal()
         setTimeout(() => {
             setScanned(false)
-        }, 300)
+        }, 600)
     }
 
     const closeAllModal = () => {
@@ -85,30 +84,35 @@ export const Scan = ({ navigation }) => {
         setIsModalDefault(false)
     }
 
+    let isUsing  = false;
+    const onPressHandler = () => {
+        isUsing = false;
+        setScanned(false)
+    }
+
+    
     const useOffer = async (count) => {
         if (isUsing) return;
-        setIsUsing(true)
+        isUsing = true;
         const response = await OfferUsingStore.useOffer({
             number_client: currentUserId,
             id_offer: currentOfferId,
             id_waiter: idManager,
             count
         })
+        closeAllModal()
         if (!response?.length) {
             Alert.alert('', "Произошла ошибка",
                 [
                     {
                         text: 'ОК',
-                        onPress: () => {
-                            setTimeout(() => {
-                                setScanned(false)
-                            }, 300)
-                        },
+                        onPress: onPressHandler,
                         style: 'cancel',
                     },
                 ])
             return;
         }
+
         let isError = false
         let errorText = 'Ошибка: '
         for (resp of response) {
@@ -119,45 +123,44 @@ export const Scan = ({ navigation }) => {
         }
 
         if (isError) {
-            Alert.alert('', errorText);
-            setTimeout(() => {
-                setScanned(false)
-            }, 300)
+            Alert.alert('', errorText, 
+                [
+                    {
+                        text: 'ОК',
+                        onPress: onPressHandler,
+                        style: 'cancel',
+                    },
+                ]
+            );
         } else {
             Alert.alert('', "Готово! Вы успешно отсканировали QR код",
                 [
                     {
                         text: 'ОК',
-                        onPress: () => {
-                            setTimeout(() => {
-                                setScanned(false)
-                            }, 300)
-                        },
+                        onPress: onPressHandler,
                         style: 'cancel',
                     },
                 ]
             )
         }
-        closeAllModal()
     }
 
     const useBonuses = async (bonuses) => {
+        if (isUsing) return;
+        isUsing = true;
         const response = await OfferUsingStore.useBonuses({
             number_client: currentUserId,
             id_offer: currentOfferId,
             id_waiter: idManager,
             bonuses
         })
+        closeAllModal()
         if (!response || response.error) {
             Alert.alert('', "Произошла ошибка",
                 [
                     {
                         text: 'ОК',
-                        onPress: () => {
-                            setTimeout(() => {
-                                setScanned(false)
-                            }, 300)
-                        },
+                        onPress: onPressHandler,
                         style: 'cancel',
                     },
                 ])
@@ -168,15 +171,11 @@ export const Scan = ({ navigation }) => {
         [
             {
                 text: 'ОК',
-                onPress: () => {
-                    setTimeout(() => {
-                        setScanned(false)
-                    }, 300)
-                },
+                onPress: onPressHandler,
                 style: 'cancel',
             },
         ])
-        closeAllModal()
+         
     }
 
     const managersView = () => {
@@ -264,7 +263,6 @@ export const Scan = ({ navigation }) => {
                         title="Отмена"
                         color='red' />
                     <Button onPress={() => { useOffer() }}
-                        disabled={isUsing}
                         title="Применить"
                         color='#0EA47A' />
                 </View>
@@ -293,7 +291,6 @@ export const Scan = ({ navigation }) => {
     const handleBarCodeScanned = async ({ type, data }) => {
         if(!isCanScan) return;
         isCanScan = false;
-        setIsUsing(false)
         setScanned(true);
         // 0 - user_number
         // 1 - offer_number
@@ -311,7 +308,7 @@ export const Scan = ({ navigation }) => {
         setCurrentOfferName(offer.name)
         setCurrentUserId(qrData[0]) // не id а number
         setCurrentOfferId(offer.id)
-        setBonuses(offer.bonuses)
+        setBonuses(qrData[3])
         setCurrentOfferType(offer.type)
         setMaxCount(offer.max_count)
         setUseCount(qrData[4] || 0)
@@ -370,7 +367,6 @@ export const Scan = ({ navigation }) => {
                     currentOfferType={currentOfferType}
                     maxCount={maxCount}
                     useCount={useCount}
-                    isUsing={isUsing}
                     cancelAction={cancelAction}
                 />
                 <ModalBonuses
@@ -381,7 +377,6 @@ export const Scan = ({ navigation }) => {
                     idManager={idManager}
                     currentOfferName={currentOfferName}
                     cancelAction={cancelAction}
-                    isUsing={isUsing}
                     bonuses={bonuses}
                 />
                 <ModalDefault/>
