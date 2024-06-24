@@ -29,7 +29,7 @@ export const CompanyProfile = observer(({ navigation, route }) => {
         }
     };
     const OpenInstagramButton = ({ instagram }) => {
-        if (instagram) {
+        if (instagram?.trim()) {
             return (
                 <TouchableWithoutFeedback onPress={() => {openInstagram(instagram)}}>
                     <View style={styles.instagramBtn}>

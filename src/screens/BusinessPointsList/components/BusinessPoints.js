@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, ActivityIndicator } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View, FlatList, RefreshControl, Image, Text, ActivityIndicator, Linking } from 'react-native';
 import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
@@ -87,13 +87,22 @@ const styles = StyleSheet.create({
     tintColor: '#0EA47A',
   },
   save: {
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    flex: 1,
+  },
+  instagramBtn: {
+    marginTop: -50,
+  },
+  instagramIcon: {
+    width: 40,
+    height: 40,
+    opacity: 0.8
   },
   title: {
     fontSize: 15,
     color: '#fff',
     paddingTop: 0,
-    width: 180
+    width: 140
   },
   touch: {
     paddingHorizontal: 10,
@@ -121,7 +130,13 @@ const styles = StyleSheet.create({
   },
   address: {
     width: '80%',
-  }
+  },
+  emptyViewInCompany: {
+    flex: 1,
+    marginTop: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
 
 
@@ -161,15 +176,31 @@ export const BusinessPoints = observer(({ navigation }) => {
   )
 
   const EmptyComponent = () => {
-    return (
-      <View style={styles.emptyView}>
-        <Text style={styles.emptyText}>Чтобы добавить в "Мои компании"</Text>
-        <View style={styles.emptyRow}>
-          <Text style={styles.emptyText}>нажмите на иконку</Text>
-          <Image source={require('../../../../assets/save.png')} />
+    if (isFavoriteList) {
+      return (
+        <View style={styles.emptyView}>
+          <Text style={styles.emptyText}>Чтобы добавить в "Мои компании"</Text>
+          <View style={styles.emptyRow}>
+            <Text style={styles.emptyText}>нажмите на иконку</Text>
+            <Image source={require('../../../../assets/save.png')} />
+          </View>
         </View>
-      </View>
-    )
+      )
+    } else {
+      return (
+        <View style={styles.emptyViewInCompany}>
+          <Text style={styles.emptyText}>Нет доступных компаний</Text>
+          <Text style={styles.emptyText}>Для загрузки сделайте свайп вниз</Text>
+          <Text></Text>
+          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.png')} />
+        </View>
+      )
+    }
+
+  }
+
+  const handleRefresh = () => {
+    BusinessPointsStore.getAll()
   }
 
   const BusinessPoints = () => (
@@ -182,6 +213,14 @@ export const BusinessPoints = observer(({ navigation }) => {
         numColumns={1}
         renderItem={({ item }) => <Item item={item} navigation={navigation} />}
         keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl
+            onRefresh={handleRefresh}
+            colors={['#0EA47A']}
+            tintColor={'white'}
+            progressViewOffset={5}
+          />
+        }
       >
       </FlatList>
     </View >
@@ -214,17 +253,42 @@ const Item = ({ navigation, item }) => {
     }, 200)
   }
 
+
+  const openInstagram = async (url) => {
+    instagram = url.split('?')[0];
+    instagram = instagram.replace("https://", '')
+    instagram = instagram.replace("www.", '')
+    instagram = instagram.replace("instagram.com/", '')
+    instagram = instagram.replace("/", '')
+    if (instagram) {
+        try {
+            await Linking.openURL(`instagram://user?username=${instagram}`)
+        } catch (e) {
+            await Linking.openURL(url)
+        }
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => { openDetail(company) }}>
       <View style={styles.businessPoint}>
         <View style={styles.item}>
           <Image source={{ uri: `${FILE_URL}${company.img}.${company.img_ext}` }} style={styles.icon} />
-          <View style={styles.column}>
-            <Text style={styles.title}>{company.name}</Text>
-            <View style={styles.row}>
-              <Image source={require('../../../../assets/time.png')} style={styles.clock} />
-              <Text style={styles.time}>{workTime}</Text>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.title}>{company.name}</Text>
+              <View style={styles.row}>
+                <Image source={require('../../../../assets/time.png')} style={styles.clock} />
+                <Text style={styles.time}>{workTime}</Text>
+              </View>
             </View>
+            {
+              company.instagram?.trim() ? <TouchableWithoutFeedback onPress={() => {openInstagram(company.instagram)}}>
+                <View style={styles.instagramBtn}>
+                  <Image source={require('../../../../assets/instagram3.png')} style={styles.instagramIcon} />
+                </View>
+              </TouchableWithoutFeedback> : null
+            }
           </View>
         </View>
 

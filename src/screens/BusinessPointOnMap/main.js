@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Linking, TouchableWithoutFeedback } from 'react-native';
 import MapView from "react-native-map-clustering";
 import { Marker } from 'react-native-maps';
 import { useState } from 'react';
@@ -65,6 +65,21 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
         return workTime;
     }
 
+    const openInstagram = async (url) => {
+        instagram = url.split('?')[0];
+        instagram = instagram.replace("https://", '')
+        instagram = instagram.replace("www.", '')
+        instagram = instagram.replace("instagram.com/", '')
+        instagram = instagram.replace("/", '')
+        if (instagram) {
+            try {
+                await Linking.openURL(`instagram://user?username=${instagram}`)
+            } catch (e) {
+                await Linking.openURL(url)
+            }
+        }
+    };
+
     return (
         <View style={styles.container}>
             <MapView
@@ -112,9 +127,20 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
                                     </View>
                                 </View>
                             </View>
-                            <TouchableOpacity style={styles.buttonStyle} onPress={() => openDetail(selectedBp)}>
-                                <Text style={styles.showPromotionText}>Посмотреть</Text>
-                            </TouchableOpacity>
+                            <View style={styles.actionsView}>
+                                <TouchableOpacity style={styles.buttonStyle} onPress={() => openDetail(selectedBp)}>
+                                    <Text style={styles.showPromotionText}>Все акции</Text>
+                                </TouchableOpacity>
+                                {
+                                    selectedBp.instagram?.trim()
+                                    ?   <TouchableWithoutFeedback style={styles.instagramBtn} onPress={() => {openInstagram(selectedBp.instagram)}}>
+                                            <View  >
+                                                <Image source={require('../../../assets/instagram3.png')} style={styles.instagramIcon} />
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    : null
+                                }
+                            </View>
                         </View>
                     </View>
                 </Modal>
@@ -224,5 +250,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10
+    },
+    actionsView: {
+        width: '100%',
+        height: 40,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+    },
+    instagramBtn: {
+        marginTop: 40,
+        marginLeft: 10,
+    },
+    instagramIcon: {
+        marginTop: 10,
+        width: 60,
+        height: 60,
+        opacity: 0.8
     },
 })
