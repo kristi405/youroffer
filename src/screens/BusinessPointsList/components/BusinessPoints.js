@@ -46,6 +46,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 2,
   },
+  rowInst: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
   column: {
     flexDirection: 'column',
     gap: 5
@@ -59,6 +64,11 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingTop: 2,
     opacity: 0.5
+  },
+  instText: {
+    color: '#E1306C',
+    fontSize: 15,
+    paddingTop: 3,
   },
   item: {
     flex: 1,
@@ -94,9 +104,8 @@ const styles = StyleSheet.create({
     marginTop: -50,
   },
   instagramIcon: {
-    width: 40,
-    height: 40,
-    opacity: 0.8
+    width: 25,
+    height: 25,
   },
   title: {
     fontSize: 15,
@@ -281,14 +290,15 @@ const Item = ({ navigation, item }) => {
                 <Image source={require('../../../../assets/time.png')} style={styles.clock} />
                 <Text style={styles.time}>{workTime}</Text>
               </View>
-            </View>
-            {
+              {
               company.instagram?.trim() ? <TouchableWithoutFeedback onPress={() => {openInstagram(company.instagram)}}>
-                <View style={styles.instagramBtn}>
+                <View style={styles.rowInst}>
                   <Image source={require('../../../../assets/instagram3.png')} style={styles.instagramIcon} />
+                  <Text style={styles.instText}>Instagram</Text>
                 </View>
               </TouchableWithoutFeedback> : null
             }
+            </View>
           </View>
         </View>
 
