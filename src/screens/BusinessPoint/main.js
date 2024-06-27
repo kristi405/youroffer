@@ -15,6 +15,7 @@ export const CompanyProfile = observer(({ navigation, route }) => {
     }
 
     const openInstagram = async (url) => {
+        url = url.trim();
         instagram = url.split('?')[0];
         instagram = instagram.replace("https://", '')
         instagram = instagram.replace("www.", '')
@@ -41,23 +42,23 @@ export const CompanyProfile = observer(({ navigation, route }) => {
         }
     };
 
-
     const openWebsite = async (url) => {
+        url = url?.trim();
         await Linking.openURL(url)
     };
-    const OpenURLButton = ({ website }) => {
+
+    const OpenURLButton = ({ website, text, delivery }) => {
         if (website) {
             return (
                 <TouchableWithoutFeedback onPress={() => {openWebsite(website)}}>
                     <View style={styles.websiteBtn}>
-                        <Image source={require('../../../assets/website2.png')} style={styles.websiteIcon} />
-                        <Text style={styles.link}>Перейти на сайт</Text>
+                        <Image source={delivery ? require('../../../assets/delivery.png') : require('../../../assets/website2.png')} style={styles.websiteIcon} />
+                        <Text style={styles.link}>{text ? text : 'Перейти на сайт'}</Text>
                     </View>
                 </TouchableWithoutFeedback>
             )
         }
     };
-
 
     const openMap = () => {
         navigation.navigate('BusinessPointOnMap', { data: item, name: item.name })
@@ -80,8 +81,11 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                         <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
                         <Text style={styles.time}> {item.dist / 1000} км </Text>
                     </View>}
+                    {item.website && <View style={styles.stack}>
+                        <OpenURLButton text="Заказать доставку" website={item.website}  delivery={true}/>
+                    </View>}
                     {item.website &&  <View style={styles.stack}>
-                        <OpenURLButton website={item.website}/>
+                        <OpenURLButton website={item.website} text='Перейти на сайт' delivery={false}/>
                     </View>}
                 </View>
             </View>

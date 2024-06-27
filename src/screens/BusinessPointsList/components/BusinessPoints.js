@@ -49,6 +49,8 @@ const styles = StyleSheet.create({
   rowInst: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: -5,
+    marginTop: 5,
     gap: 5,
   },
   column: {
@@ -67,8 +69,7 @@ const styles = StyleSheet.create({
   },
   instText: {
     color: '#E1306C',
-    fontSize: 15,
-    paddingTop: 3,
+    fontSize: 16,
   },
   item: {
     flex: 1,
@@ -104,8 +105,8 @@ const styles = StyleSheet.create({
     marginTop: -50,
   },
   instagramIcon: {
-    width: 25,
-    height: 25,
+    width: 30,
+    height: 30,
   },
   title: {
     fontSize: 15,
@@ -137,15 +138,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  address: {
-    width: '80%',
-  },
   emptyViewInCompany: {
     flex: 1,
     marginTop: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  marginWrapper: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    flexDirection: 'row',
+  },
+  mainIconBlock: {
+    width: "35%"
+  },
+  mainInfoBlock: {
+    width: "55%"
+  },
+  deliveryBlock: {
+    flex: 1,
+    width: "10%",
+    alignItems: 'end',
+  },
+  deliveryIcon: {
+    height: 35,
+    width: 35,
+    marginLeft: 5
+  }
 })
 
 
@@ -264,6 +284,7 @@ const Item = ({ navigation, item }) => {
 
 
   const openInstagram = async (url) => {
+    url = url.trim();
     instagram = url.split('?')[0];
     instagram = instagram.replace("https://", '')
     instagram = instagram.replace("www.", '')
@@ -278,12 +299,19 @@ const Item = ({ navigation, item }) => {
     }
   };
 
+  const openDelivery = async (url) => {
+    url = url?.trim();
+    await Linking.openURL(url);
+  }
+
   return (
     <TouchableWithoutFeedback onPress={() => { openDetail(company) }}>
       <View style={styles.businessPoint}>
-        <View style={styles.item}>
-          <Image source={{ uri: `${FILE_URL}${company.img}.${company.img_ext}` }} style={styles.icon} />
-          <View style={styles.row}>
+        <View style={styles.marginWrapper}>
+          <View style={styles.mainIconBlock}>
+            <Image source={{ uri: `${FILE_URL}${company.img}.${company.img_ext}` }} style={styles.icon} />
+          </View>
+          <View style={styles.mainInfoBlock}>
             <View style={styles.column}>
               <Text style={styles.title}>{company.name}</Text>
               <View style={styles.row}>
@@ -291,15 +319,21 @@ const Item = ({ navigation, item }) => {
                 <Text style={styles.time}>{workTime}</Text>
               </View>
               {
-              company.instagram?.trim() ? <TouchableWithoutFeedback onPress={() => {openInstagram(company.instagram)}}>
-                <View style={styles.rowInst}>
-                  <Image source={require('../../../../assets/instagram3.png')} style={styles.instagramIcon} />
-                  <Text style={styles.instText}>Instagram</Text>
-                </View>
-              </TouchableWithoutFeedback> : null
-            }
+                company.instagram?.trim() ? <TouchableWithoutFeedback onPress={() => {openInstagram(company.instagram)}}>
+                  <View style={styles.rowInst}>
+                    <Image source={require('../../../../assets/instagram3.png')} style={styles.instagramIcon} />
+                    <Text style={styles.instText}>Instagram</Text>
+                  </View>
+                </TouchableWithoutFeedback> : null
+              }
             </View>
           </View>
+            {
+              company.delivery_url?.trim() ? <View style={styles.deliveryBlock}><TouchableWithoutFeedback onPress={() => {openDelivery(company.delivery_url)}}>
+              <Image source={require('../../../../assets/delivery.png')} style={styles.deliveryIcon} />
+            </TouchableWithoutFeedback></View> : null
+            }
+
         </View>
 
         <View style={styles.header}>

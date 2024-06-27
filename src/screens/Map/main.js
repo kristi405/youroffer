@@ -60,6 +60,7 @@ export const Map = observer(({ navigation, route }) => {
     }
 
     const openInstagram = async (url) => {
+        url = url.trim();
         instagram = url.split('?')[0];
         instagram = instagram.replace("https://", '')
         instagram = instagram.replace("www.", '')
@@ -73,6 +74,11 @@ export const Map = observer(({ navigation, route }) => {
             }
         }
     };
+
+    const openDelivery = async (url) => {
+        url = url?.trim();
+        await Linking.openURL(url);
+    }
 
     return (
         <View style={styles.container}>
@@ -133,6 +139,15 @@ export const Map = observer(({ navigation, route }) => {
                                     ?   <TouchableWithoutFeedback style={styles.instagramBtn} onPress={() => {openInstagram(selectedBp.instagram)}}>
                                             <View  >
                                                 <Image source={require('../../../assets/instagram3.png')} style={styles.instagramIcon} />
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    : null
+                                }
+                                {
+                                    selectedBp.delivery_url?.trim()
+                                    ?   <TouchableWithoutFeedback style={styles.instagramBtn} onPress={() => {openDelivery(selectedBp.delivery_url)}}>
+                                            <View  >
+                                                <Image source={require('../../../assets/delivery.png')} style={styles.deliveryIcon} />
                                             </View>
                                         </TouchableWithoutFeedback>
                                     : null
@@ -239,7 +254,7 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     buttonStyle: {
-        width: '60%',
+        width: '40%',
         height: 40,
         borderRadius: 10,
         backgroundColor: '#0EA47A',
@@ -265,6 +280,11 @@ const styles = StyleSheet.create({
         height: 60,
         opacity: 0.8
     },
+    deliveryIcon: {
+        width: 45,
+        height: 45,
+        marginTop: 10,
+    }
 })
 
 
