@@ -134,27 +134,31 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
                                 </View>
                             </View>
                             <View style={styles.actionsView}>
-                                <TouchableOpacity style={styles.buttonStyle} onPress={() => openDetail(selectedBp)}>
-                                    <Text style={styles.showPromotionText}>Все акции</Text>
-                                </TouchableOpacity>
-                                {
-                                    selectedBp.instagram?.trim()
-                                    ?   <TouchableWithoutFeedback style={styles.instagramBtn} onPress={() => {openInstagram(selectedBp.instagram)}}>
-                                            <View  >
-                                                <Image source={require('../../../assets/instagram3.png')} style={styles.instagramIcon} />
-                                            </View>
-                                        </TouchableWithoutFeedback>
-                                    : null
-                                }
-                                {
-                                    selectedBp.delivery_url?.trim()
-                                    ?   <TouchableWithoutFeedback style={styles.instagramBtn} onPress={() => {openDelivery(selectedBp.delivery_url)}}>
-                                            <View  >
-                                                <Image source={require('../../../assets/delivery.png')} style={styles.deliveryIcon} />
-                                            </View>
-                                        </TouchableWithoutFeedback>
-                                    : null
-                                }
+                                <View style={styles.buttonPromotionBlock}>
+                                    <TouchableOpacity style={styles.buttonStyle}   onPress={() => openDetail(selectedBp)}>
+                                        <Text style={styles.showPromotionText}>Все акции</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.buttonAdditionalBlock}>
+                                    {
+                                        selectedBp.instagram?.trim()
+                                        ?   <TouchableWithoutFeedback style={styles.instagramBtn} onPress={() => {openInstagram(selectedBp.instagram)}}>
+                                                <View>
+                                                    <Image source={require('../../../assets/instagram3.png')} style={styles.instagramIcon} />
+                                                </View>
+                                            </TouchableWithoutFeedback>
+                                        : null
+                                    }
+                                    {
+                                        selectedBp.delivery_url?.trim()
+                                        ?   <TouchableWithoutFeedback style={styles.deliveryBtn} onPress={() => {openDelivery(selectedBp.delivery_url)}}>
+                                                <View  >
+                                                    <Image source={require('../../../assets/delivery.png')} style={styles.deliveryIcon} />
+                                                </View>
+                                            </TouchableWithoutFeedback>
+                                        : null
+                                    }
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -257,14 +261,27 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     buttonStyle: {
-        width: '40%',
         height: 40,
         borderRadius: 10,
         backgroundColor: '#0EA47A',
         opacity: 0.8,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 10,
+        marginLeft: 10
+    },
+    instagramIcon: {
+        marginTop: 10,
+        width: 40,
+        height: 40,
+        opacity: 0.8
+    },
+    deliveryIcon: {
+        width: 30,
+        height: 30,
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
     },
     actionsView: {
         width: '100%',
@@ -272,20 +289,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
+        paddingRight: 10,
+        paddingLeft: 10
     },
-    instagramBtn: {
-        marginTop: 40,
-        marginLeft: 10,
+    buttonPromotionBlock: {
+        width: '60%',
     },
-    instagramIcon: {
-        marginTop: 10,
-        width: 60,
-        height: 60,
-        opacity: 0.8
-    },
-    deliveryIcon: {
-        width: 45,
-        height: 45,
-        marginTop: 10,
+    buttonAdditionalBlock: {
+        width: '40%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
     }
 })

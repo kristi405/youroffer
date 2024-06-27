@@ -50,8 +50,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: -5,
-    marginTop: 5,
     gap: 5,
+    zIndex: 3, // works on ios
+    elevation: 3, // works on android
   },
   column: {
     flexDirection: 'column',
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   },
   instText: {
     color: '#E1306C',
-    fontSize: 16,
+    fontSize: 14,
   },
   item: {
     flex: 1,
@@ -101,9 +102,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     flex: 1,
   },
-  instagramBtn: {
-    marginTop: -50,
-  },
   instagramIcon: {
     width: 30,
     height: 30,
@@ -112,7 +110,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     paddingTop: 0,
-    width: 140
   },
   touch: {
     paddingHorizontal: 10,
@@ -162,8 +159,8 @@ const styles = StyleSheet.create({
     alignItems: 'end',
   },
   deliveryIcon: {
-    height: 35,
-    width: 35,
+    height: 27,
+    width: 27,
     marginLeft: 5
   }
 })
