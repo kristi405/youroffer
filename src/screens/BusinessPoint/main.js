@@ -81,8 +81,8 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                         <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
                         <Text style={styles.time}> {item.dist / 1000} км </Text>
                     </View>}
-                    {item.website && <View style={styles.stack}>
-                        <OpenURLButton text="Заказать доставку" website={item.website}  delivery={true}/>
+                    {item.delivery_url && <View style={styles.stack}>
+                        <OpenURLButton text="Заказать доставку" website={item.delivery_url}  delivery={true}/>
                     </View>}
                     {item.website &&  <View style={styles.stack}>
                         <OpenURLButton website={item.website} text='Перейти на сайт' delivery={false}/>
