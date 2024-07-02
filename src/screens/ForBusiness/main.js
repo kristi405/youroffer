@@ -20,10 +20,9 @@ const validateStroe = new ValidateStore({
         isValid: true,
         rules: [VALIDATE_RULES.required]
     }
-
 })
 
-export const ContactUs = observer(({ navigation }) => {
+export const ForBusiness = observer(({ navigation }) => {
     const [name, setName] = useState('');
     const [contact, setContact] = useState('');
     const [text, setText] = useState('');
@@ -33,6 +32,7 @@ export const ContactUs = observer(({ navigation }) => {
     const [instagram, setInstagram] = useState('');
     const [textForClients, setTextForClients] = useState('');
     const [presentation, setPresentation] = useState('');
+
 
     useFocusEffect(
         React.useCallback(() => {
@@ -85,7 +85,7 @@ export const ContactUs = observer(({ navigation }) => {
             <TouchableWithoutFeedback onPress={() => {openInstagram()}}>
                 <View style={styles.header}>
                     <Image source={require('../../../assets/instagram3.png')} style={styles.instagramImg} />
-                    <Text style={styles.titleInstagram}>Перейти в Instagram</Text>
+                    <Text style={styles.titleInstagram}>Напишите нам в Instagram</Text>
                 </View>
             </TouchableWithoutFeedback>
         )
@@ -108,22 +108,30 @@ export const ContactUs = observer(({ navigation }) => {
         }
     };
 
+    const openPresentation = async() => {
+        await Linking.openURL(presentation)
+    }
+
     return (
         <TouchableWithoutFeedback onPress={handleScreenPress}>
             <View style={styles.container}>
                 <View style={styles.header}>
+                    <Text style={styles.titleText}>{textForClients}</Text>
+                </View>
+                <TouchableWithoutFeedback onPress={() => {openPresentation()}}>
+                    <View style={styles.header}>
+                        <Text style={styles.titleLink}>Ознакомтесь с нашей презетнацией</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+                <OpenInstagramButton/>
+                <View style={styles.header}>
                     <Image source={require('../../../assets/phone.png')} style={styles.image} />
-                    <Text style={styles.title}>mob: {phone}</Text>
+                    <Text style={styles.title}>mob: { phone }</Text>
                 </View>
                 <View style={styles.header}>
                     <Image source={require('../../../assets/mail.png')} style={styles.image} />
                     <Text style={styles.title}>e-mail: {email}</Text>
                 </View>
-                <View style={styles.header}>
-                    <Image source={require('../../../assets/web.png')} style={styles.image} />
-                    <Text style={styles.title}>web: {web}</Text>
-                </View>
-                <OpenInstagramButton/>
 
                 <View style={styles.requestBlock}>
                     <Text style={styles.requestTitle}>Оставить заявку: </Text>
@@ -169,12 +177,24 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 20,
+        paddingRight: 10,
         gap: 10
     },
     title: {
         fontSize: 14,
         color: 'white',
         opacity: 0.7
+    },
+    titleText: {
+        fontSize: 16,
+        color: 'white',
+        opacity: 0.7
+    },
+    titleLink: {
+        fontSize: 16,
+        color: '#0EA47A',
+        opacity: 0.8,
+        textDecorationLine: 'underline'
     },
     titleInstagram: {
         fontSize: 14,
@@ -200,7 +220,7 @@ const styles = StyleSheet.create({
         opacity: 0.7,
         height: 25,
         borderRadius: 5,
-        marginLeft: -3,
+        marginLeft: -5,
     },
     codeInputStyle: {
         color: 'white',
@@ -224,7 +244,7 @@ const styles = StyleSheet.create({
         width: '100%',
         gap: 10,
         flexDirection: 'column',
-        paddingTop: 65,
+        paddingTop: 25,
         alignItems: 'center'
     },
     buttonStyle: {

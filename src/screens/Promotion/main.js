@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Linking } from 'react-native';
 import { PromotionView } from "./components/PromotionView";
 import { BonusView } from "./components/BonusView";
 import { getUser } from "../../services/auth"
@@ -223,6 +223,28 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         return null
     }
 
+    const OpenLink = () => {
+        if (offer.link?.trim()) {
+            return (
+                <TouchableWithoutFeedback onPress={() => {openLinkHandler()}}>
+                    <View style={styles.linkBody}>
+                        <Image source={require('../../../assets/web.png')} style={styles.imageLink} />
+                        <Text style={styles.titleLink}>Перейти по сслыке</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        }
+        return null
+    };
+
+    const openLinkHandler = async () => {
+        try {
+            await Linking.openURL(offer.link)
+        } catch (e) {
+            console.log('openLinkHandler')
+        }
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -240,6 +262,8 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 </View>
                 <Text style={styles.descriptionText}>Описание акции:</Text>
                 <Text style={styles.contentText}>{item.description}</Text>
+                <Text style={styles.contentLink}>Перейти по ссылке</Text>
+                <OpenLink style={styles.contentLink}/>
                 <View style={styles.button}>
                     <ButtonView buttonTitle={btnText()} />
                 </View>
@@ -393,4 +417,22 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingRight: 5
     },
+    titleLink: {
+        fontSize: 16,
+        color: '#0EA47A',
+        opacity: 0.8,
+        textDecorationLine: 'underline'
+    },
+    imageLink: {
+        tintColor: '#0EA47A',
+        width: 20,
+        height: 20,
+        borderRadius: 5
+    },
+    linkBody: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        marginBottom: 20
+    }
 })

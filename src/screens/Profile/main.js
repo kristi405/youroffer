@@ -16,10 +16,12 @@ export const Profile = ({ navigation }) => {
         if (item.id == 0) {
             navigation.navigate('EditScreen')
         } else if (item.id == 1) {
-            navigation.navigate('ContactUs')
+            navigation.navigate('ForBusiness')
         } else if (item.id == 2) {
+            navigation.navigate('ContactUs')
+        } else if (item.id == 3) {
             navigation.navigate('Region')
-        }  else if (item.id == 3) {
+        }  else if (item.id == 4) {
             openInstagram()
         }
     }
@@ -141,16 +143,21 @@ const itemData = [
     },
     {
         id: 1,
+        title: (<Text style={styles.title}>ДЛЯ БИЗНЕСА</Text>),
+        image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
+    },
+    {
+        id: 2,
         title: (<Text style={styles.title}>Свяжитесь с нами</Text>),
         image: (<Image source={require('../../../assets/contactUs.png')} style={styles.image} />),
     },
     {
-        id: 2,
+        id: 3,
         title: (<Text style={styles.title}>Изменить регион</Text>),
-        image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
+        image: (<Image source={require('../../../assets/cell.png')} style={styles.image} />),
     },
     {
-        id: 3,
+        id: 4,
         title: (<Text style={styles.title}>Подпишись на нас  😉🙏👻</Text>),
         image: (<Image source={require('../../../assets/instagram3.png')} style={styles.image} />),
     }
