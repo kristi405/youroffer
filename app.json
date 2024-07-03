@@ -26,14 +26,6 @@
     },
     "plugins": [
       "sentry-expo",
-      [
-        "@sentry/react-native/expo",
-        {
-          "organization": "myoffer",
-          "project": "myoffer_app",
-          "url": "https://app.glitchtip.com/"
-        }
-      ],
       "expo-apple-authentication",
       [
         "expo-location",
