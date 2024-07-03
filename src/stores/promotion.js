@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 
 // максимальное количесвто акций получаемых при одном запросе
 const COUNT_PER_ONE_REQUEST = 10
@@ -57,10 +57,10 @@ class PromotionStore {
             this.isLoding = false
             console.error(error)
             status = REQUEST_STATUS.error
-            Sentry.Native.captureException(error, (scope) => {
-                scope.setTransactionName('PromotionStore:getList');
-                return scope;
-            });
+            // Sentry.Native.captureException(error, (scope) => {
+            //     scope.setTransactionName('PromotionStore:getList');
+            //     return scope;
+            // });
         }
         return status
     }
@@ -71,10 +71,10 @@ class PromotionStore {
            await api.patch('/api/v1/offer/favorite', {id, favorite})
         } catch (error) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(error, (scope) => {
-                scope.setTransactionName('PromotionStore:addToFavorite');
-                return scope;
-            });
+            // Sentry.Native.captureException(error, (scope) => {
+            //     scope.setTransactionName('PromotionStore:addToFavorite');
+            //     return scope;
+            // });
         }
         return status
     }

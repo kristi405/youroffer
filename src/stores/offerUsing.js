@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 
 class OfferUsingStore {
     constructor() {
@@ -15,10 +15,10 @@ class OfferUsingStore {
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('OfferUsingStore:useOffer');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('OfferUsingStore:useOffer');
+            //     return scope;
+            // });
         }
         return [];
     }
@@ -30,10 +30,10 @@ class OfferUsingStore {
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('OfferUsingStore:useOffer');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('OfferUsingStore:useOffer');
+            //     return scope;
+            // });
         }
         return [];
     }
@@ -46,10 +46,10 @@ class OfferUsingStore {
         } catch (e) {
             status =  REQUEST_STATUS.error
             console.log(e)
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('OfferUsingStore:getOfferById');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('OfferUsingStore:getOfferById');
+            //     return scope;
+            // });
         }
     }
 
@@ -63,10 +63,10 @@ class OfferUsingStore {
         } catch (e) {
             status =  REQUEST_STATUS.error
             console.log(e)
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('OfferUsingStore:getOfferToScan');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('OfferUsingStore:getOfferToScan');
+            //     return scope;
+            // });
         }
     }
 }

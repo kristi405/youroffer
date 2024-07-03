@@ -3,14 +3,14 @@ import { useEffect } from 'react';
 import { Main } from './src/main'
 import * as NavigationBar from 'expo-navigation-bar';
 import 'expo-dev-client';
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 import * as Updates from 'expo-updates';
 
-Sentry.init({
-  dsn: 'https://803698e536aa4528ac38b38788093389@app.glitchtip.com/5267',
-  enableInExpoDevelopment: false,
-  debug: false
-});
+// Sentry.init({
+//   dsn: 'https://803698e536aa4528ac38b38788093389@app.glitchtip.com/5267',
+//   enableInExpoDevelopment: false,
+//   debug: false
+// });
 
 
 export default function App() {
@@ -34,10 +34,10 @@ export default function App() {
         ])
       }
     } catch (error) {
-      Sentry.Native.captureException(error, (scope) => {
-        scope.setTransactionName('onFetchUpdateAsync');
-        return scope;
-      });
+      // Sentry.Native.captureException(error, (scope) => {
+      //   scope.setTransactionName('onFetchUpdateAsync');
+      //   return scope;
+      // });
     }
   }
 

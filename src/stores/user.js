@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 import { setUser } from '../services/auth'
 
 class UserStore {
@@ -20,10 +20,10 @@ class UserStore {
             return resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('UserStore:getUser');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('UserStore:getUser');
+            //     return scope;
+            // });
         }
     }
 }

@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
 import { getLocation, distanceBetweenGeoPoints } from '../services/geo'
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 
 // максимальное количесвто акций получаемых при одном запросе
 const COUNT_PER_ONE_REQUEST = 10
@@ -44,10 +44,10 @@ class BusinessPointsStore {
             this.setList(data)
         } catch (e) {
             console.error(e)
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('BusinessPointsStore:getAll');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('BusinessPointsStore:getAll');
+            //     return scope;
+            // });
         }
     }
 
@@ -84,10 +84,10 @@ class BusinessPointsStore {
            })
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('BusinessPointsStore:addToFavorite');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('BusinessPointsStore:addToFavorite');
+            //     return scope;
+            // });
         }
         return status
     }

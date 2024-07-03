@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 
 class RegionStore {
     list = []
@@ -23,10 +23,10 @@ class RegionStore {
             this.list = resp.data
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('RegionStore:getRegions');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('RegionStore:getRegions');
+            //     return scope;
+            // });
         }
         this.loading = false
         return status;
@@ -40,10 +40,10 @@ class RegionStore {
             });
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('UserStore:saveRegion');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('UserStore:saveRegion');
+            //     return scope;
+            // });
         }
 
         return status;

@@ -10,7 +10,7 @@ import { Platform } from 'react-native';
 import ValidateStore from '../../stores/validate'
 import { VALIDATE_RULES } from '../../services/validate'
 import { observer } from "mobx-react-lite"
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 
 WebBrowser.maybeCompleteAuthSession();
 

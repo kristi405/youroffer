@@ -25,7 +25,6 @@
       ]
     },
     "plugins": [
-      "sentry-expo",
       "expo-apple-authentication",
       [
         "expo-location",

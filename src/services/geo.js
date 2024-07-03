@@ -1,5 +1,5 @@
 import * as Location from 'expo-location';
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 import { Alert, Linking } from 'react-native';
 
 let CAHCE = null
@@ -68,13 +68,12 @@ const getUserLocation = async () => {
         CAHCE = {}
         CAHCE.latitude = location.coords.latitude;
         CAHCE.longitude = location.coords.longitude;
-        console.log('33333333333333', CAHCE)
         return CAHCE;
     } catch (e) {
-        Sentry.Native.captureException(e, (scope) => {
-          scope.setTransactionName('service:geo:getUserLocation');
-          return scope;
-        });
+        // Sentry.Native.captureException(e, (scope) => {
+        //   scope.setTransactionName('service:geo:getUserLocation');
+        //   return scope;
+        // });
         console.error(e);
         return
     }

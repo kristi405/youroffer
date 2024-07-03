@@ -3,7 +3,7 @@ import api from '../services/api'
 import { getLocation } from '../services/geo'
 import { REQUEST_STATUS } from '../services/constants'
 import { setSession, setUser, getUser, cleanAuthData } from '../services/auth'
-import * as Sentry from 'sentry-expo';
+// import * as Sentry from 'sentry-expo';
 import Constants from "expo-constants"
 
 class AuthStore {
@@ -22,10 +22,10 @@ class AuthStore {
             const resp = await api.post('api/v1/auth/login/phone', {phone})
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:getPin');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:getPin');
+            //     return scope;
+            // });
         }
 
         return status
@@ -39,10 +39,10 @@ class AuthStore {
             await setUser(resp.data.user)
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:setPin');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:setPin');
+            //     return scope;
+            // });
         }
         return status
     }
@@ -59,10 +59,10 @@ class AuthStore {
             await setUser(resp.data.user)
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:signUpByEmail');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:signUpByEmail');
+            //     return scope;
+            // });
             return e.response.data
         }
         return status
@@ -80,10 +80,10 @@ class AuthStore {
             await setUser(resp.data.user)
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:loginByEmail');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:loginByEmail');
+            //     return scope;
+            // });
             return e.response.data
         }
         return status
@@ -105,10 +105,10 @@ class AuthStore {
             await setUser(resp.data.user)
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:loginByGoogle');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:loginByGoogle');
+            //     return scope;
+            // });
         }
         return status
     }
@@ -126,10 +126,10 @@ class AuthStore {
             await setUser(resp.data.user)
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:loginByApple');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:loginByApple');
+            //     return scope;
+            // });
         }
         return status
     }
@@ -142,10 +142,10 @@ class AuthStore {
             await setUser(resp.data)
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:updateUser');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:updateUser');
+            //     return scope;
+            // });
         }
         return status
     }
@@ -161,10 +161,10 @@ class AuthStore {
             })
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:updateCoord');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:updateCoord');
+            //     return scope;
+            // });
         }
         return status
     }
@@ -173,10 +173,10 @@ class AuthStore {
         try {
             await cleanAuthData()
         } catch (e) {
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:clearUser');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:clearUser');
+            //     return scope;
+            // });
         }
     }
 
@@ -188,10 +188,10 @@ class AuthStore {
             await setUser(resp.data.user)
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('AuthStore:createUser');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('AuthStore:createUser');
+            //     return scope;
+            // });
             return e.response.data
         }
         return status
@@ -211,10 +211,10 @@ class AuthStore {
             return resp.data;
         } catch (e) {
             status =  REQUEST_STATUS.error
-            Sentry.Native.captureException(e, (scope) => {
-                scope.setTransactionName('UserStore:getUser');
-                return scope;
-            });
+            // Sentry.Native.captureException(e, (scope) => {
+            //     scope.setTransactionName('UserStore:getUser');
+            //     return scope;
+            // });
         }
     }
 }
