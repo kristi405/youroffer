@@ -1,14 +1,41 @@
 import * as Location from 'expo-location';
 import * as Sentry from 'sentry-expo';
+import { Alert, Linking } from 'react-native';
 
-const CAHCE = {}
+let CAHCE = null
 const EARTH_RADIUS = 6371;  // Радиус Земли в километрах
-
-export const getLocation = async () => {
-    if (CAHCE.latitude && CAHCE.longitude) {
+let SHOW_FORCE_ALERT = true
+let ALREADY_ASKED = false
+export const getLocation = async (update) => {
+    // так как мы пытаемся получить геолокацию на разных экранах нам нужно проверять не запросили ли мы уже геолокацию
+    if (ALREADY_ASKED) return CAHCE;
+    ALREADY_ASKED = true;
+    if (update) {
+      CAHCE = null
+    }
+    if (CAHCE?.latitude && CAHCE?.longitude) {
       return CAHCE
     }
     const status = await Location.requestForegroundPermissionsAsync();
+
+    setTimeout(() => {
+      ALREADY_ASKED = false
+    }, 1000)
+    // Если мы пытаемся обновить экра с компаниями и у нас нет доступа к голокации - мы спрашиваем доступ
+    if (status.canAskAgain === false && SHOW_FORCE_ALERT && update) {
+      Alert.alert('', "Чтобы мы могли показать вам ближайшие заведения, включите геолокацию",
+      [
+          {
+            text: 'ОК',
+            onPress: () => {
+              SHOW_FORCE_ALERT = false
+              Linking.openSettings();
+
+            },
+            style: 'cancel',
+          },
+      ])
+    }
     if (status.status == 'granted') {
       return await getUserLocation()
     } else {
@@ -38,8 +65,10 @@ export const distanceBetweenGeoPoints = (pointA, pointB) => {
 const getUserLocation = async () => {
     try {
         const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+        CAHCE = {}
         CAHCE.latitude = location.coords.latitude;
         CAHCE.longitude = location.coords.longitude;
+        console.log('33333333333333', CAHCE)
         return CAHCE;
     } catch (e) {
         Sentry.Native.captureException(e, (scope) => {

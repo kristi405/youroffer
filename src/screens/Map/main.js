@@ -14,7 +14,6 @@ let CURRENT_COORD;
 async function getCurrentCoordinates() {
     CURRENT_COORD = await getLocation()
 }
-
 getCurrentCoordinates()
 
 export const Map = observer(({ navigation, route }) => {
@@ -90,8 +89,8 @@ export const Map = observer(({ navigation, route }) => {
                 customMapStyle={MAP_STYLE}
                 tracksViewChanges={false}
                 region={{
-                    latitude: CURRENT_COORD ? CURRENT_COORD.latitude : regionCoord.latitude,
-                    longitude: CURRENT_COORD ? CURRENT_COORD.longitude : regionCoord.longitude,
+                    latitude: CURRENT_COORD ? CURRENT_COORD?.latitude : regionCoord.latitude,
+                    longitude: CURRENT_COORD ? CURRENT_COORD?.longitude : regionCoord.longitude,
                     latitudeDelta: 0.15,
                     longitudeDelta: 0.15,
                 }}
@@ -122,7 +121,7 @@ export const Map = observer(({ navigation, route }) => {
                                     <Text style={styles.name}>{selectedBp.name}</Text>
                                     <View style={styles.stack}>
                                         <Image source={require('../../../assets/mapIcon.png')} style={styles.mapIcon} />
-                                        <Text style={styles.distans}>{selectedBp.dist ? selectedBp.dist / 1000 : '-'} {selectedBp.dist ? 'км' : ''}</Text>
+                                        <Text style={styles.distans}>{selectedBp.dist ? selectedBp.dist / 1000 : 'нет доступа'} {selectedBp.dist ? 'км' : ''}</Text>
                                     </View>
                                     <View style={styles.stack}>
                                         <Image source={require('../../../assets/time.png')} style={styles.timeIcon} />

@@ -4,6 +4,8 @@ import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { FILE_URL } from '../../../services/constants'
+import { getLocation } from '../../../services/geo'
+
 
 const styles = StyleSheet.create({
   segment: {
@@ -225,7 +227,8 @@ export const BusinessPoints = observer(({ navigation }) => {
 
   }
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
+    await getLocation(true)
     BusinessPointsStore.getAll()
   }
 
@@ -336,7 +339,7 @@ const Item = ({ navigation, item }) => {
         <View style={styles.header}>
           <View style={styles.row}>
             <Image source={require('../../../../assets/mapIcon.png')} style={styles.map} />
-            <Text style={styles.time}>{company.dist ? company.dist / 1000 + ' км' : '-'}</Text>
+            <Text style={styles.time}>{company.dist ? company.dist / 1000 + ' км' : 'нет доступа'}</Text>
           </View>
           <View style={styles.save}>
             <TouchableWithoutFeedback style={styles.save} onPress={() => { addToFavorite(company) }}>
