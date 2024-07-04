@@ -21,7 +21,7 @@ export default function App() {
   async function onFetchUpdateAsync() {
     try {
       const update = await Updates.checkForUpdateAsync();
-      if (!update.isAvailable) {
+      if (update.isAvailable) {
         await Updates.fetchUpdateAsync();
         await Updates.reloadAsync();
         Alert.alert('', "Пожалуйста, не выключайте приложение, идет обновление",
