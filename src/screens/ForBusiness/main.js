@@ -94,11 +94,11 @@ export const ForBusiness = observer(({ navigation }) => {
 
     const openInstagram = async () => {
         tempInstagram = instagram.trim();
-        tempInstagram = instagram.split('?')[0];
-        tempInstagram = instagram.replace("https://", '')
-        tempInstagram = instagram.replace("www.", '')
-        tempInstagram = instagram.replace("instagram.com/", '')
-        tempInstagram = instagram.replace("/", '')
+        tempInstagram = tempInstagram.split('?')[0];
+        tempInstagram = tempInstagram.replace("https://", '')
+        tempInstagram = tempInstagram.replace("www.", '')
+        tempInstagram = tempInstagram.replace("instagram.com/", '')
+        tempInstagram = tempInstagram.replace("/", '')
         if (tempInstagram) {
             try {
                 await Linking.openURL(`instagram://user?username=${tempInstagram}`)
@@ -120,7 +120,7 @@ export const ForBusiness = observer(({ navigation }) => {
                 </View>
                 <TouchableWithoutFeedback onPress={() => {openPresentation()}}>
                     <View style={styles.header}>
-                        <Text style={styles.titleLink}>Ознакомтесь с нашей презетнацией</Text>
+                        <Text style={styles.titleLink}>Ознакомьтесь с нашей презентацией</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <OpenInstagramButton/>

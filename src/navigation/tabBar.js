@@ -31,24 +31,28 @@ function ScanStackScreen() {
 };
 
 const images = {
-    coupon: require("../../assets/couponIcon.png"),
-    company: require("../../assets/companyIcon.png"),
-    map: require("../../assets/mapIcon.png"),
-    profile: require("../../assets/profile.png"),
+    coupon: require("../../assets/homeIcon.png"),
+    company: require("../../assets/homeIcon.png"),
+    map: require("../../assets/mapIcon2.png"),
+    profile: require("../../assets/profileIcon.png"),
     couponSelected: require("../../assets/couponIconSelected.png"),
     companySelected: require("../../assets/companyIconSelected.png"),
-    mapSelected: require("../../assets/mapIconSelected.png"),
-    profileSelected: require("../../assets/profileSelected.png"),
+    mapSelected: require("../../assets/mapIcon2.png"),
+    profileSelected: require("../../assets/profileIcon.png"),
     scan: require("../../assets/scan.png"),
     scanSelected: require("../../assets/scanSelected.png"),
+    sailIcon: require("../../assets/sailIcon4.png"),
+    sailIconSelected: require("../../assets/sailIcon4.png"),
+    // #939393
 };
 
 const TabBarImage = ({ focused, imgName }) => {
     return (
         <View>
             <Image
-                source={images[focused ? imgName + 'Selected' : imgName]}
+                source={images[imgName]}
                 resizeMode="contain"
+                tintColor={focused ? '#0EA47A' : '#939393'}
                 style={{ width: 25 }}
             />
         </View>
@@ -78,20 +82,20 @@ export const TabBar = () => {
                     tabBarIcon: ({ focused }) => (
                         <TabBarImage
                             focused={focused}
-                            imgName={'coupon'}
+                            imgName={'sailIcon'}
                         />
                     ),
                     headerShown: false
                 }}
             />
             <Tab.Screen
-                name="Компании"
+                name="Заведения"
                 component={CompanyScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarImage
                             focused={focused}
-                            imgName={'company'}
+                            imgName={'coupon'}
                         />
                     ),
                     headerShown: false

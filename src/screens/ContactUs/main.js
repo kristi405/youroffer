@@ -94,11 +94,11 @@ export const ContactUs = observer(({ navigation }) => {
 
     const openInstagram = async () => {
         tempInstagram = instagram.trim();
-        tempInstagram = instagram.split('?')[0];
-        tempInstagram = instagram.replace("https://", '')
-        tempInstagram = instagram.replace("www.", '')
-        tempInstagram = instagram.replace("instagram.com/", '')
-        tempInstagram = instagram.replace("/", '')
+        tempInstagram = tempInstagram.split('?')[0];
+        tempInstagram = tempInstagram.replace("https://", '')
+        tempInstagram = tempInstagram.replace("www.", '')
+        tempInstagram = tempInstagram.replace("instagram.com/", '')
+        tempInstagram = tempInstagram.replace("/", '')
         if (tempInstagram) {
             try {
                 await Linking.openURL(`instagram://user?username=${tempInstagram}`)

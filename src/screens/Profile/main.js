@@ -5,10 +5,12 @@ import Constants from "expo-constants"
 
 export const Profile = ({ navigation }) => {
     const [id, setId] = useState('')
+    const [instagram, setInstagram] = useState('');
 
     useEffect(() => {
         getUser().then((user) => {
             setId(user.number)
+            setInstagram(user?.settings?.instagram)
         })
     })
 
@@ -27,12 +29,28 @@ export const Profile = ({ navigation }) => {
     }
 
     const openInstagram = async () => {
-        try {
-            await Linking.openURL('instagram://user?username=myoffersapp')
-        } catch (e) {
-            await Linking.openURL('https://www.instagram.com/myoffersapp/')
+        tempInstagram = instagram.trim();
+        tempInstagram = tempInstagram.split('?')[0];
+        tempInstagram = tempInstagram.replace("https://", '')
+        tempInstagram = tempInstagram.replace("www.", '')
+        tempInstagram = tempInstagram.replace("instagram.com/", '')
+        tempInstagram = tempInstagram.replace("/", '')
+        if (tempInstagram) {
+            try {
+                await Linking.openURL(`instagram://user?username=${tempInstagram}`)
+            } catch (e) {
+                await Linking.openURL(instagram)
+            }
         }
     };
+
+    // const openInstagram = async () => {
+    //     try {
+    //         await Linking.openURL('instagram://user?username=myoffersapp')
+    //     } catch (e) {
+    //         await Linking.openURL('https://www.instagram.com/myoffersapp/')
+    //     }
+    // };
 
     return (
         <View style={styles.container}>
