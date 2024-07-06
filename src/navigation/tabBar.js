@@ -39,8 +39,8 @@ const images = {
     companySelected: require("../../assets/companyIconSelected.png"),
     mapSelected: require("../../assets/mapIcon2.png"),
     profileSelected: require("../../assets/profileIcon.png"),
-    scan: require("../../assets/scan.png"),
-    scanSelected: require("../../assets/scanSelected.png"),
+    scan: require("../../assets/qrScanIcon.png"),
+    scanSelected: require("../../assets/qrScanIcon.png"),
     sailIcon: require("../../assets/sailIcon4.png"),
     sailIconSelected: require("../../assets/sailIcon4.png"),
     // #939393
