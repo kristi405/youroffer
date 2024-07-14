@@ -5,7 +5,8 @@ import { getSession, getRegion, getUser } from '../../services/auth'
 import { getLocation } from '../../services/geo'
 import AuthStore from '../../stores/auth'
 import BusinessPointsStore from '../../stores/businessPoints'
-import { ModalUpdate } from "./components/ModalUpdate";
+import PromotionStore from '../../stores/promotion'
+import { ModalUpdate } from "./components/ModalUpdate"
 
 const NOT_WORKING_STATUSES = ['not_working_soft', 'not_working_hard']
 
@@ -20,7 +21,7 @@ export const OnboardingScreen = ({navigation}) => {
   }, []);
 
     const init = async () => {
-      await getLocation(true, 'start')
+      await getLocation()
       const session = await getSession()
       if (!session) {
         await AuthStore.createUser()
@@ -43,6 +44,8 @@ export const OnboardingScreen = ({navigation}) => {
         setisVisibleModal(true)
         return;
       }
+
+      await PromotionStore.getList();
 
       setTimeout(() => {
         setVisible(false);

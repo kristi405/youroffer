@@ -26,12 +26,11 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
     });
 
     useEffect(() => {
-        getLocation(false, 'test4').then(data => CURRENT_COORD = data)
         init()
     }, []);
 
     const init = async () => {
-        CURRENT_COORD = await getLocation(false, 'test5')
+        CURRENT_COORD = await getLocation()
         const region = await getRegion()
         setRegionCoord({
             latitude: Number(region.lat),

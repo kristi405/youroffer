@@ -25,7 +25,7 @@ export const Map = observer(({ navigation, route }) => {
     }, []);
 
     const init = async () => {
-        CURRENT_COORD = await getLocation(false, 'test4')
+        CURRENT_COORD = await getLocation()
         const region = await getRegion()
         setRegionCoord({
             latitude: Number(region.lat),

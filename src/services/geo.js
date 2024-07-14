@@ -6,7 +6,7 @@ let CAHCE = null
 const EARTH_RADIUS = 6371;  // Радиус Земли в километрах
 let SHOW_FORCE_ALERT = true
 let ALREADY_ASKED = false
-export const getLocation = async (update, test) => {
+export const getLocation = async (update) => {
     // так как мы пытаемся получить геолокацию на разных экранах нам нужно проверять не запросили ли мы уже геолокацию
     if (ALREADY_ASKED) return CAHCE;
     ALREADY_ASKED = true;
