@@ -11,10 +11,10 @@ import { observer } from "mobx-react-lite"
 
 
 let CURRENT_COORD;
-async function getCurrentCoordinates() {
-    CURRENT_COORD = await getLocation()
-}
-getCurrentCoordinates()
+// async function getCurrentCoordinates() {
+//     CURRENT_COORD = await getLocation(false, 'start2')
+// }
+// getCurrentCoordinates()
 
 export const BusinessPointOnMap = observer(({ navigation, route }) => {
     const [bp, setBp] = useState(route?.params?.data)
@@ -26,10 +26,12 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
     });
 
     useEffect(() => {
+        getLocation(false, 'test4').then(data => CURRENT_COORD = data)
         init()
     }, []);
 
     const init = async () => {
+        CURRENT_COORD = await getLocation(false, 'test5')
         const region = await getRegion()
         setRegionCoord({
             latitude: Number(region.lat),

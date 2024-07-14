@@ -105,7 +105,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const ButtonView = ({ buttonTitle }) => {
         if (item.type == 'default' && !item.generate_qr) return null
-        if (item.type == 'discount' && item.is_active_for_user) return buttonTitle
+        if (item.type == 'discount' && item.is_active_for_user && !item.one_time) return buttonTitle
         if (offer.type == 'subscription' && offer.use_count === offer.max_count) {
             return (
                 <TouchableOpacity style={styles.buttonStyleDisabed} disabled={true}>
@@ -159,27 +159,29 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             item.is_active_for_user &&
             item.reset_after_days &&
             item.days_to_reset) {
+
             const date = new Date(item.start_offer_time);
             date.setDate(date.getDate() + item.days_to_reset);
+            const currentStyle = item.one_time ? styles.activeDiscountTextBtn : styles.activeDiscountText
             return (
-                <View style={styles.activeDiscountText}>
-                    <Text style={styles.activeDiscountText}>Ваша скидка активна</Text>
-                    <Text style={styles.activeDiscountText}>до: {date.toLocaleString('Ru', {
+                <View style={currentStyle}>
+                    <Text style={currentStyle}>{item.one_time ? 'Воспользоваться скидкой' : 'Скидка активна'}</Text>
+                    <Text style={currentStyle}>до: {date.toLocaleString('Ru', {
                         hour: 'numeric',
                         minute: 'numeric',
                         year: 'numeric',
                         month: "long",
                         day: 'numeric'
-
                     })}</Text>
                 </View>
             )
         }
 
         if (item.type === 'discount' && item.is_active_for_user) {
+            const currentStyle = item.one_time ? styles.activeDiscountTextBtn : styles.activeDiscountText
             return (
-                <View style={styles.activeDiscountText}>
-                    <Text style={styles.activeDiscountText}>Ваша скидка активна</Text>
+                <View style={currentStyle}>
+                    <Text style={currentStyle}>{item.one_time ? 'Воспользоваться скидкой' : 'Скидка активна'}</Text>
                 </View>
             )
         }
@@ -297,6 +299,12 @@ const styles = StyleSheet.create({
         color: '#0EA47A',
         textAlign: 'center'
     },
+    activeDiscountTextBtn: {
+        textAlign: 'center',
+        fontSize: 15,
+        color: '#fff',
+        fontWeight: '700',
+    },
     timeToText: {
         fontSize: 15,
         fontWeight: '500',
@@ -392,7 +400,7 @@ const styles = StyleSheet.create({
         opacity: 1
     },
     buttonStyle: {
-        height: 40,
+        height: 45,
         borderRadius: 8,
         backgroundColor: '#0EA47A',
         opacity: 0.8,

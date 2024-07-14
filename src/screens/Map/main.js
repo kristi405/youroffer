@@ -11,11 +11,6 @@ import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 
 let CURRENT_COORD;
-async function getCurrentCoordinates() {
-    CURRENT_COORD = await getLocation()
-}
-getCurrentCoordinates()
-
 export const Map = observer(({ navigation, route }) => {
     const [item, setItem] = useState(route?.params?.data)
     const [selectedBp, setSelectedBp] = useState(null)
@@ -30,6 +25,7 @@ export const Map = observer(({ navigation, route }) => {
     }, []);
 
     const init = async () => {
+        CURRENT_COORD = await getLocation(false, 'test4')
         const region = await getRegion()
         setRegionCoord({
             latitude: Number(region.lat),

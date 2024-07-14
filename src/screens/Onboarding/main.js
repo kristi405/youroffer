@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import AnimatedLoader from "react-native-animated-loader";
 import { getSession, getRegion, getUser } from '../../services/auth'
+import { getLocation } from '../../services/geo'
 import AuthStore from '../../stores/auth'
 import BusinessPointsStore from '../../stores/businessPoints'
 import { ModalUpdate } from "./components/ModalUpdate";
@@ -13,13 +14,13 @@ export const OnboardingScreen = ({navigation}) => {
   const [versionStatus, setVersionStatus] = useState(null);
   const [isVisibleModal, setisVisibleModal] = useState(false);
   let navigateTo = 'CouponScreen';
-  let showScan = false;
 
   useEffect(() => {
     init()
   }, []);
 
     const init = async () => {
+      await getLocation(true, 'start')
       const session = await getSession()
       if (!session) {
         await AuthStore.createUser()

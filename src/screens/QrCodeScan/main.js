@@ -52,6 +52,7 @@ export const Scan = ({ navigation }) => {
                     getCameraPermission()
                 }
             })
+            setScanned(false)
         }, [])
     );
 
@@ -90,7 +91,7 @@ export const Scan = ({ navigation }) => {
         setScanned(false)
     }
 
-    
+
     const useOffer = async (count) => {
         if (isUsing) return;
         isUsing = true;
@@ -123,7 +124,7 @@ export const Scan = ({ navigation }) => {
         }
 
         if (isError) {
-            Alert.alert('', errorText, 
+            Alert.alert('', errorText,
                 [
                     {
                         text: 'ОК',
@@ -175,7 +176,7 @@ export const Scan = ({ navigation }) => {
                 style: 'cancel',
             },
         ])
-         
+
     }
 
     const managersView = () => {
@@ -289,6 +290,7 @@ export const Scan = ({ navigation }) => {
 
     let isCanScan = true;
     const handleBarCodeScanned = async ({ type, data }) => {
+        console.log('dddddddccccc')
         if(!isCanScan) return;
         isCanScan = false;
         setScanned(true);
@@ -350,6 +352,7 @@ export const Scan = ({ navigation }) => {
                         }
                     }}
                     onBarCodeScanned={(e) => {
+                        console.log('sssssDDDDDDsss')
                         if (!scanned) {
                             handleBarCodeScanned(e)
                         }
