@@ -5,6 +5,7 @@ import PromotionStore from "../../../stores/promotion"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { FILE_URL } from '../../../services/constants'
+import { FIRST_INIT, setFirstInit } from '../../../services/globals'
 
 const styles = StyleSheet.create({
   segment: {
@@ -125,19 +126,11 @@ const styles = StyleSheet.create({
 // для того чтобы не перезгружать страницу и чтобы не потерялась прокрутка
 let fromPromotionPage = false
 
-// Для того чтобы не показывать лодер 2 раза (сначала онбординг потом лоадер в списке)
-// При первой закгрузке мы уже получит первую порцию акицый в онобрдинге
-// Поэтому при первой загрузке сразу показываем список акций
-let FIRST_INIT = true
-
 export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFavoriteList, setIsFavoriteList] = useState(0)
 
   const flatListRef = useRef(null);
-
-
-
   useFocusEffect(
     React.useCallback(() => {
       init(PromotionStore.isFavoriteBlock)
@@ -155,7 +148,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
     }
 
     if (FIRST_INIT) {
-      FIRST_INIT = false
+      setFirstInit()
     } else {
       setIsLoading(true)
       PromotionStore.resetLists();

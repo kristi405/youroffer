@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite"
 import RegionStore from "../../stores/regions"
 import BusinessPointsStore from '../../stores/businessPoints'
 import { setRegion, getRegion } from "../../services/auth"
+import { setFirstInit } from '../../services/globals'
 
 export const Region = observer(({ navigation }) => {
     const [selectedRegionId, setSelectedRegionId] = useState();
@@ -28,13 +29,14 @@ export const Region = observer(({ navigation }) => {
     )
 
     const selectRegion = async (item) => {
+        setFirstInit()
         await setRegion(item)
         setLoading(true)
         setTimeout(async () => {
             await RegionStore.saveRegion(item.id)
             setSelectedRegionId(item?.id)
             if (!curregion) {
-                navigation.replace('Profile')
+                navigation.replace('CouponScreen', { screen: 'Акции' })
             }
             setCurregion(item)
             setLoading(false)
