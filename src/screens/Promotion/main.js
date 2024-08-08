@@ -17,7 +17,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const [ids, setIds] = useState(null)
 
     useEffect(() => {
-        const newIds = [...item.related] || []
+        const newIds = item?.related ? [...item?.related] : []
         if (!newIds.includes(item.id)) {
             newIds.unshift(item.id);
         }
@@ -247,13 +247,20 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         }
     }
 
+    const ShowImg = () => {
+        if (item?.business_points && item?.business_points[0] ) {
+            return <Image source={{ uri: `${FILE_URL}${item?.business_points[0]?.img}.${item?.business_points[0]?.img_ext}` }} style={styles.avatar} />
+        }
+        return null
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView>
                 <Image source={{ uri: `${FILE_URL}${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
                 <View style={styles.headerContainerView}>
                     <View style={styles.headerView}>
-                        <Image source={{ uri: `${FILE_URL}${item.business_points[0].img}.${item.business_points[0].img_ext}` }} style={styles.avatar} />
+                        <ShowImg />
                         <Text style={styles.headerText}>{item.name}</Text>
                     </View>
                     {/* <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>

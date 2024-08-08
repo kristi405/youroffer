@@ -17,6 +17,8 @@ eas build:configure
 eas build --platform android --profile production
 eas build --platform ios --profile production
 
+eas build --platform android --profile preview
+
 обновить билд у пользователей
 npx eas update --branch production --message "Updating the app"
 https://u.expo.dev/bf189e94-81ad-4deb-9d3b-3de10662db11?runtime-version=1.0.15&channel-name=production&platform=android
@@ -40,9 +42,18 @@ export const API_URL = 'https://myoffer.life/';
 export const ANDROID_CLIENT_ID = '431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com'
 export const IOS_CLIENT_ID = '834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com'
 
-for android 
+for android
 export const FILE_URL = `${process.env.EXPO_PUBLIC_API_URL}api/v1/file/`;
 export const API_URL = process.env.EXPO_PUBLIC_API_URL;
 export const ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID
 export const IOS_CLIENT_ID = process.env.EXPO_PUBLIC_IOS_CLIENT_ID
+
+// dev
+export const FILE_URL = `https://dev.myoffer.life/api/v1/file/`;
+export const API_URL = 'https://dev.myoffer.life/';
+export const ANDROID_CLIENT_ID = '431628664212-ncgb1pcdupvjm1o2h9ahqm55birluvsh.apps.googleusercontent.com'
+export const IOS_CLIENT_ID = '834107509512-4ml4fiue0sovdee82fuj67900vglpsdc.apps.googleusercontent.com'
+
+
+
 

@@ -205,7 +205,7 @@ class AuthStore {
                     version: Constants.easConfig.version,
                     osVersion,
                     os,
-                    model: model
+                    model: model,
                 }
             })
             return resp.data;

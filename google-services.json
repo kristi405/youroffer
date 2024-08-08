@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "151499960939",
+    "project_id": "myoffers-8b141",
+    "storage_bucket": "myoffers-8b141.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151499960939:android:14dac292f55a9989f7b72e",
+        "android_client_info": {
+          "package_name": "com.offer.youoffer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuG-hfUqx-2C3c7e9Hu_0JOFIMtrxDE6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,6 +5,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import 'expo-dev-client';
 // import * as Sentry from 'sentry-expo';
 import * as Updates from 'expo-updates';
+import messaging from '@react-native-firebase/messaging';
 
 // Sentry.init({
 //   dsn: 'https://803698e536aa4528ac38b38788093389@app.glitchtip.com/5267',
@@ -13,7 +14,7 @@ import * as Updates from 'expo-updates';
 // });
 
 
-export default function App() {
+export default function App({navigation}) {
   if (Platform.OS == 'android') {
     NavigationBar.setBackgroundColorAsync("black");
   }
@@ -41,7 +42,7 @@ export default function App() {
     }
   }
 
-  useEffect(() => { onFetchUpdateAsync() }, []);
+  useEffect(() => { onFetchUpdateAsync(); }, []);
 
   return (
     <Main />

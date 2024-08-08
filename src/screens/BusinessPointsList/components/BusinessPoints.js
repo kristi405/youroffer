@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 40,
-    opacity: 0.8
+    opacity: 1
   },
   map: {
     width: 16,
@@ -112,6 +112,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     paddingTop: 0,
+  },
+  addressText: {
+    fontSize: 10,
+    color: '#fff',
+    opacity: 0.8
   },
   touch: {
     paddingHorizontal: 10,
@@ -304,6 +309,14 @@ const Item = ({ navigation, item }) => {
     await Linking.openURL(url);
   }
 
+  const cutAddress = (address) => {
+    if (address?.length > 30) {
+      return `${address.slice(0, 30)} ..`
+    }
+
+    return address.slice(0, 30)
+  }
+
   return (
     <TouchableWithoutFeedback onPress={() => { openDetail(company) }}>
       <View style={styles.businessPoint}>
@@ -314,6 +327,7 @@ const Item = ({ navigation, item }) => {
           <View style={styles.mainInfoBlock}>
             <View style={styles.column}>
               <Text style={styles.title}>{company.name}</Text>
+              <Text style={styles.addressText}>{ cutAddress(company.address) }</Text>
               <View style={styles.row}>
                 <Image source={require('../../../../assets/time.png')} style={styles.clock} />
                 <Text style={styles.time}>{workTime}</Text>

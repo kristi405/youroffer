@@ -5,6 +5,7 @@ import RegionStore from "../../stores/regions"
 import BusinessPointsStore from '../../stores/businessPoints'
 import { setRegion, getRegion } from "../../services/auth"
 import { setFirstInit } from '../../services/globals'
+import { subscribeToTopic } from '../../services/fcm'
 
 export const Region = observer(({ navigation }) => {
     const [selectedRegionId, setSelectedRegionId] = useState();
@@ -41,6 +42,7 @@ export const Region = observer(({ navigation }) => {
             setCurregion(item)
             setLoading(false)
             BusinessPointsStore.getAll()
+            subscribeToTopic()
         }, 500)
     }
 

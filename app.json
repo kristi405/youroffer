@@ -25,6 +25,15 @@
       ]
     },
     "plugins": [
+      "@react-native-firebase/app",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
       "expo-apple-authentication",
       [
         "expo-location",
@@ -53,6 +62,7 @@
           "android": {
             "compileSdkVersion": 34,
             "targetSdkVersion": 34,
+            "minSdkVersion": 24,
             "buildToolsVersion": "34.0.0"
           },
           "ios": {
@@ -75,6 +85,7 @@
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.offer.youoffer",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "locationAlwaysAndWhenInUsePermission": "Разрешите $(myoffers) использовать ваше местоположение для расчета расстояния от вашего местоположения до ближайших кафе с акциями.",
         "locationWhenInUsePermission": "Разрешите $(myoffers) использовать ваше местоположение для расчета расстояния от вашего местоположения до ближайших кафе с акциями.",
@@ -89,6 +100,7 @@
     },
     "android": {
       "versionCode": 49,
+      "googleServicesFile": "./google-services.json",
       "package": "com.offer.youoffer",
       "config": {
         "googleMaps": {

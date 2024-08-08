@@ -3,3 +3,7 @@
 // Поэтому при первой загрузке сразу показываем список акций
 export let FIRST_INIT = true
 export const setFirstInit = () => FIRST_INIT= false
+
+// Начальная старница для загрузки
+export let FIRST_PAGE = 'CouponScreen';
+export const setFirstPage = (page) => FIRST_PAGE = page

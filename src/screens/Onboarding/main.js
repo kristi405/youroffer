@@ -1,27 +1,45 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Alert} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import AnimatedLoader from "react-native-animated-loader";
 import { getSession, getRegion, getUser } from '../../services/auth'
 import { getLocation } from '../../services/geo'
+import { requestUserPermission } from '../../services/fcm'
 import AuthStore from '../../stores/auth'
 import BusinessPointsStore from '../../stores/businessPoints'
 import PromotionStore from '../../stores/promotion'
 import { ModalUpdate } from "./components/ModalUpdate"
+import { FIRST_PAGE, setFirstPage } from "./../../services/globals"
+import messaging from '@react-native-firebase/messaging';
 
 const NOT_WORKING_STATUSES = ['not_working_soft', 'not_working_hard']
-
 export const OnboardingScreen = ({navigation}) => {
   const [visible, setVisible] = useState(true);
   const [versionStatus, setVersionStatus] = useState(null);
   const [isVisibleModal, setisVisibleModal] = useState(false);
-  let navigateTo = 'CouponScreen';
+
+  function getMessage() {
+    // const unsubscribe = messaging().onMessage(async remoteMessage => {
+    //   console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    //   navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
+    // });
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
+    });
+
+    messaging().getInitialNotification().then(initialMessage => {
+      console.log("Initial Message: ", initialMessage);
+    })
+    // return unsubscribe;
+  }
 
   useEffect(() => {
     init()
   }, []);
 
     const init = async () => {
+      getMessage()
       await getLocation()
+      await requestUserPermission()
       const session = await getSession()
       if (!session) {
         await AuthStore.createUser()
@@ -29,7 +47,9 @@ export const OnboardingScreen = ({navigation}) => {
 
       const currentRegion = await getRegion()
       if (!currentRegion) {
-        navigateTo = 'Region'
+        setFirstPage('Region')
+      } else {
+        setFirstPage('CouponScreen')
       }
       const stauts = await AuthStore.checkVersion({
         os: Platform?.OS,
@@ -51,14 +71,14 @@ export const OnboardingScreen = ({navigation}) => {
         setVisible(false);
         AuthStore.updateCoord()
         BusinessPointsStore.getAll()
-        navigation.replace(navigateTo, { screen: 'Акции' })
+        navigation.replace(FIRST_PAGE, { screen: 'Акции' })
       });
     }
 
     const closeModal = () => {
       setisVisibleModal(false)
       setTimeout(async () => {
-        navigation.replace(navigateTo, { screen: 'Акции' })
+        navigation.replace(FIRST_PAGE, { screen: 'Акции' })
       }, 500);
     }
 

@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingRight: 10,
     borderRadius: 10,
-    opacity: 0.8
+    opacity: 0.95
   },
   title: {
     fontSize: 13,

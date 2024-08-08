@@ -127,6 +127,35 @@ export const getRegion = async () => {
     }
 }
 
+export const getTopic = async () => {
+    try {
+        const key = keyPrefix + 'TOPIC'
+        if (CAHCE[key]) return CAHCE[key];
+        const topic = await AsyncStorage.getItem(key);
+        CAHCE[key] = topic
+        return CAHCE[key]
+    } catch (error) {
+        // Sentry.Native.captureException(error, (scope) => {
+        //     scope.setTransactionName('service:auth:getTopic');
+        //     return scope;
+        // });
+    }
+}
+
+export const setTopic = async (topic) => {
+    try {
+        const key = keyPrefix + 'TOPIC'
+        CAHCE[key] = topic
+        await AsyncStorage.setItem(key, topic);
+    } catch (error) {
+        // Sentry.Native.captureException(error, (scope) => {
+        //     scope.setTransactionName('service:auth:getTopic');
+        //     return scope;
+        // });
+    }
+}
+
+
 export const cleanAuthData = async () => {
     try {
         await AsyncStorage.clear();
