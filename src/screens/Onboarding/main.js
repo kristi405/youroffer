@@ -8,7 +8,7 @@ import AuthStore from '../../stores/auth'
 import BusinessPointsStore from '../../stores/businessPoints'
 import PromotionStore from '../../stores/promotion'
 import { ModalUpdate } from "./components/ModalUpdate"
-import { FIRST_PAGE, setFirstPage } from "./../../services/globals"
+import { FIRST_PAGE, setFirstPage, PUSH_ACCESS } from "./../../services/globals"
 import messaging from '@react-native-firebase/messaging';
 
 const NOT_WORKING_STATUSES = ['not_working_soft', 'not_working_hard']
@@ -23,14 +23,24 @@ export const OnboardingScreen = ({navigation}) => {
     //   navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
     // });
     messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('setBackgroundMessageHandler', remoteMessage?.data?.id_offer)
       navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
     });
 
     messaging().getInitialNotification().then(initialMessage => {
+      console.log('getInitialNotification', initialMessage?.data?.id_offer)
       if (initialMessage?.data?.id_offer) {
         navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
       }
     })
+
+        // Обработка уведомления, когда приложение находится в фоновом режиме или закрыто
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log('onNotificationOpenedApp', initialMessage?.data?.id_offer)
+      if (remoteMessage?.data?.id_offer) {
+        navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
+      }
+    });
     // return unsubscribe;
   }
 
@@ -56,7 +66,8 @@ export const OnboardingScreen = ({navigation}) => {
       const stauts = await AuthStore.checkVersion({
         os: Platform?.OS,
         osVersion: Platform?.Version || Platform?.osVersion,
-        model: Platform?.constants?.Model
+        model: Platform?.constants?.Model,
+        pushAccess: PUSH_ACCESS
       });
 
       setVersionStatus(stauts);

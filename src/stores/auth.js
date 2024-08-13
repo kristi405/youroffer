@@ -197,7 +197,7 @@ class AuthStore {
         return status
     }
 
-    async checkVersion({ os, osVersion, model }) {
+    async checkVersion({ os, osVersion, model, pushAccess }) {
         let status =  REQUEST_STATUS.success
         try {
             const resp = await api.get(`/api/v1/version/check`, {
@@ -206,6 +206,7 @@ class AuthStore {
                     osVersion,
                     os,
                     model: model,
+                    push_access: pushAccess?.toString()
                 }
             })
             return resp.data;

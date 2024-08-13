@@ -1,7 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 import { getRegion, getTopic, setTopic } from './auth'
-import {PermissionsAndroid} from 'react-native';
-
+import {PermissionsAndroid, Platform} from 'react-native';
+import { setPushAccess } from "./globals"
 
 
 export const requestUserPermission = async () => {
@@ -9,6 +9,13 @@ export const requestUserPermission = async () => {
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  if (Platform.OS !== 'ios') {
+    const granted =  await PermissionsAndroid?.request(PermissionsAndroid?.PERMISSIONS?.POST_NOTIFICATIONS);
+    setPushAccess(granted)
+  } else {
+    setPushAccess(enabled)
+  }
 
   if (enabled) {
     await messaging().registerDeviceForRemoteMessages();
