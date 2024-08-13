@@ -27,7 +27,9 @@ export const OnboardingScreen = ({navigation}) => {
     });
 
     messaging().getInitialNotification().then(initialMessage => {
-      console.log("Initial Message: ", initialMessage);
+      if (initialMessage?.data?.id_offer) {
+        navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
+      }
     })
     // return unsubscribe;
   }

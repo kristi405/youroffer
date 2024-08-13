@@ -89,6 +89,9 @@
       "infoPlist": {
         "locationAlwaysAndWhenInUsePermission": "Разрешите $(myoffers) использовать ваше местоположение для расчета расстояния от вашего местоположения до ближайших кафе с акциями.",
         "locationWhenInUsePermission": "Разрешите $(myoffers) использовать ваше местоположение для расчета расстояния от вашего местоположения до ближайших кафе с акциями.",
+        "UIBackgroundModes": [
+          "audio"
+        ],
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": [

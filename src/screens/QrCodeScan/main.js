@@ -9,7 +9,7 @@ import { setCamerAccess, getCamerAccess } from "../../services/auth"
 import { ModalPromotion } from "./components/ModalPromotion";
 import { ModalBonuses } from "./components/ModalBonuses";
 import { Camera } from "expo-camera";
-
+import { Audio } from 'expo-av';
 
 export const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState('waiting');
@@ -288,21 +288,40 @@ export const Scan = ({ navigation }) => {
         )
     }
 
+    async function playSound() {
+        try {
+            await Audio.Sound.createAsync(
+                require('../../../assets/scan.mp3'),
+                { shouldPlay: true }
+            );
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
+
     let isCanScan = true;
     const handleBarCodeScanned = async ({ type, data }) => {
-        console.log('dddddddccccc')
         if(!isCanScan) return;
         isCanScan = false;
         setScanned(true);
-        // 0 - user_number
-        // 1 - offer_number
-        // 2 - is_active_for_user
-        // 3 - bonusess
-        // 4 - use_count
-        const qrData = JSON.parse(data.trim())
-        const offer = offers.find(o => o.number == qrData[1])
+        await playSound()
+        let qrData;
+        let offer;
+        try {
+            // 0 - user_number
+            // 1 - offer_number
+            // 2 - is_active_for_user
+            // 3 - bonusess
+            // 4 - use_count
+            qrData = JSON.parse(data.trim())
+            offer = offers.find(o => o.number == qrData[1])
+        } catch (e) {
+            showAccessModal();
+            return;
+        }
 
-        if (!offer) {
+        if (!offer || !qrData) {
             showAccessModal();
             return;
         }
@@ -352,7 +371,6 @@ export const Scan = ({ navigation }) => {
                         }
                     }}
                     onBarCodeScanned={(e) => {
-                        console.log('sssssDDDDDDsss')
                         if (!scanned) {
                             handleBarCodeScanned(e)
                         }
