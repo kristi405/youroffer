@@ -22,23 +22,24 @@ export const OnboardingScreen = ({navigation}) => {
     //   console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
     //   navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
     // });
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('setBackgroundMessageHandler', remoteMessage?.data?.id_offer)
-      navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
-    });
+    // messaging().setBackgroundMessageHandler(async remoteMessage => {
+    //   console.log('setBackgroundMessageHandler', remoteMessage?.data?.id_offer)
+    //   navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
+    // });
 
-    messaging().getInitialNotification().then(initialMessage => {
-      console.log('getInitialNotification', initialMessage?.data?.id_offer)
-      if (initialMessage?.data?.id_offer) {
-        navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
-      }
-    })
+    // Обработка уведомления, когда приложение закрыто
+    // messaging().getInitialNotification().then(async (initialMessage) => {
+    //   console.log('getInitialNotification', initialMessage?.data?.id_offer)
+    //   if (initialMessage?.data?.id_offer) {
+    //     navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
+    //   }
+    // }).catch(e => console.log('2'))
 
-        // Обработка уведомления, когда приложение находится в фоновом режиме или закрыто
-    messaging().onNotificationOpenedApp(remoteMessage => {
+    // Обработка уведомления, когда приложение находится в фоновом режиме или закрыто
+    messaging().onNotificationOpenedApp(initialMessage => {
       console.log('onNotificationOpenedApp', initialMessage?.data?.id_offer)
-      if (remoteMessage?.data?.id_offer) {
-        navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
+      if (initialMessage?.data?.id_offer) {
+        navigation.navigate('CouponDetailScreen', { data: { id: initialMessage?.data?.id_offer } })
       }
     });
     // return unsubscribe;
@@ -80,11 +81,16 @@ export const OnboardingScreen = ({navigation}) => {
 
       await PromotionStore.getList();
 
-      setTimeout(() => {
+      setTimeout(async () => {
         setVisible(false);
         AuthStore.updateCoord()
         BusinessPointsStore.getAll()
-        navigation.replace(FIRST_PAGE, { screen: 'Акции' })
+        const initialMessage = await messaging().getInitialNotification()
+        if (initialMessage?.data?.id_offer) {
+          navigation.replace('CouponDetailScreen', { data: { id: initialMessage?.data?.id_offer } })
+        } else {
+          navigation.replace(FIRST_PAGE, { screen: 'Акции' })
+        }
       });
     }
 
