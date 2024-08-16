@@ -18,23 +18,6 @@ export const OnboardingScreen = ({navigation}) => {
   const [isVisibleModal, setisVisibleModal] = useState(false);
 
   function getMessage() {
-    // const unsubscribe = messaging().onMessage(async remoteMessage => {
-    //   console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    //   navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
-    // });
-    // messaging().setBackgroundMessageHandler(async remoteMessage => {
-    //   console.log('setBackgroundMessageHandler', remoteMessage?.data?.id_offer)
-    //   navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
-    // });
-
-    // Обработка уведомления, когда приложение закрыто
-    // messaging().getInitialNotification().then(async (initialMessage) => {
-    //   console.log('getInitialNotification', initialMessage?.data?.id_offer)
-    //   if (initialMessage?.data?.id_offer) {
-    //     navigation.navigate('CouponDetailScreen', { data: { id: remoteMessage?.data?.id_offer } })
-    //   }
-    // }).catch(e => console.log('2'))
-
     // Обработка уведомления, когда приложение находится в фоновом режиме или закрыто
     messaging().onNotificationOpenedApp(initialMessage => {
       console.log('onNotificationOpenedApp', initialMessage?.data?.id_offer)
@@ -42,7 +25,6 @@ export const OnboardingScreen = ({navigation}) => {
         navigation.navigate('CouponDetailScreen', { data: { id: initialMessage?.data?.id_offer } })
       }
     });
-    // return unsubscribe;
   }
 
   useEffect(() => {
@@ -87,7 +69,8 @@ export const OnboardingScreen = ({navigation}) => {
         BusinessPointsStore.getAll()
         const initialMessage = await messaging().getInitialNotification()
         if (initialMessage?.data?.id_offer) {
-          navigation.replace('CouponDetailScreen', { data: { id: initialMessage?.data?.id_offer } })
+          navigation.replace(FIRST_PAGE, { screen: 'Акции' })
+          navigation.navigate('CouponDetailScreen', { data: { id: initialMessage?.data?.id_offer } })
         } else {
           navigation.replace(FIRST_PAGE, { screen: 'Акции' })
         }
