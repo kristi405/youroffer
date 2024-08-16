@@ -141,7 +141,7 @@ class AuthStore {
             const resp = await api.patch('/api/v1/user/update', userToUpdate)
             await setUser(resp.data)
         } catch (e) {
-            status =  REQUEST_STATUS.error
+            status = e.response?.data?.message || REQUEST_STATUS.error
             // Sentry.Native.captureException(e, (scope) => {
             //     scope.setTransactionName('AuthStore:updateUser');
             //     return scope;

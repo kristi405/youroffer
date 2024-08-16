@@ -73,8 +73,14 @@ export const EditScreen = observer(({ navigation }) => {
             )
             init()
         } else {
+            let msg = 'Неизвестная ошибка, попробуйте ще раз'
+            let title = 'Данные не сохранены'
+            if (status === "login exists") {
+                title = 'Данные не сохранены'
+                msg = 'Такой логин уже существует, придумайте новый'
+            }
             Alert.alert(
-                '', 'Данные не сохранены',
+                title, msg,
                 [
                     {
                         text: 'Закрыть',
