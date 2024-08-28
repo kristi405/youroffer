@@ -28,6 +28,8 @@ api.interceptors.request.use(
       config.headers['x-fcm'] = fcmToken
     }
 
+    config.headers['x-type'] = 'mobile';
+
     return config
   },
   (error) => Promise.reject(error)

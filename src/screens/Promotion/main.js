@@ -106,6 +106,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const ButtonView = ({ buttonTitle }) => {
         if (item.type == 'default' && !item.generate_qr) return null
         if (item.type == 'discount' && item.is_active_for_user && !item.one_time) return buttonTitle
+        if (item.type == 'present' && !item.is_active_for_user) return buttonTitle
         if (offer.type == 'subscription' && offer.use_count === offer.max_count) {
             return (
                 <TouchableOpacity style={styles.buttonStyleDisabed} disabled={true}>
@@ -182,6 +183,39 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             return (
                 <View style={currentStyle}>
                     <Text style={currentStyle}>{item.one_time ? 'Воспользоваться скидкой' : 'Скидка активна'}</Text>
+                </View>
+            )
+        }
+
+        if (item.type === 'present' && item.is_active_for_user && item.reset_after_days) {
+            const date = new Date(item.start_offer_time);
+            date.setDate(date.getDate() + item.days_to_reset);
+            return (
+                <View style={styles.activeDiscountTextBtn}>
+                    <Text style={styles.activeDiscountTextBtn}>Воспользоваться подарком</Text>
+                    <Text style={styles.activeDiscountTextBtn}>до: {date.toLocaleString('Ru', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        year: 'numeric',
+                        month: "long",
+                        day: 'numeric'
+                    })}</Text>
+                </View>
+            )
+        }
+
+        if (item.type === 'present' && item.is_active_for_user && !item.reset_after_days) {
+            return (
+                <View style={styles.activeDiscountTextBtn}>
+                    <Text style={styles.activeDiscountTextBtn}>Воспользоваться подарком</Text>
+                </View>
+            )
+        }
+
+        if (item.type === 'present' && !item.is_active_for_user) {
+            return (
+                <View style={styles.activeDiscountText}>
+                    <Text style={styles.activeDiscountText}>Вы уже использовали подарок</Text>
                 </View>
             )
         }

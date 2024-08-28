@@ -3,7 +3,7 @@
     "name": "myOffers",
     "scheme": "youoffer",
     "slug": "youoffer",
-    "version": "1.0.50",
+    "version": "1.0.51",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -102,7 +102,7 @@
       }
     },
     "android": {
-      "versionCode": 50,
+      "versionCode": 51,
       "googleServicesFile": "./google-services.json",
       "package": "com.offer.youoffer",
       "config": {

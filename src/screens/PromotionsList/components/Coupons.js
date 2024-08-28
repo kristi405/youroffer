@@ -88,6 +88,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10
   },
+  hidden: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    opacity: 0
+  },
   emptyView: {
     flex: 1,
     justifyContent: 'center',
@@ -274,6 +279,24 @@ const Item = ({ navigation, item, businessPointId }) => {
     }, 200)
   }
 
+  const AddToFavoriteView = ({offer}) => {
+    if (offer.type === 'present') return (
+      <TouchableWithoutFeedback >
+        <View style={styles.hidden}>
+          <Image source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+        </View>
+      </TouchableWithoutFeedback>
+    )
+
+    return (
+      <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>
+        <View style={styles.touch}>
+          <Image source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
+
   return (
     <TouchableWithoutFeedback onPress={() => { openDetail(offer) }}>
       <View style={styles.coupon}>
@@ -286,11 +309,7 @@ const Item = ({ navigation, item, businessPointId }) => {
           <Text style={styles.title}>{offer.name}</Text>
         </View>
         <View style={styles.save}>
-          <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>
-            <View style={styles.touch}>
-              <Image source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
-            </View>
-          </TouchableWithoutFeedback>
+          <AddToFavoriteView offer={offer} />
         </View>
       </View>
     </TouchableWithoutFeedback>
