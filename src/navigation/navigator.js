@@ -14,6 +14,7 @@ import { ContactUs } from '../screens/ContactUs/main';
 import { ForBusiness } from '../screens/ForBusiness/main';
 import { Region } from '../screens/Region/main';
 import { BusinessPointOnMap } from '../screens/BusinessPointOnMap/main';
+import { BonusCard } from '../screens/BonusCard/main';
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +58,11 @@ export const Navigator = () => {
             />
             <Stack.Screen
                 name="CouponScreen"
+                component={TabBar}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="BonusCard"
                 component={TabBar}
                 options={{ headerShown: false }}
             />
