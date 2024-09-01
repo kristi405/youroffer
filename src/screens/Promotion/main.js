@@ -105,7 +105,8 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const ButtonView = ({ buttonTitle }) => {
         if (item.type == 'default' && !item.generate_qr) return null
-        if (item.type == 'discount' && item.is_active_for_user && !item.one_time) return buttonTitle
+        if (item.type == 'discount' && item.is_active_for_user && !item.one_time) return null
+        if (item.type == 'present' && item.is_active_for_user && !item.one_time) return null
         if (item.type == 'present' && !item.is_active_for_user) return buttonTitle
         if (offer.type == 'subscription' && offer.use_count === offer.max_count) {
             return (
@@ -156,28 +157,6 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             return 'Активировать скидку'
         }
 
-        if (item.type === 'discount' &&
-            item.is_active_for_user &&
-            item.reset_after_days &&
-            item.days_to_reset) {
-
-            const date = new Date(item.start_offer_time);
-            date.setDate(date.getDate() + item.days_to_reset);
-            const currentStyle = item.one_time ? styles.activeDiscountTextBtn : styles.activeDiscountText
-            return (
-                <View style={currentStyle}>
-                    <Text style={currentStyle}>{item.one_time ? 'Воспользоваться скидкой' : 'Скидка активна'}</Text>
-                    <Text style={currentStyle}>до: {date.toLocaleString('Ru', {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        year: 'numeric',
-                        month: "long",
-                        day: 'numeric'
-                    })}</Text>
-                </View>
-            )
-        }
-
         if (item.type === 'discount' && item.is_active_for_user) {
             const currentStyle = item.one_time ? styles.activeDiscountTextBtn : styles.activeDiscountText
             return (
@@ -187,24 +166,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             )
         }
 
-        if (item.type === 'present' && item.is_active_for_user && item.reset_after_days) {
-            const date = new Date(item.start_offer_time);
-            date.setDate(date.getDate() + item.days_to_reset);
-            return (
-                <View style={styles.activeDiscountTextBtn}>
-                    <Text style={styles.activeDiscountTextBtn}>Воспользоваться подарком</Text>
-                    <Text style={styles.activeDiscountTextBtn}>до: {date.toLocaleString('Ru', {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        year: 'numeric',
-                        month: "long",
-                        day: 'numeric'
-                    })}</Text>
-                </View>
-            )
-        }
-
-        if (item.type === 'present' && item.is_active_for_user && !item.reset_after_days) {
+        if (item.type === 'present' && item.is_active_for_user) {
             return (
                 <View style={styles.activeDiscountTextBtn}>
                     <Text style={styles.activeDiscountTextBtn}>Воспользоваться подарком</Text>
@@ -223,7 +185,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         return 'Воспользоваться акцией'
     }
 
-    const TimeToText = () => {
+    const AdditionalInfo = () => {
         if (item.type === 'subscription' && item.is_active_for_user && item.reset_after_days && item.days_to_reset) {
             const date = new Date(item.start_offer_time);
             date.setDate(date.getDate() + item.days_to_reset);
@@ -252,6 +214,60 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                         month: "long",
                         day: 'numeric'
                     })}</Text>
+                </View>
+            )
+        }
+
+        if (item.type === 'discount' &&
+                item.is_active_for_user &&
+                item.reset_after_days &&
+                item.days_to_reset) {
+
+            const date = new Date(item.start_offer_time);
+            date.setDate(date.getDate() + item.days_to_reset);
+            return (
+                <View style={styles.button}>
+                    <Text style={styles.timeToText}>ВАША СКИДКА АКТИВНА</Text>
+                    <Text style={styles.timeToText}>Действует до: {date.toLocaleString('Ru', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        year: 'numeric',
+                        month: "long",
+                        day: 'numeric'
+                    })}</Text>
+                </View>
+            )
+        }
+
+        if (item.type === 'discount' && item.is_active_for_user) {
+            return (
+                <View style={styles.button}>
+                    <Text style={styles.timeToText}>ВАША СКИДКА АКТИВНА</Text>
+                </View>
+            )
+        }
+
+        if (item.type === 'present' && item.is_active_for_user && item.reset_after_days) {
+            const date = new Date(item.start_offer_time);
+            date.setDate(date.getDate() + item.days_to_reset);
+            return (
+                <View style={styles.button}>
+                    <Text style={styles.timeToText}>ВАШ ПОДАРОК АКТИВЕН</Text>
+                    <Text style={styles.timeToText}>Действует до: {date.toLocaleString('Ru', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        year: 'numeric',
+                        month: "long",
+                        day: 'numeric'
+                    })}</Text>
+                </View>
+            )
+        }
+
+        if (item.type === 'present' && item.is_active_for_user) {
+            return (
+                <View style={styles.button}>
+                    <Text style={styles.timeToText}>ВАШ ПОДАРОК АКТИВЕН</Text>
                 </View>
             )
         }
@@ -310,7 +326,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <View style={styles.button}>
                     <ButtonView buttonTitle={btnText()} />
                 </View>
-                <TimeToText />
+                <AdditionalInfo />
                 <View style={styles.circle}>
                     <AccumulativePromotionView />
                     <AccumulativeBonusView />
@@ -349,7 +365,7 @@ const styles = StyleSheet.create({
     timeToText: {
         fontSize: 15,
         fontWeight: '500',
-        color: '#0EA47A',
+        color: '#ece164',
         textAlign: 'center'
     },
     container: {
