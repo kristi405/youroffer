@@ -14,7 +14,7 @@ import { ContactUs } from '../screens/ContactUs/main';
 import { ForBusiness } from '../screens/ForBusiness/main';
 import { Region } from '../screens/Region/main';
 import { BusinessPointOnMap } from '../screens/BusinessPointOnMap/main';
-import { BonusCard } from '../screens/BonusCard/main';
+import { NewCard } from '../screens/BonusCard/components/NewCard';
 
 const Stack = createNativeStackNavigator();
 
@@ -80,6 +80,15 @@ export const Navigator = () => {
                 component={QrCodeScreen}
                 options={{
                     title: 'QR code',
+                    headerTintColor: '#0EA47A',
+                    headerStyle: { backgroundColor: 'black' }
+                }}
+            />
+            <Stack.Screen
+                name="NewCard"
+                component={NewCard}
+                options={{
+                    title: 'Добавьте новую карту',
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 }}

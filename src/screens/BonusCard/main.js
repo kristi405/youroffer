@@ -1,8 +1,13 @@
 import React, { useCallback } from "react";
 import { StyleSheet, View, FlatList, Image, Text, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { observer } from "mobx-react-lite"
+import Barcode from 'react-native-barcode-svg';
 
 export const BonusCard = observer(({ navigation }) => {
+
+    const openNewCard = async () => {
+        navigation.navigate('NewCard')
+    }
 
     return (
         <View style={styles.container}>
@@ -15,22 +20,18 @@ export const BonusCard = observer(({ navigation }) => {
                 keyExtractor={(item) => item.id}
             >
             </FlatList>
-            <TouchableWithoutFeedback >
+            <TouchableWithoutFeedback onPress={openNewCard}>
                 <View style={styles.addButton}>
                     <Image source={require('../../../assets/plus.png')} />
                 </View>
-            </TouchableWithoutFeedback>
-            {/* <Barcode
-                value="123456789999"
-                options={{ format: 'UPC', background: 'lightblue' }}
-                rotation={-5}
-            /> */}
+            </TouchableWithoutFeedback >
         </View>
     )
 })
 
-const Item = ({ title }) => (
+const Item = ({title}) => (
     <View style={styles.item}>
+        <Image style={styles.imageContainer} source={require('../../../assets/discontCard.png')} />
         <Text style={styles.title}>{title}</Text>
     </View>
 );
@@ -38,7 +39,7 @@ const Item = ({ title }) => (
 const DATA = [
     {
         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
+        title: 'Остров чистоты',
     },
     {
         id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
@@ -65,17 +66,26 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         gap: 15,
     },
+    imageContainer: {
+        width: '100%',
+        height: 110,
+        borderRadius: 10,
+    },
     item: {
-        backgroundColor: '#f9c2ff',
+        backgroundColor: '#1A1A1A',
         flexDirection: 'column',
         width: '46%',
-        height: 110,
+        height: 140,
         margin: 8,
         borderRadius: 10,
         justifyContent: 'space-between',
+        gap: 5
     },
     title: {
-        fontSize: 32,
+        fontSize: 15,
+        color: 'white',
+        paddingLeft: 5,
+        paddingBottom: 5
     },
     addButton: {
         backgroundColor: '#0EA47A',
@@ -83,8 +93,4 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 25,
     },
-    box: {
-        width: 100,
-        height: 100,
-    }
 })
