@@ -11,14 +11,17 @@ export const NewCard = observer(({ navigation }) => {
     const [code, setCode] = useState('')
 
     const save = async () => {
-       console.log(number)
-       setCode(number)
+        console.log(number)
+        setCode(number)
     }
 
     const BarcodeView = () => {
         if (code.length == 0) return null
         return (
-            <Text><Barcode value={code} format="CODE128" />;</Text>
+            <View style={styles.barcodeView}>
+                <Text><Barcode value={code} format="CODE128" height={75}/></Text>
+                <Text style={styles.code}>{code}</Text>
+            </View>
         )
     }
 
@@ -28,7 +31,7 @@ export const NewCard = observer(({ navigation }) => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={styles.createUserBlock}>
                     <TextInput style={[styles.codeInputStyle]}
-                        onChangeText={(v) => { setType(v)}}
+                        onChangeText={(v) => { setType(v) }}
                         value={type}
                         keyboardType='default'
                         placeholder="список"
@@ -55,7 +58,7 @@ export const NewCard = observer(({ navigation }) => {
                     <Text style={styles.title}>Сохранить</Text>
                 </View>
             </TouchableWithoutFeedback>
-            <BarcodeView/>
+            <BarcodeView />
         </View>
     )
 })
@@ -103,5 +106,20 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'white',
         fontWeight: '500',
+    },
+    barcodeView: {
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        width: '95%',
+        padding: 5,
+        paddingTop: 10,
+        gap: 5,
+        alignItems: 'center',
+    },
+    code: {
+        fontSize: 17,
+        color: 'black',
+        fontWeight: '400',
     },
 })

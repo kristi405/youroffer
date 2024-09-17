@@ -1,12 +1,15 @@
 import React, { useCallback } from "react";
 import { StyleSheet, View, FlatList, Image, Text, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { observer } from "mobx-react-lite"
-import Barcode from 'react-native-barcode-svg';
 
 export const BonusCard = observer(({ navigation }) => {
 
     const openNewCard = async () => {
         navigation.navigate('NewCard')
+    }
+
+    const openBonusCardView = async () => {
+        navigation.navigate('BonusCardView')
     }
 
     return (
@@ -16,7 +19,7 @@ export const BonusCard = observer(({ navigation }) => {
                 data={DATA}
                 contentContainerStyle={{ paddingBottom: 20 }}
                 numColumns={2}
-                renderItem={({ item }) => <Item title={item.title} />}
+                renderItem={({ item }) => <Item navigation={navigation} title={item.title} />}
                 keyExtractor={(item) => item.id}
             >
             </FlatList>
@@ -29,12 +32,24 @@ export const BonusCard = observer(({ navigation }) => {
     )
 })
 
-const Item = ({title}) => (
-    <View style={styles.item}>
-        <Image style={styles.imageContainer} source={require('../../../assets/discontCard.png')} />
-        <Text style={styles.title}>{title}</Text>
-    </View>
-);
+const Item = ({ navigation, title }) => {
+
+    const openBonusCardView = async () => {
+        console.log('2363263727')
+        navigation.navigate('BonusCardView')
+        // if (!businessPointId) fromPromotionPage = true;
+        // navigation.navigate('CouponDetailScreen', { data: item })
+    }
+
+    return (
+        <TouchableWithoutFeedback onPress={openBonusCardView}>
+            <View style={styles.item}>
+                <Image style={styles.imageContainer} source={require('../../../assets/discontCard.png')} />
+                <Text style={styles.title}>{title}</Text>
+            </View>
+        </TouchableWithoutFeedback>
+    )
+};
 
 const DATA = [
     {
