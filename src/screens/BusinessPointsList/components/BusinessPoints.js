@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { TouchableWithoutFeedback, StyleSheet, View, FlatList, RefreshControl, Image, Text, ActivityIndicator, Linking } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View, FlatList, RefreshControl, Image, Text, ActivityIndicator, Linking, TextInput } from 'react-native';
 import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { FILE_URL } from '../../../services/constants'
 import { getLocation } from '../../../services/geo'
-
+import { useFocusEffect } from '@react-navigation/native'; 
 
 const styles = StyleSheet.create({
   segment: {
@@ -173,24 +173,21 @@ const styles = StyleSheet.create({
 })
 
 
-export const BusinessPoints = observer(({ navigation }) => {
-  const [isFavoriteList, setIsFavoriteList] = useState(0)
-  const [list, setList] = useState([])
-
+export const BusinessPoints = ({ navigation }) => {
+  const [isFavoriteList, setIsFavoriteList] = useState(BusinessPointsStore.isFavorite ? 1 : 0) 
+ 
   const handleValueChange = async (isFavorite) => {
-    setIsFavoriteList(isFavorite)
-    if (isFavorite) {
-      setList(BusinessPointsStore.favoriteList())
-    } else {
-      setList(BusinessPointsStore.all)
-    }
+    BusinessPointsStore.setIsFavorite(isFavorite)
+    setIsFavoriteList(isFavorite)    
   };
+  
+  useFocusEffect((React.useCallback(() => {
+    BusinessPointsStore.setIsFavorite(0)
+    setIsFavoriteList(0)
+  }, [])))
 
-  useEffect(() => {
-    handleValueChange(isFavoriteList)
-  }, [BusinessPointsStore.isLoading]);
 
-  const Component = observer(() => (
+  const Component = () => (
     <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center' }}>
       <SegmentedControl
         style={styles.segment}
@@ -200,13 +197,27 @@ export const BusinessPoints = observer(({ navigation }) => {
         selectedIndex={isFavoriteList}
         onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
       />
-      {BusinessPointsStore.isLoading ? <Loading /> : <BusinessPoints />}
+      <SearchBlock />
+      {BusinessPointsStore.isLoading 
+        ? <Loading /> 
+        : <BusinessPointsList 
+            isFavoriteList={isFavoriteList}
+            navigation={navigation}
+        />     
+    }
     </View >
-  ))
+  )  
 
-  const Loading = () => (
-    <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
-  )
+  return <Component />
+}
+
+
+const Loading = () => {
+  return <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
+}
+
+const BusinessPointsList = observer(({ isFavoriteList, navigation }) => {
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const EmptyComponent = () => {
     if (isFavoriteList) {
@@ -229,27 +240,29 @@ export const BusinessPoints = observer(({ navigation }) => {
         </View>
       )
     }
-
   }
 
   const handleRefresh = async () => {
+    setRefreshing(true);
     await getLocation(true)
-    BusinessPointsStore.getAll()
+    await BusinessPointsStore.getAll()
+    setRefreshing(false);
   }
 
-  const BusinessPoints = () => (
+  return (
     <View style={styles.app}>
       <FlatList
         ListEmptyComponent={EmptyComponent}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 60 }}
         style={styles.flatList}
-        data={list}
+        data={BusinessPointsStore.all}
         numColumns={1}
         renderItem={({ item }) => <Item item={item} navigation={navigation} />}
         keyExtractor={(item) => item.id}
         refreshControl={
           <RefreshControl
             onRefresh={handleRefresh}
+            refreshing={refreshing}
             colors={['#0EA47A']}
             tintColor={'white'}
             progressViewOffset={5}
@@ -259,8 +272,6 @@ export const BusinessPoints = observer(({ navigation }) => {
       </FlatList>
     </View >
   );
-
-  return <Component />
 })
 
 const Item = ({ navigation, item }) => {
@@ -366,4 +377,46 @@ const Item = ({ navigation, item }) => {
       </View>
     </TouchableWithoutFeedback>
   )
+}
+
+const SearchBlock = () => {
+  const [searchString, setSearchString] = useState("")  
+  let timer;
+  const onSearchHandler = (text) => {  
+    setSearchString(text)
+    clearTimeout(timer)
+    timer = setTimeout(() => {    
+      BusinessPointsStore.setSearchString(text?.trim())
+    }, 600)
+  } 
+
+  useFocusEffect((React.useCallback(() => {
+    setSearchString("")
+  }, [])))
+
+  return (
+    <View style={{     
+      width: "95%"
+    }}>
+      <TextInput
+        placeholder="Поиск"
+        placeholderTextColor="#A9A9A9"
+        cursorColor="#A9A9A9"
+        onChangeText={onSearchHandler}
+        autoCorrect={false}
+        value={searchString}      
+        style={{
+          height: 40,
+          backgroundColor: "#1A1A1A",
+          borderRadius: 10,
+          paddingHorizontal: 10,
+          borderWidth: 0.5,
+          color: '#A9A9A9',          
+          borderColor: "#808080",
+          width: "100%"
+        }}
+      />
+
+    </View>
+  );
 }

@@ -35,7 +35,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             timers = []
         }
         // если мы вернулись из QR делаем еще несколько запросов
-        if (fromQR && ['accumulative', 'subscription', 'discount'].includes(item?.type)) {
+        if (fromQR && ['accumulative', 'subscription', 'discount', 'present', 'coupon'].includes(item?.type)) {
             fromQR = false
             timers.push(init(3000))
             timers.push(init(6000))
@@ -106,7 +106,8 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const ButtonView = ({ buttonTitle }) => {
         if (item.type == 'default' && !item.generate_qr) return null
         if (item.type == 'discount' && item.is_active_for_user && !item.one_time) return null
-        if (item.type == 'present' && item.is_active_for_user && !item.one_time) return null
+        if (item.type == 'present' && item.is_active_for_user && !item.one_time) return null       
+         
         if (item.type == 'present' && !item.is_active_for_user) return buttonTitle
         if (offer.type == 'subscription' && offer.use_count === offer.max_count) {
             return (
@@ -123,10 +124,19 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     }
 
     const QuantitativePromotionView = () => {
-        if (item.type != 'quantitative') return null
-        return (
-            <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {offer?.max_count || 0}</Text>
-        )
+        if (item.type === 'quantitative') {
+            return (
+                <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {offer?.max_count || 0}</Text>
+            )
+        }
+        
+        if (item.type === 'coupon' && item.is_quantitative_limit) {
+            return (
+                <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {offer?.max_count || 0}</Text>
+            )
+        }  
+
+        return null
     }
 
     let timer;
@@ -141,7 +151,6 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const openMap = bp => {
         navigation.navigate('BusinessPointOnMap', { data: bp, name: bp.name })
-
     }
 
     const btnText = () => {
@@ -157,6 +166,10 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             return 'Активировать скидку'
         }
 
+        if (item.type === 'coupon' && !item.is_active_for_user) {
+            return 'Активировать купон'
+        }
+
         if (item.type === 'discount' && item.is_active_for_user) {
             const currentStyle = item.one_time ? styles.activeDiscountTextBtn : styles.activeDiscountText
             return (
@@ -164,6 +177,10 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                     <Text style={currentStyle}>{item.one_time ? 'Воспользоваться скидкой' : 'Скидка активна'}</Text>
                 </View>
             )
+        }
+
+        if (item.type === 'coupon' && item.is_active_for_user) {
+            return 'Воспользоваться купоном'       
         }
 
         if (item.type === 'present' && item.is_active_for_user) {
@@ -246,6 +263,35 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 </View>
             )
         }
+
+        if (item.type === 'coupon' &&
+                item.is_active_for_user &&
+                item.reset_after_days &&
+                item.days_to_reset) {
+
+            const date = new Date(item.start_offer_time);
+            date.setDate(date.getDate() + item.days_to_reset);
+            return (
+                <View style={styles.button}>
+                    <Text style={styles.timeToText}>ВАШ КУПОН АКТИВЕН</Text>
+                    <Text style={styles.timeToText}>Действует до: {date.toLocaleString('Ru', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        year: 'numeric',
+                        month: "long",
+                        day: 'numeric'
+                    })}</Text>
+                </View>
+            )
+        }
+
+        if (item.type === 'coupon' && item.is_active_for_user) {
+            return (
+                <View style={styles.button}>
+                    <Text style={styles.timeToText}>ВАШ КУПОН АКТИВЕН</Text>
+                </View>
+            )
+        }        
 
         if (item.type === 'present' && item.is_active_for_user && item.reset_after_days) {
             const date = new Date(item.start_offer_time);

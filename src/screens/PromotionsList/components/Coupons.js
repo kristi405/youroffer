@@ -295,7 +295,7 @@ const Item = ({ navigation, item, businessPointId }) => {
         </View>
       </TouchableWithoutFeedback>
     )
-  }
+  } 
 
   return (
     <TouchableWithoutFeedback onPress={() => { openDetail(offer) }}>

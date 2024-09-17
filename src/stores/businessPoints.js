@@ -12,13 +12,34 @@ class BusinessPointsStore {
     // флаг указывающий что мы получили все акции
     finishScroll = false
     isLoading = false
+    isFavorite = false
+    searchSrting = ""
 
     constructor() {
         makeAutoObservable(this)
     }
 
-    get all() {
-        return this.list || []
+    get all() {        
+        if (this.isFavorite && this.searchSrting) {
+            return this.list?.filter(bp => bp.favorite && bp.name?.toLowerCase().includes(this.searchSrting)) || []
+        }
+        
+        if (this.isFavorite) {
+            return this.list?.filter(bp => bp.favorite) || []
+        }
+
+        if (this.searchSrting) {
+            return this.list?.filter(bp => bp.name?.toLowerCase().includes(this.searchSrting)) || []
+        }       
+        
+        return this.list || []                
+    }
+    
+    setIsFavorite(isFavorite) {
+        runInAction(() => {
+            this.searchSrting = ""
+            this.isFavorite = !!isFavorite            
+        })
     }
 
     favoriteList() {
@@ -26,9 +47,15 @@ class BusinessPointsStore {
         return favorite
     }
 
+    setSearchString(searchSrting) {
+        runInAction(() => {             
+            this.searchSrting = searchSrting?.toLowerCase()        
+        })        
+    }
+
     setList(list) {
         runInAction(() => {
-            this.list = list || []
+            this.list = list ? [...list] : []
             this.isLoading = false
         })
     }
@@ -49,6 +76,7 @@ class BusinessPointsStore {
             //     return scope;
             // });
         }
+        this.isLoading = false
     }
 
     async sortByDistance(businessPoints) {
