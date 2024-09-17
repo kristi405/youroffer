@@ -242,7 +242,7 @@ const SearchBlock = () => {
 
 const styles = StyleSheet.create({
     container: {
-        ...StyleSheet.absoluteFillObject,
+        height: "100%",
         backgroundColor: 'black',
     },
     modalStack: {
@@ -259,11 +259,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     mapContainer: {
-        ...StyleSheet.absoluteFillObject,
-        marginTop: 110
+        height: "100%",
+        marginTop: 100
     },
     map: {
-        ...StyleSheet.absoluteFillObject,        
+        height: "100%",       
     }, 
     segment: {
         width: '95%',
