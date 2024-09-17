@@ -38,6 +38,8 @@ export const Scan = ({ navigation }) => {
         "user_count": "Пользователь уже использовал эту акцию!",
         "subscription_is_already_active": "Подписка уже активна, пользователь должен назжать кнопку 'Воспользоваться подпиской'",
         "discount_is_already_active": "Скидка уже активна",
+        "сoupon_is_already_active": "Партнерская акция уже активна",
+        "сoupon_cant_be_active": "Активировать партнерскую акцию может только Ваш партнер",
     }
 
     useFocusEffect(
