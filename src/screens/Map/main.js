@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking, TextInput } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking, TextInput, Keyboard } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import MapView from "react-native-map-clustering";
 import { Marker } from 'react-native-maps';
@@ -98,6 +98,7 @@ const MapComponent = observer(({ navigation }) => {
                     latitudeDelta: 0.15,
                     longitudeDelta: 0.15,
                 }}
+                onPress={Keyboard.dismiss}
                 clusterColor='red'
                 cluster={true}
                 clusterRadius={80}
