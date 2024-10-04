@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking, TextInput, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking, TextInput, Keyboard, SafeAreaView } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import MapView from "react-native-map-clustering";
 import { Marker } from 'react-native-maps';
@@ -13,10 +13,12 @@ import { observer } from "mobx-react-lite"
 import { useFocusEffect } from '@react-navigation/native';
 
 export const Map = ({ navigation }) => {
-    return (<View style={styles.container}>
-        <Filters/>
-        <MapComponent navigation={navigation}/>
-    </View>)
+    return (
+        <SafeAreaView style={styles.container}>
+            <Filters />
+            <MapComponent navigation={navigation}/>
+        </SafeAreaView>
+    )
 }
 
 let CURRENT_COORD;
@@ -183,7 +185,7 @@ const Filters = () => {
     }; 
   
     const Component = () => (
-      <View style={{ width: '100%', flex: 1, gap: 10, alignItems: 'center', marginTop: 10 }}>
+      <View  style={styles.filtersContainer} >
         <SegmentedControl
           style={styles.segment}
           backgroundColor='black'
@@ -215,7 +217,8 @@ const SearchBlock = () => {
     }, [])))
   
     return (
-      <View style={{     
+      <View style={{
+        marginTop: 10,     
         width: "95%"
       }}>
         <TextInput
@@ -242,9 +245,12 @@ const SearchBlock = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        height: "100%",
-        backgroundColor: 'black',
+    container: {       
+        backgroundColor: 'black', 
+        flexDirection: "column", 
+        flex: 1,
+        flexDirection: 'column', 
+        justifyContent: 'center'     
     },
     modalStack: {
         width: '100%',
@@ -259,9 +265,17 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between'
     },
+    filtersContainer: {
+        paddingTop: 15,
+        minHeight: 120,     
+        height: "15%",
+        flex: 1,
+        flexDirection: 'column', 
+        justifyContent: 'center',
+        alignItems: 'center'    
+    },
     mapContainer: {
-        height: "100%",
-        marginTop: 100
+        height: "85%",        
     },
     map: {
         height: "100%",       
