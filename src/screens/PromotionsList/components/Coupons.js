@@ -142,14 +142,23 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   );
 
   const init = async (isFavorite) => {
-    if (fromPromotionPage && !businessPointId)  {
-      fromPromotionPage = false;
-      return;
+    // нужно проверить, если акции не принадлежат текущей компании то перезагужаем старницу с акциями 
+    const firstItem = PromotionStore.list && PromotionStore.list[0]; 
+    const bpIds = [];
+    firstItem?.business_points?.forEach(bp => {       
+      bpIds.push(bp.id)
+    });
+
+    // Если мы на странице бизнес точки - то нужно проверить, 
+    // если это та-же бизнес точка - то не нужно перезагружать список 
+    if (businessPointId && !bpIds.includes(businessPointId)) {
+      fromPromotionPage = false
     }
 
-    if (businessPointId) {
+    if (fromPromotionPage)  {
       fromPromotionPage = false;
-    }
+      return;
+    } 
 
     if (FIRST_INIT) {
       setFirstInit()
@@ -265,8 +274,8 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
 const Item = ({ navigation, item, businessPointId }) => {
   const [offer, setOffer] = useState(item)
 
-  const openDetail = (item) => {
-    if (!businessPointId) fromPromotionPage = true;
+  const openDetail = (item) => { 
+    fromPromotionPage = true;
     navigation.navigate('CouponDetailScreen', { data: item })
   }
 
@@ -295,7 +304,7 @@ const Item = ({ navigation, item, businessPointId }) => {
         </View>
       </TouchableWithoutFeedback>
     )
-  }
+  } 
 
   return (
     <TouchableWithoutFeedback onPress={() => { openDetail(offer) }}>

@@ -22,6 +22,7 @@ export const Scan = ({ navigation }) => {
     const [isModalPromo, setIsModalPromo] = React.useState(false);
     const [isModalBonuses, setIsModalBonuses] = React.useState(false);
     const [isModalDefault, setIsModalDefault] = React.useState(false);
+    const [isActiveForUser, setIsActiveForUser] = React.useState(false);
     const [currentOfferName, setCurrentOfferName] = React.useState('')
     const [currentUserId, setCurrentUserId] = React.useState('')
     const [currentOfferId, setCurrentOfferId] = React.useState('')
@@ -37,6 +38,8 @@ export const Scan = ({ navigation }) => {
         "user_count": "Пользователь уже использовал эту акцию!",
         "subscription_is_already_active": "Подписка уже активна, пользователь должен назжать кнопку 'Воспользоваться подпиской'",
         "discount_is_already_active": "Скидка уже активна",
+        "сoupon_is_already_active": "Партнерская акция уже активна",
+        "сoupon_cant_be_active": "Активировать партнерскую акцию может только Ваш партнер",
     }
 
     useFocusEffect(
@@ -229,6 +232,10 @@ export const Scan = ({ navigation }) => {
     }
 
     const modalDefaultTitle = () => {
+        if (isActiveForUser && currentOfferType === 'discount') {
+            return 'Применить скидку'
+        }
+
         if (currentOfferType === 'discount') {
             return 'Активировать скидку'
         }
@@ -237,19 +244,15 @@ export const Scan = ({ navigation }) => {
             return 'Активировать подписку'
         }
 
+        if (currentOfferType === 'present') {
+            return 'Использовать подарок'
+        }
+
         return 'Применить акцию'
     }
 
     const modalDefaultText = () => {
-        if (currentOfferType === 'discount') {
-            return currentOfferName
-        }
-
-        if (currentOfferType === 'subscription') {
-            return currentOfferName
-        }
-
-        return `Aкция: "${currentOfferName}"`
+        return `"${currentOfferName}"`
     }
 
     const ModalDefault = () => {
@@ -332,6 +335,7 @@ export const Scan = ({ navigation }) => {
         setBonuses(qrData[3])
         setCurrentOfferType(offer.type)
         setMaxCount(offer.max_count)
+        setIsActiveForUser(qrData[2])
         setUseCount(qrData[4] || 0)
         if (offer.type === 'accumulative') {
             setTimeout(() => {

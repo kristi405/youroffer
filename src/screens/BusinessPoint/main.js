@@ -5,7 +5,7 @@ import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 
 export const CompanyProfile = observer(({ navigation, route }) => {
-    const item = route?.params?.data
+    const item = route?.params?.data   
 
     let workTime = '-'
     if (item.start_time && item.end_time) {
@@ -29,6 +29,7 @@ export const CompanyProfile = observer(({ navigation, route }) => {
             }
         }
     };
+
     const OpenInstagramButton = ({ instagram }) => {
         if (instagram?.trim()) {
             return (

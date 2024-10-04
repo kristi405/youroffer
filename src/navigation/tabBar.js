@@ -91,7 +91,7 @@ export const TabBar = () => {
                 }}
             />
             <Tab.Screen
-                name="Заведения"
+                name="Компании"
                 component={CompanyScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (

@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking, TextInput, Keyboard, SafeAreaView } from 'react-native';
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import MapView from "react-native-map-clustering";
 import { Marker } from 'react-native-maps';
 import { useState } from 'react';
@@ -9,10 +10,19 @@ import { MAP_STYLE, getLocation } from '../../services/geo'
 import { getRegion } from '../../services/auth'
 import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
+import { useFocusEffect } from '@react-navigation/native';
+
+export const Map = ({ navigation }) => {
+    return (
+        <SafeAreaView style={styles.container}>
+            <Filters />
+            <MapComponent navigation={navigation}/>
+        </SafeAreaView>
+    )
+}
 
 let CURRENT_COORD;
-export const Map = observer(({ navigation, route }) => {
-    const [item, setItem] = useState(route?.params?.data)
+const MapComponent = observer(({ navigation }) => { 
     const [selectedBp, setSelectedBp] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [regionCoord, setRegionCoord] = useState({
@@ -22,9 +32,9 @@ export const Map = observer(({ navigation, route }) => {
 
     useEffect(() => {
         init()
-    }, []);
+    }, []); 
 
-    const init = async () => {
+    const init = async () => {       
         CURRENT_COORD = await getLocation()
         const region = await getRegion()
         setRegionCoord({
@@ -76,7 +86,7 @@ export const Map = observer(({ navigation, route }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={styles.mapContainer}>     
             <MapView
                 mapType="standard"
                 userInterfaceStyle="dark"
@@ -90,6 +100,7 @@ export const Map = observer(({ navigation, route }) => {
                     latitudeDelta: 0.15,
                     longitudeDelta: 0.15,
                 }}
+                onPress={Keyboard.dismiss}
                 clusterColor='red'
                 cluster={true}
                 clusterRadius={80}
@@ -158,11 +169,88 @@ export const Map = observer(({ navigation, route }) => {
             </View>}
         </View>
     )
-})
+}) 
+
+const Filters = () => {
+    const [isFavoriteList, setIsFavoriteList] = useState(0)
+
+    useFocusEffect((React.useCallback(() => {
+        BusinessPointsStore.setIsFavorite(0)
+        setIsFavoriteList(0)
+    }, [])))
+
+    const handleValueChange = async (isFavorite) => {
+      BusinessPointsStore.setIsFavorite(isFavorite)
+      setIsFavoriteList(isFavorite)    
+    }; 
+  
+    const Component = () => (
+      <View  style={styles.filtersContainer} >
+        <SegmentedControl
+          style={styles.segment}
+          backgroundColor='black'
+          tintColor='#0EA47A'
+          values={['Все компании', 'Мои компании']}
+          selectedIndex={isFavoriteList}
+          onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
+        />
+        <SearchBlock />        
+      </View >
+    )  
+  
+    return <Component />
+}
+
+const SearchBlock = () => {    
+    const [searchString, setSearchString] = useState("")  
+    let timer;
+    const onSearchHandler = (text) => {   
+        setSearchString(text)
+        clearTimeout(timer)
+        timer = setTimeout(() => {    
+            BusinessPointsStore.setSearchString(text?.trim())
+        }, 600)
+    }
+    
+    useFocusEffect((React.useCallback(() => {
+        setSearchString("")
+    }, [])))
+  
+    return (
+      <View style={{
+        marginTop: 10,     
+        width: "95%"
+      }}>
+        <TextInput
+          placeholder="Поиск"
+          placeholderTextColor="#A9A9A9"
+          cursorColor="#A9A9A9"
+          onChangeText={onSearchHandler}
+          autoCorrect={false} 
+          value={searchString}              
+          style={{
+            height: 40,
+            backgroundColor: "#1A1A1A",
+            borderRadius: 10,
+            paddingHorizontal: 10,
+            borderWidth: 0.5,
+            color: '#A9A9A9',          
+            borderColor: "#808080",
+            width: "100%"
+          }}
+        />
+  
+      </View>
+    );
+}
 
 const styles = StyleSheet.create({
-    container: {
-        ...StyleSheet.absoluteFillObject,
+    container: {       
+        backgroundColor: 'black', 
+        flexDirection: "column", 
+        flex: 1,
+        flexDirection: 'column', 
+        justifyContent: 'center'     
     },
     modalStack: {
         width: '100%',
@@ -177,8 +265,26 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between'
     },
+    filtersContainer: {
+        paddingTop: 15,
+        minHeight: 120,     
+        height: "15%",
+        flex: 1,
+        flexDirection: 'column', 
+        justifyContent: 'center',
+        alignItems: 'center'    
+    },
+    mapContainer: {
+        height: "85%",        
+    },
     map: {
-        ...StyleSheet.absoluteFillObject,
+        height: "100%",       
+    }, 
+    segment: {
+        width: '95%',
+        height: 35,
+        borderWidth: 1,
+        borderColor: '#434343',
     },
     name: {
         color: 'white',
