@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingTop: 40,
         backgroundColor: 'black',
-        paddingTop: 30,
+        paddingTop: 50,
         paddingBottom: 10,
         paddingHorizontal: 10,
         justifyContent: 'space-between'

@@ -14,6 +14,8 @@ import { ContactUs } from '../screens/ContactUs/main';
 import { ForBusiness } from '../screens/ForBusiness/main';
 import { Region } from '../screens/Region/main';
 import { BusinessPointOnMap } from '../screens/BusinessPointOnMap/main';
+import { NewCard } from '../screens/BonusCard/components/NewCard';
+import { BonusCardView } from '../screens/BonusCard/components/BonusCardView';
 
 const Stack = createNativeStackNavigator();
 
@@ -61,6 +63,11 @@ export const Navigator = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
+                name="BonusCard"
+                component={TabBar}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
                 name="CouponDetailScreen"
                 component={CouponDetailScreen}
                 options={{
@@ -74,6 +81,24 @@ export const Navigator = () => {
                 component={QrCodeScreen}
                 options={{
                     title: 'QR code',
+                    headerTintColor: '#0EA47A',
+                    headerStyle: { backgroundColor: 'black' }
+                }}
+            />
+            <Stack.Screen
+                name="NewCard"
+                component={NewCard}
+                options={{
+                    title: 'Добавьте новую карту',
+                    headerTintColor: '#0EA47A',
+                    headerStyle: { backgroundColor: 'black' }
+                }}
+            />
+            <Stack.Screen
+                name="BonusCardView"
+                component={BonusCardView}
+                options={{
+                    title: 'Бонусная карта',
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 }}

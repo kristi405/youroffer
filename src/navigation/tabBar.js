@@ -6,6 +6,7 @@ import { CompanyScreen } from "../screens/BusinessPointsList/main";
 import { Map } from "../screens/Map/main";
 import { Profile } from "../screens/Profile/main";
 import { Scan } from "../screens/QrCodeScan/main";
+import { BonusCard } from "../screens/BonusCard/main";
 import UserStore from '../stores/user'
 import { ManagerScreen } from '../screens/Manager/main';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -43,6 +44,7 @@ const images = {
     scanSelected: require("../../assets/qrScanIcon.png"),
     sailIcon: require("../../assets/sailIcon4.png"),
     sailIconSelected: require("../../assets/sailIcon4.png"),
+    bonusCard: require("../../assets/bonusCard.png"),
     // #939393
 };
 
@@ -96,6 +98,19 @@ export const TabBar = () => {
                         <TabBarImage
                             focused={focused}
                             imgName={'coupon'}
+                        />
+                    ),
+                    headerShown: false
+                }}
+            />
+            <Tab.Screen
+                name="Мои карты"
+                component={BonusCard}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarImage
+                            focused={focused}
+                            imgName={'bonusCard'}
                         />
                     ),
                     headerShown: false

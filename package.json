@@ -7,6 +7,7 @@
     "ios": "NODE_ENV=development expo run:ios --device"
   },
   "dependencies": {
+    "@adrianso/react-native-barcode-builder": "^1.0.12",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/geolocation": "^3.0.6",
     "@react-native-community/netinfo": "9.3.10",
@@ -26,7 +27,8 @@
     "expo-application": "~5.3.0",
     "expo-asset": "~8.10.1",
     "expo-auth-session": "~5.0.2",
-    "expo-av": "~13.4.1",
+    "expo-av": "~13.4.1", 
+    "expo-barcode-generator": "^3.0.2", 
     "expo-barcode-scanner": "~12.5.3",
     "expo-build-properties": "~0.8.3",
     "expo-camera": "~13.4.4",
@@ -49,6 +51,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.72.6",
     "react-native-animated-loader": "^1.0.0",
+    "react-native-barcode-svg": "^0.0.15",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-map-clustering": "^3.4.2",
     "react-native-maps": "^1.10.0",
