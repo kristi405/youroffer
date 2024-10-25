@@ -97,11 +97,11 @@ export const Navigator = () => {
             <Stack.Screen
                 name="BonusCardView"
                 component={BonusCardView}
-                options={{
-                    title: 'Бонусная карта',
+                options={({ route }) => ({
+                    title: route.params.name || 'Бонусная карта',                    
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
-                }}
+                })}
             />
             <Stack.Screen
                 name="CompanyScreen"

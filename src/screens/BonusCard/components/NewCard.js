@@ -1,42 +1,95 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
-import { observer } from "mobx-react-lite"
-import Barcode from 'react-native-barcode-svg';
+import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import { observer } from "mobx-react-lite" 
+import BonusCardStore from '../../../stores/bonusCard'
 import { Keyboard } from 'react-native';
+import { FILE_URL } from '../../../services/constants'
+import { BarcodeCreatorView, BarcodeFormat } from "react-native-barcode-creator";
+import { setNeedToReloadBonusCardsLisr } from '../../../services/globals'
 
 export const NewCard = observer(({ navigation }) => {
     const [type, setType] = useState('');
+    const [typeId, setTypeId] = useState('');
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
-    const [code, setCode] = useState('')
+    const [loading, setLoading] = useState(false);
 
-    const save = async () => {
-        console.log(number)
-        setCode(number)
+    const save = async () => {         
+        if (loading) return;   
+        setLoading(true)
+        await BonusCardStore.saveCard({
+            name: name,
+            code: number,
+            id: type?.id
+        })
+        setNeedToReloadBonusCardsLisr(true)
+        navigation.goBack()    
+        setLoading(false)  
     }
 
-    const BarcodeView = () => {
-        if (code.length == 0) return null
+    const BarcodeView = () => {         
+        if (number?.length == 0) return null
         return (
-            <View style={styles.barcodeView}>
-                <Text><Barcode value={code} format="CODE128" height={75}/></Text>
-                <Text style={styles.code}>{code}</Text>
+            <View style={styles.barcodeView}>                
+                <Text><BarcodeCreatorView
+                    value={number}
+                    background={'#FFFFFF'}
+                    style={styles.barcode}
+                    foregroundColor={'#000000'}
+                    format={BarcodeFormat.CODE128}                   
+                /></Text>
+                <Text style={styles.code}>{number}</Text>
             </View>
         )
     }
+    
+    const SaveBtn = () => {
+        if (loading) {
+            return <ActivityIndicator style={{ marginVertical: 20 }} size="large" color="white" />; 
+        } else if (number?.length > 0 && name?.length > 0) {
+            return <TouchableWithoutFeedback onPress={save}>
+                <View style={styles.saveButton}>
+                    <Text style={styles.title}>Сохранить</Text>
+                </View>
+            </TouchableWithoutFeedback>
+        } else {
+            return <View style={styles.saveButtonDisable}>
+                <Text style={styles.title}>Сохранить</Text>
+            </View>
+        }
+    }     
 
     return (
-        <View style={styles.container}>
-            <Image source={require('../../../../assets/discontCard.png')} style={styles.imageContainer} />
+        <View style={styles.container}> 
+            <Image source={
+                type?.img 
+                ? { uri: `${FILE_URL}${type?.img}.${type?.img_ext}`}
+                : require('../../../../assets/discontCard.png')} 
+                style={styles.imageContainer} 
+            />
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={styles.createUserBlock}>
-                    <TextInput style={[styles.codeInputStyle]}
-                        onChangeText={(v) => { setType(v) }}
-                        value={type}
-                        keyboardType='default'
-                        placeholder="список"
-                        maxLength={20}
-                        placeholderTextColor={'#474A51'} />
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            style={styles.picker}
+                            selectedValue={typeId}
+                            onValueChange={(itemValue, itemIndex) =>{
+                                setTypeId(itemValue)
+                                const item = BonusCardStore.list.find((item) => item.id === itemValue)
+                                setType(item)
+                                setName(item?.name || '')
+                            }}>
+                                <Picker.Item label={"Нет в списке"} value={{name: ''}}/>
+                                {
+                                    BonusCardStore.list.map((item) => {
+                                        return (
+                                            <Picker.Item label={item.name} value={item.id} key={item.id} />
+                                        )
+                                    })
+                                }                          
+                        </Picker>
+                    </View>   
                     <TextInput style={[styles.codeInputStyle]}
                         onChangeText={(v) => { setName(v) }}
                         value={name}
@@ -48,22 +101,27 @@ export const NewCard = observer(({ navigation }) => {
                         onChangeText={(v) => { setNumber(v) }}
                         value={number}
                         keyboardType='number-pad'
-                        placeholder="Номер дисконтной карты"
+                        placeholder="Данные штрих кода карты"
                         maxLength={20}
                         placeholderTextColor={'#474A51'} />
                 </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={save}>
-                <View style={styles.saveButton}>
-                    <Text style={styles.title}>Сохранить</Text>
-                </View>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> 
             <BarcodeView />
+            <SaveBtn />
         </View>
     )
 })
 
 const styles = StyleSheet.create({
+    pickerContainer: {
+        borderRadius: 10, // Закругленные углы
+        overflow: 'hidden', // Скрывает элементы, выходящие за границы контейнера
+        backgroundColor: '#333', // Фон контейнера        
+    },
+    picker: {      
+        color: '#fff', // Цвет текста для Picker
+        backgroundColor: '#333', // Цвет фона для Picker
+    },
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -102,6 +160,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    saveButtonDisable: {
+        backgroundColor: 'gray',
+        height: 50,
+        width: '95%',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 0.3
+    },
     title: {
         fontSize: 20,
         color: 'white',
@@ -116,6 +183,10 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         gap: 5,
         alignItems: 'center',
+    },
+    barcode: {
+        width: 300,
+        height: 80,
     },
     code: {
         fontSize: 17,

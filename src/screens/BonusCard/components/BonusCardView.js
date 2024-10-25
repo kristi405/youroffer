@@ -1,41 +1,79 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
-import { observer } from "mobx-react-lite"
-import Barcode from 'react-native-barcode-svg';
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, Alert } from 'react-native'; 
+import BonusCardStore from '../../../stores/bonusCard'
+import { BarcodeCreatorView, BarcodeFormat } from "react-native-barcode-creator";
+import { FILE_URL } from '../../../services/constants'
+import { setNeedToReloadBonusCardsLisr } from '../../../services/globals'
+import * as Brightness from 'expo-brightness';
 
-export const BonusCardView = observer(({ navigation }) => {
-    const [type, setType] = useState('');
-    const [name, setName] = useState('');
-    const [number, setNumber] = useState('');
-    const [code, setCode] = useState('')
+export const BonusCardView = ({ navigation, route }) => {
+    const [item, setItem] = useState(route?.params?.data)
 
-    const save = async () => {
-       console.log(number)
-       setCode(number)
+    const setBrightness = async () => {
+        try {
+            await Brightness.setBrightnessAsync(1)
+        } catch(e) {
+            console.log(e)
+        }    
+    }
+    setBrightness();   
+    
+
+    const remove = async () => {
+        Alert.alert('Удаление',
+        "Вы действительно хотите удалить бонусную карту?",
+        [
+            {
+                text: 'Удалить',
+                onPress: () => {
+                    BonusCardStore.removeCard(item.id)
+                    setNeedToReloadBonusCardsLisr(true)
+                    navigation.goBack()
+                },                    
+            },
+            {
+                text: 'Отмена',                
+                style: 'cancel',
+            },
+        ]
+        )      
     }
 
-    const BarcodeView = () => {
+    const BarcodeView = () => {        
         // if (code.length == 0) return null
         return (
             <View style={styles.barcodeView}>
-                <Text><Barcode value='2364581274871263987' format="CODE128" height={75}/></Text>
-                <Text style={styles.code}>2364581274871263987</Text>
+                <Text>
+                    <BarcodeCreatorView
+                        value={item.code}
+                        background={'#FFFFFF'}
+                        style={styles.barcode}
+                        foregroundColor={'#000000'}
+                        format={BarcodeFormat.CODE128}                   
+                    />
+                </Text>
+                <Text style={styles.code}>{item.code}</Text>
             </View>
         )
     }
 
     return (
         <View style={styles.container}>
-            <Image source={require('../../../../assets/discontCard.png')} style={styles.imageContainer} />
+            <Image source={
+                item?.img 
+                ? { uri: `${FILE_URL}${item?.img}.${item?.img_ext}`}
+                : require('../../../../assets/discontCard.png')} 
+                style={styles.imageContainer} 
+            />
             <BarcodeView/>
-            <TouchableWithoutFeedback onPress={save}>
+            <TouchableWithoutFeedback onPress={remove}>
                 <View style={styles.deleteButton}>
                     <Text style={styles.title}>Удалить</Text>
                 </View>
             </TouchableWithoutFeedback>
         </View>
     )
-})
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -81,5 +119,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'red',
         fontWeight: '500',
+    },
+    barcode: {
+        width: 300,
+        height: 80,
     },
 })

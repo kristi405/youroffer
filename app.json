@@ -11,19 +11,7 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "myoffer",
-            "project": "myoffer_app",
-            "url": "https://app.glitchtip.com/"
-          }
-        }
-      ]
-    },
+    }, 
     "plugins": [
       "@react-native-firebase/app",
       [
@@ -69,7 +57,8 @@
             "deploymentTarget": "13.4"
           }
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0,

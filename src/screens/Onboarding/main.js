@@ -7,6 +7,7 @@ import { requestUserPermission } from '../../services/fcm'
 import AuthStore from '../../stores/auth'
 import BusinessPointsStore from '../../stores/businessPoints'
 import PromotionStore from '../../stores/promotion'
+import BonusCardStore from '../../stores/bonusCard'
 import { ModalUpdate } from "./components/ModalUpdate"
 import { FIRST_PAGE, setFirstPage, PUSH_ACCESS } from "./../../services/globals"
 import messaging from '@react-native-firebase/messaging';
@@ -67,6 +68,7 @@ export const OnboardingScreen = ({navigation}) => {
         setVisible(false);
         AuthStore.updateCoord()
         BusinessPointsStore.getAll()
+        BonusCardStore.getList() 
         const initialMessage = await messaging().getInitialNotification()
         if (initialMessage?.data?.id_offer) {
           navigation.replace(FIRST_PAGE, { screen: 'Акции' })

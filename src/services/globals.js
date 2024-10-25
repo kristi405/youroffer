@@ -10,3 +10,6 @@ export const setFirstPage = (page) => FIRST_PAGE = page
 
 export let PUSH_ACCESS = 'denied'
 export const setPushAccess = (access) => PUSH_ACCESS = access
+
+export let NEED_TO_RELOAD_BONUS_CARDS_LIST = true
+export const setNeedToReloadBonusCardsLisr = (need) => NEED_TO_RELOAD_BONUS_CARDS_LIST = need

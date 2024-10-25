@@ -7,12 +7,12 @@ import { getUser } from "../../services/auth"
 import OfferUsingStore from '../../stores/offerUsing'
 import { FILE_URL } from '../../services/constants'
 import PromotionStore from "../../stores/promotion"
+import * as Brightness from 'expo-brightness';
 
 let fromQR = false;
 let timers = []
-export const CouponDetailScreen = ({ navigation, route }) => {
+export const CouponDetailScreen = ({ navigation, route }) => { 
     const [item, setItem] = useState(route?.params?.data)
-
     const [offer, setOffer] = useState('');
     const [ids, setIds] = useState(null)
 
@@ -23,6 +23,16 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         }
         setIds(newIds)
     }, [item]);
+
+    const setBrightness = async () => {
+        try {
+            const brightness = await Brightness.getSystemBrightnessAsync()            
+            await Brightness.setBrightnessAsync(brightness)            
+        } catch (e) {
+            console.log(e)
+        }        
+    }
+    setBrightness()
 
     const handler = React.useCallback(() => {
         setItem(route?.params?.data)

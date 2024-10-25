@@ -1,28 +1,59 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, View, FlatList, Image, Text, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { observer } from "mobx-react-lite"
+import { useFocusEffect } from '@react-navigation/native';
+import BonusCardStore from '../../stores/bonusCard'
+import { FILE_URL } from '../../services/constants'
+import { NEED_TO_RELOAD_BONUS_CARDS_LIST, setNeedToReloadBonusCardsLisr } from '../../services/globals'
+import * as Brightness from 'expo-brightness';
 
+let IS_NEED_UPDATE = true
 export const BonusCard = observer(({ navigation }) => {
+    const [loading, setLoading] = useState(false);
 
-    const openNewCard = async () => {
+    const setBrightness = async () => {         
+        try {
+            const brightness = await Brightness.getSystemBrightnessAsync()            
+            await Brightness.setBrightnessAsync(brightness)            
+        } catch (e) {
+            console.log(e)
+        }        
+    }    
+
+    const handler = useCallback(() => {
+        setBrightness()  
+        if (!NEED_TO_RELOAD_BONUS_CARDS_LIST) return;
+        setLoading(true)      
+        BonusCardStore.getUserList()
+            .then(() => setLoading(false))
+            .catch(() => setLoading(false))
+        setNeedToReloadBonusCardsLisr(false)
+    }, [])
+    useFocusEffect(handler);
+
+    const openNewCard = async () => {        
         navigation.navigate('NewCard')
-    }
+    } 
 
-    const openBonusCardView = async () => {
-        navigation.navigate('BonusCardView')
-    }
-
-    return (
-        <View style={styles.container}>
-            <FlatList
+    const List = () => {        
+        if (BonusCardStore.loading) {
+            return <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
+        } else {
+            return <FlatList
                 style={styles.flatList}
-                data={DATA}
+                data={BonusCardStore.userList}
                 contentContainerStyle={{ paddingBottom: 20 }}
                 numColumns={2}
-                renderItem={({ item }) => <Item navigation={navigation} title={item.title} />}
+                renderItem={({ item }) => <Item navigation={navigation} item={item} />}
                 keyExtractor={(item) => item.id}
             >
             </FlatList>
+        }
+    }
+ 
+    return (
+        <View style={styles.container}>
+            <List />
             <TouchableWithoutFeedback onPress={openNewCard}>
                 <View style={styles.addButton}>
                     <Image source={require('../../../assets/plus.png')} />
@@ -32,20 +63,22 @@ export const BonusCard = observer(({ navigation }) => {
     )
 })
 
-const Item = ({ navigation, title }) => {
-
-    const openBonusCardView = async () => {
-        console.log('2363263727')
-        navigation.navigate('BonusCardView')
-        // if (!businessPointId) fromPromotionPage = true;
-        // navigation.navigate('CouponDetailScreen', { data: item })
+const Item = ({ navigation, item }) => {
+    const openBonusCardView = async () => {         
+        navigation.navigate('BonusCardView', { data: item, name: item.name })     
     }
 
     return (
         <TouchableWithoutFeedback onPress={openBonusCardView}>
             <View style={styles.item}>
-                <Image style={styles.imageContainer} source={require('../../../assets/discontCard.png')} />
-                <Text style={styles.title}>{title}</Text>
+                <Image source={
+                    item?.img 
+                    ? { uri: `${FILE_URL}${item?.img}.${item?.img_ext}`}
+                    : require('../../../assets/discontCard.png')} 
+                    style={styles.imageContainer} 
+                />
+                
+                <Text style={styles.title}>{item.name || 'бонусная карта'}</Text>
             </View>
         </TouchableWithoutFeedback>
     )
@@ -90,17 +123,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#1A1A1A',
         flexDirection: 'column',
         width: '46%',
-        height: 140,
+        height: 145,
         margin: 8,
         borderRadius: 10,
         justifyContent: 'space-between',
         gap: 5
     },
     title: {
-        fontSize: 15,
+        fontSize: 14,
         color: 'white',
-        paddingLeft: 5,
-        paddingBottom: 5
+        paddingLeft: 10,
+        paddingBottom: 8
     },
     addButton: {
         backgroundColor: '#0EA47A',
