@@ -38,7 +38,7 @@ export const BonusCard = observer(({ navigation }) => {
     const List = () => {        
         if (BonusCardStore.loading) {
             return <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
-        } else {
+        } else if (BonusCardStore.userList?.length) {
             return <FlatList
                 style={styles.flatList}
                 data={BonusCardStore.userList}
@@ -48,6 +48,14 @@ export const BonusCard = observer(({ navigation }) => {
                 keyExtractor={(item) => item.id}
             >
             </FlatList>
+        } else {
+            return <View style={styles.emptyBlock}> 
+                <Text style={styles.emptyTextTitle}>У вас пока нет бонусных карт.</Text>
+                <Text style={styles.emptyTextTitle}>Вы можете добавить свои бонусные карты нажав на кноку с плюсом.</Text>
+                <Text style={styles.emptyText}>1. Выберите название карты из списка. Если такой карты нет в списке, выберите "Нет в списке".</Text>
+                <Text style={styles.emptyText}>2. Введите название карты.</Text>
+                <Text style={styles.emptyText}>3. Введите цифры, которые находятся под штрих кодом Вашей бонусной карты.</Text>
+            </View>
         }
     }
  
@@ -141,4 +149,28 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 25,
     },
+    emptyText: {
+        color: "#FFF",
+        fontSize: 14,
+        opacity: 0.8,
+        textAlign: "left",
+        marginBottom: 10 
+    },
+    emptyTextTitle: {
+        color: "#FFF",
+        fontSize: 18,
+        opacity: 0.8,
+        textAlign: "center",
+        marginBottom: 20
+    },
+    emptyBlock: {
+        backgroundColor: "#282928",         
+        borderRadius: 15,         
+        flat: 1,
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 100,  
+        padding: 20
+        
+    }
 })
