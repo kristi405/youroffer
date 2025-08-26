@@ -11,7 +11,7 @@ import * as Brightness from 'expo-brightness';
 
 let fromQR = false;
 let timers = []
-export const CouponDetailScreen = ({ navigation, route }) => { 
+export const CouponDetailScreen = ({ navigation, route }) => {
     const [item, setItem] = useState(route?.params?.data)
     const [offer, setOffer] = useState('');
     const [ids, setIds] = useState(null)
@@ -26,11 +26,11 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const setBrightness = async () => {
         try {
-            const brightness = await Brightness.getSystemBrightnessAsync()            
-            await Brightness.setBrightnessAsync(brightness)            
+            const brightness = await Brightness.getSystemBrightnessAsync()
+            await Brightness.setBrightnessAsync(brightness)
         } catch (e) {
             console.log(e)
-        }        
+        }
     }
     setBrightness()
 
@@ -116,8 +116,8 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     const ButtonView = ({ buttonTitle }) => {
         if (item.type == 'default' && !item.generate_qr) return null
         if (item.type == 'discount' && item.is_active_for_user && !item.one_time) return null
-        if (item.type == 'present' && item.is_active_for_user && !item.one_time) return null       
-         
+        if (item.type == 'present' && item.is_active_for_user && !item.one_time) return null
+
         if (item.type == 'present' && !item.is_active_for_user) return buttonTitle
         if (offer.type == 'subscription' && offer.use_count === offer.max_count) {
             return (
@@ -139,12 +139,12 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {offer?.max_count || 0}</Text>
             )
         }
-        
+
         if (item.type === 'coupon' && item.is_quantitative_limit) {
             return (
                 <Text style={styles.quantitativeStyle}>* Количество оставшихся акций: {offer?.max_count || 0}</Text>
             )
-        }  
+        }
 
         return null
     }
@@ -160,6 +160,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     }
 
     const openMap = bp => {
+        console.log('openMap', bp)
         navigation.navigate('BusinessPointOnMap', { data: bp, name: bp.name })
     }
 
@@ -190,7 +191,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         }
 
         if (item.type === 'coupon' && item.is_active_for_user) {
-            return 'Воспользоваться купоном'       
+            return 'Воспользоваться купоном'
         }
 
         if (item.type === 'present' && item.is_active_for_user) {
@@ -301,7 +302,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                     <Text style={styles.timeToText}>ВАШ КУПОН АКТИВЕН</Text>
                 </View>
             )
-        }        
+        }
 
         if (item.type === 'present' && item.is_active_for_user && item.reset_after_days) {
             const date = new Date(item.start_offer_time);

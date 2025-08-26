@@ -3,7 +3,7 @@
     "name": "myOffers",
     "scheme": "youoffer",
     "slug": "youoffer",
-    "version": "1.0.55",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -11,7 +11,7 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    }, 
+    },
     "plugins": [
       "@react-native-firebase/app",
       [
@@ -48,13 +48,13 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 34,
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
             "minSdkVersion": 24,
-            "buildToolsVersion": "34.0.0"
+            "buildToolsVersion": "35.0.0"
           },
           "ios": {
-            "deploymentTarget": "13.4"
+            "deploymentTarget": "15.1"
           }
         }
       ],

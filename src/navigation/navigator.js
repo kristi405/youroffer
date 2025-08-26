@@ -98,7 +98,7 @@ export const Navigator = () => {
                 name="BonusCardView"
                 component={BonusCardView}
                 options={({ route }) => ({
-                    title: route.params.name || 'Бонусная карта',                    
+                    title: route.params.name || 'Бонусная карта',
                     headerTintColor: '#0EA47A',
                     headerStyle: { backgroundColor: 'black' }
                 })}

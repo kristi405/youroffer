@@ -1,5 +1,8 @@
  сменить версию JAVA
  sudo update-alternatives --config java
+    export ANDROID_HOME=$HOME/Android/Sdk
+    export PATH=$PATH:$ANDROID_HOME/emulator
+    export PATH=$PATH:$ANDROID_HOME/platform-tools
  java -version
  export PATH="/home/azhuk/.nvm/versions/node/v20.17.0/bin:$PATH"
  adb start-server

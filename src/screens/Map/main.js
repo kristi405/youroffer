@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking, TextInput, Keyboard, SafeAreaView } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import MapView from "react-native-map-clustering";
@@ -11,6 +11,7 @@ import { getRegion } from '../../services/auth'
 import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 import { useFocusEffect } from '@react-navigation/native';
+import { SearchBlock } from '../../components/searchBusinessPoint'
 
 export const Map = ({ navigation }) => {
     return (
@@ -22,7 +23,7 @@ export const Map = ({ navigation }) => {
 }
 
 let CURRENT_COORD;
-const MapComponent = observer(({ navigation }) => { 
+const MapComponent = observer(({ navigation }) => {
     const [selectedBp, setSelectedBp] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [regionCoord, setRegionCoord] = useState({
@@ -32,9 +33,9 @@ const MapComponent = observer(({ navigation }) => {
 
     useEffect(() => {
         init()
-    }, []); 
+    }, []);
 
-    const init = async () => {       
+    const init = async () => {
         CURRENT_COORD = await getLocation()
         const region = await getRegion()
         setRegionCoord({
@@ -85,9 +86,25 @@ const MapComponent = observer(({ navigation }) => {
         await Linking.openURL(url);
     }
 
+    // 1) Берём только валидные точки
+    const markers = useMemo(() => {
+        return BusinessPointsStore.all
+            ?.map(bp => {
+                const lat = Number(bp.lat);
+                const lng = Number(bp.lng);
+                if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+                return { ...bp, lat, lng };
+            }) || [];
+    }, [BusinessPointsStore.all]);
+
+    const mapKey = useMemo(() => {
+        return markers?.map(m => `${m.id}:${m.lat}:${m.lng}`)?.join("|") || 'empty';
+    }, [markers]);
+
     return (
-        <View style={styles.mapContainer}>     
+        <View style={styles.mapContainer}>
             <MapView
+                key={mapKey}
                 mapType="standard"
                 userInterfaceStyle="dark"
                 style={styles.map}
@@ -101,20 +118,24 @@ const MapComponent = observer(({ navigation }) => {
                     longitudeDelta: 0.15,
                 }}
                 onPress={Keyboard.dismiss}
-                clusterColor='red'
-                cluster={true}
+                clusterColor="red"
                 clusterRadius={80}
-                minimumClusterSize={10}>
-                    {BusinessPointsStore.all.map((bp) => {
+                minimumClusterSize={2}>
+                    {markers?.map((bp) => {
+                        const lat = parseFloat(bp.lat);
+                        const lng = parseFloat(bp.lng);
+
+                        if (isNaN(lat) || isNaN(lng)) return null;
+
                         return (<Marker
-                            key={bp.id}
-                            coordinate={{ latitude: parseFloat(bp.lat), longitude: parseFloat(bp.lng) }}
-                            pinColor={'red'}
-                            onPress={(e) => {
+                            key={`${bp.id}-${bp.lat}-${bp.lng}`}
+                            coordinate={{ latitude:lat, longitude: lng }}
+                            pinColor='red'
+                            onPress={() => {
                                 setSelectedBp(bp)
                                 setIsModalVisible(true)
                             }}
-                            tracksViewChanges={false}
+                            tracksViewChanges={true}
                         />)
                         })}
                 </MapView>
@@ -169,7 +190,7 @@ const MapComponent = observer(({ navigation }) => {
             </View>}
         </View>
     )
-}) 
+})
 
 const Filters = () => {
     const [isFavoriteList, setIsFavoriteList] = useState(0)
@@ -181,9 +202,9 @@ const Filters = () => {
 
     const handleValueChange = async (isFavorite) => {
       BusinessPointsStore.setIsFavorite(isFavorite)
-      setIsFavoriteList(isFavorite)    
-    }; 
-  
+      setIsFavoriteList(isFavorite)
+    };
+
     const Component = () => (
       <View  style={styles.filtersContainer} >
         <SegmentedControl
@@ -194,63 +215,62 @@ const Filters = () => {
           selectedIndex={isFavoriteList}
           onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
         />
-        <SearchBlock />        
       </View >
-    )  
-  
+    )
+
     return <Component />
 }
 
-const SearchBlock = () => {    
-    const [searchString, setSearchString] = useState("")  
-    let timer;
-    const onSearchHandler = (text) => {   
-        setSearchString(text)
-        clearTimeout(timer)
-        timer = setTimeout(() => {    
-            BusinessPointsStore.setSearchString(text?.trim())
-        }, 600)
-    }
-    
-    useFocusEffect((React.useCallback(() => {
-        setSearchString("")
-    }, [])))
-  
-    return (
-      <View style={{
-        marginTop: 10,     
-        width: "95%"
-      }}>
-        <TextInput
-          placeholder="Поиск"
-          placeholderTextColor="#A9A9A9"
-          cursorColor="#A9A9A9"
-          onChangeText={onSearchHandler}
-          autoCorrect={false} 
-          value={searchString}              
-          style={{
-            height: 40,
-            backgroundColor: "#1A1A1A",
-            borderRadius: 10,
-            paddingHorizontal: 10,
-            borderWidth: 0.5,
-            color: '#A9A9A9',          
-            borderColor: "#808080",
-            width: "100%"
-          }}
-        />
-  
-      </View>
-    );
-}
+// const SearchBlock = () => {
+//     const [searchString, setSearchString] = useState("")
+//     let timer;
+//     const onSearchHandler = (text) => {
+//         setSearchString(text)
+//         clearTimeout(timer)
+//         timer = setTimeout(() => {
+//             BusinessPointsStore.setSearchString(text?.trim())
+//         }, 600)
+//     }
+
+//     useFocusEffect((React.useCallback(() => {
+//         setSearchString("")
+//     }, [])))
+
+//     return (
+//       <View style={{
+//         marginTop: 10,
+//         width: "95%"
+//       }}>
+//         <TextInput
+//           placeholder="Поиск"
+//           placeholderTextColor="#A9A9A9"
+//           cursorColor="#A9A9A9"
+//           onChangeText={onSearchHandler}
+//           autoCorrect={false}
+//           value={searchString}
+//           style={{
+//             height: 40,
+//             backgroundColor: "#1A1A1A",
+//             borderRadius: 10,
+//             paddingHorizontal: 10,
+//             borderWidth: 0.5,
+//             color: '#A9A9A9',
+//             borderColor: "#808080",
+//             width: "100%"
+//           }}
+//         />
+
+//       </View>
+//     );
+// }
 
 const styles = StyleSheet.create({
-    container: {       
-        backgroundColor: 'black', 
-        flexDirection: "column", 
+    container: {
+        backgroundColor: 'black',
+        flexDirection: "column",
         flex: 1,
-        flexDirection: 'column', 
-        justifyContent: 'center'     
+        flexDirection: 'column',
+        justifyContent: 'center'
     },
     modalStack: {
         width: '100%',
@@ -266,25 +286,26 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     filtersContainer: {
-        paddingTop: 15,
-        minHeight: 120,     
-        height: "15%",
+        paddingTop: 10,
+        height: "10%",
         flex: 1,
-        flexDirection: 'column', 
-        justifyContent: 'center',
-        alignItems: 'center'    
+        gap: 10,
+        width: '96%',
+        flexDirection: 'column',
+        alignItems: 'center'
     },
+    //  <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center' }}>
     mapContainer: {
-        height: "85%",        
+        height: "90%",
     },
     map: {
-        height: "100%",       
-    }, 
+        height: "100%",
+    },
     segment: {
         width: '95%',
         height: 35,
         borderWidth: 1,
-        borderColor: '#434343',
+        borderColor: '#434343'
     },
     name: {
         color: 'white',

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Text, View, StyleSheet, Image, Alert, FlatList, TouchableWithoutFeedback, Button, ActivityIndicator } from 'react-native'; 
+import { Text, View, StyleSheet, Image, Alert, FlatList, TouchableWithoutFeedback, Button, ActivityIndicator } from 'react-native';
 import OfferUsingStore from "../../stores/offerUsing"
 import { useFocusEffect } from '@react-navigation/native';
 import UserStore from '../../stores/user'

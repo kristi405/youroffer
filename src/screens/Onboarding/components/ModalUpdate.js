@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Button, Platform, Linking } from 'react-native';
 import Modal from "react-native-modal"
 
 
-export const ModalUpdate= ({isVisible, cancelAction, versionStatus}) => {
+export const ModalUpdate = ({isVisible, cancelAction, versionStatus}) => {
     const gotToMarket = async () => {
         if (Platform.OS === 'android') {
             await Linking.openURL("https://play.google.com/store/apps/details?id=com.offer.youoffer")
