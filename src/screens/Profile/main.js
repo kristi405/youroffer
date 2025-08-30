@@ -51,6 +51,9 @@ export const Profile = ({ navigation }) => {
     //         await Linking.openURL('https://www.instagram.com/myoffersapp/')
     //     }
     // };
+    Object.keys(Constants?.expoConfig).forEach(key => {
+        console.log(key,  Constants.expoConfig[key])
+    });
 
     return (
         <View style={styles.container}>
@@ -59,7 +62,7 @@ export const Profile = ({ navigation }) => {
                 <TouchableWithoutFeedback>
                     <View style={styles.item}>
                         <Text style={styles.idStyle}>Ваш ID: {id}</Text>
-                        <Text style={styles.versionStyle}>Версия: {Constants.easConfig.version}</Text>
+                        <Text style={styles.versionStyle}>Версия: {Constants.expoConfig.version}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <FlatList

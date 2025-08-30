@@ -202,7 +202,7 @@ class AuthStore {
         try {
             const resp = await api.get(`/api/v1/version/check`, {
                 params: {
-                    version: Constants.easConfig.version,
+                    version: Constants.expoConfig.version,
                     osVersion,
                     os,
                     model: model,
