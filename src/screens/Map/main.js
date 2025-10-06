@@ -11,12 +11,10 @@ import { getRegion } from '../../services/auth'
 import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 import { useFocusEffect } from '@react-navigation/native';
-import { SearchBlock } from '../../components/searchBusinessPoint'
 
 export const Map = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-            <Filters />
             <MapComponent navigation={navigation}/>
         </SafeAreaView>
     )
@@ -296,7 +294,7 @@ const styles = StyleSheet.create({
     },
     //  <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center' }}>
     mapContainer: {
-        height: "90%",
+        height: "100%",
     },
     map: {
         height: "100%",

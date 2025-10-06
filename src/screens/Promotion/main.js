@@ -160,7 +160,6 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     }
 
     const openMap = bp => {
-        console.log('openMap', bp)
         navigation.navigate('BusinessPointOnMap', { data: bp, name: bp.name })
     }
 

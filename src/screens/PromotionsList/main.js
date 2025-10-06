@@ -30,28 +30,9 @@ const styles = StyleSheet.create({
 })
 
 export const CouponScreen = ({ navigation }) => {
-  const [isModalVisible, setIsModalVisible] = React.useState(true);
-
-  const ModalView = () => {
-    <Modal isVisible={isModalVisible}
-        animationType="slide"
-        transparent={true}>
-        <View style={styles.modalView}>
-          <Text style={{ color: 'red', fontSize: 20 }}>I am the modal content!</Text>
-        </View>
-      </Modal>
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <Coupons navigation={navigation} isCompanyPromotions={false} />
-      {/* <Modal isVisible={isModalVisible}
-        animationType="slide"
-        transparent={true}>
-        <View style={styles.modalView}>
-          <Text style={{ color: 'red', fontSize: 20 }}>I am the modal content!</Text>
-        </View>
-      </Modal> */}
     </SafeAreaView>
   )
 }

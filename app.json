@@ -3,7 +3,7 @@
     "name": "myOffers",
     "scheme": "youoffer",
     "slug": "youoffer",
-    "version": "1.0.71",
+    "version": "1.0.80",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -58,7 +58,8 @@
           }
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      "expo-web-browser"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0,
@@ -91,7 +92,7 @@
       }
     },
     "android": {
-      "versionCode": 71,
+      "versionCode": 80,
       "googleServicesFile": "./google-services.json",
       "package": "com.offer.youoffer",
       "config": {

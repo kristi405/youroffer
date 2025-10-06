@@ -51,9 +51,6 @@ export const Profile = ({ navigation }) => {
     //         await Linking.openURL('https://www.instagram.com/myoffersapp/')
     //     }
     // };
-    Object.keys(Constants?.expoConfig).forEach(key => {
-        console.log(key,  Constants.expoConfig[key])
-    });
 
     return (
         <View style={styles.container}>

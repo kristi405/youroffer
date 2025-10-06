@@ -4,13 +4,13 @@ import OfferUsingStore from "../../stores/offerUsing"
 import { useFocusEffect } from '@react-navigation/native';
 import UserStore from '../../stores/user'
 import Modal from "react-native-modal"
-import { setCamerAccess, getCamerAccess } from "../../services/auth"
 import { ModalPromotion } from "./components/ModalPromotion";
 import { ModalBonuses } from "./components/ModalBonuses";
-import { Camera } from "expo-camera";
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Audio } from 'expo-av';
 
 export const Scan = ({ navigation }) => {
+    const [permission, requestPermission] = useCameraPermissions();
     const [hasPermission, setHasPermission] = useState('waiting');
     const [scanned, setScanned] = useState(false);
     const [isManagerView, setIsManagerView] = useState(false);
@@ -58,18 +58,13 @@ export const Scan = ({ navigation }) => {
         }, [])
     );
 
-    getCameraPermission = async (manager) => {
+    const getCameraPermission = async (manager) => {
         if (manager?.id_waiter) setIdManager(manager?.id_waiter);
         setIsManagerView(false);
         setScanned(false);
         setHasPermission('waiting');
-        const currentStatus = await getCamerAccess()
-        if (currentStatus === 'granted') {
-            setHasPermission('access');
-            return;
-        }
-        const { status } = await Camera.requestCameraPermissionsAsync();
-        setCamerAccess(status);
+        const { status } = await requestPermission();
+
         setHasPermission(status === 'granted' ? 'access' : 'noAccess');
     }
 
@@ -365,15 +360,12 @@ export const Scan = ({ navigation }) => {
 
         return (
             <View style={styles.containerCamera}>
-                <Camera
+                <CameraView
+                    facing="back"
                     barcodeScannerSettings={{
-                        barcodeTypes: ["qr"],
-                        BarcodeSize: {
-                            height: 180,
-                            width: 180
-                        }
+                        barcodeTypes: ["qr"]
                     }}
-                    onBarCodeScanned={(e) => {
+                    onBarcodeScanned={(e) => {
                         if (!scanned) {
                             handleBarCodeScanned(e)
                         }
