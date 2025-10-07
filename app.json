@@ -89,7 +89,8 @@
             ]
           }
         ]
-      }
+      },
+      "appleTeamId": "CFTJPS6ZYY"
     },
     "android": {
       "versionCode": 80,
