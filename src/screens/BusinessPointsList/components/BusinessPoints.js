@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     height: 35,
     borderWidth: 1,
     borderColor: '#434343',
+    borderRadius: 10,
   },
   textStyle: {
     fontSize: 24,
@@ -195,6 +196,8 @@ export const BusinessPoints = ({ navigation }) => {
         backgroundColor='black'
         tintColor='#0EA47A'
         values={['Все компании', 'Мои компании']}
+        fontStyle={{ color:  '#0EA47A', fontSize: 14, fontWeight: '400' }}
+        activeFontStyle={{color: 'black', fontSize: 14, fontWeight: '600'}}
         selectedIndex={isFavoriteList}
         onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
       />

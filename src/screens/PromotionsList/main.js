@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: 'black',
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     gap: 16
   },
   modalView: {

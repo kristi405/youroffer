@@ -175,9 +175,9 @@ const itemData = [
         title: (<Text style={styles.title}>Изменить регион</Text>),
         image: (<Image source={require('../../../assets/cell.png')} style={styles.image} />),
     },
-    {
-        id: 4,
-        title: (<Text style={styles.title}>Подпишись на нас  😉🙏👻</Text>),
-        image: (<Image source={require('../../../assets/instagram3.png')} style={styles.image} />),
-    }
+    // {
+    //     id: 4,
+    //     title: (<Text style={styles.title}>Подпишись на нас  😉🙏👻</Text>),
+    //     image: (<Image source={require('../../../assets/instagram3.png')} style={styles.image} />),
+    // }
 ]

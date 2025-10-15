@@ -49,7 +49,8 @@ export const Navigator = () => {
                 options={({ route }) => ({
                     title: route.params.name,
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 })}
             />
             <Stack.Screen
@@ -73,7 +74,8 @@ export const Navigator = () => {
                 options={{
                     title: 'Акция',
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 }}
             />
             <Stack.Screen
@@ -82,7 +84,8 @@ export const Navigator = () => {
                 options={{
                     title: 'QR code',
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 }}
             />
             <Stack.Screen
@@ -91,7 +94,8 @@ export const Navigator = () => {
                 options={{
                     title: 'Добавьте новую карту',
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 }}
             />
             <Stack.Screen
@@ -100,7 +104,8 @@ export const Navigator = () => {
                 options={({ route }) => ({
                     title: route.params.name || 'Бонусная карта',
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 })}
             />
             <Stack.Screen
@@ -114,7 +119,8 @@ export const Navigator = () => {
                 options={{
                     title: 'Профиль',
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 }}
             />
             <Stack.Screen
@@ -128,7 +134,8 @@ export const Navigator = () => {
                 options={{
                     title: 'Редактировать',
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 }}
             />
             <Stack.Screen
@@ -137,7 +144,8 @@ export const Navigator = () => {
                 options={{
                     title: 'Контакты',
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 }}
             />
             <Stack.Screen
@@ -146,7 +154,8 @@ export const Navigator = () => {
                 options={{
                     title: 'Для бизнеса',
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 }}
             />
             <Stack.Screen
@@ -155,7 +164,8 @@ export const Navigator = () => {
                 options={{
                     title: 'Выберите ваш регион',
                     headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' }
+                    headerStyle: { backgroundColor: 'black' },
+                    headerBackTitleVisible: false
                 }}
             />
         </Stack.Navigator>

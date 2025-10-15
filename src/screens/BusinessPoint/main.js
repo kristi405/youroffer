@@ -91,7 +91,7 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                 </View>
             </View>
             <TouchableWithoutFeedback onPress={() => { openMap() }}>
-                <View style={styles.stack}>
+                <View style={styles.mapStack}>
                     <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
                     <Text style={styles.address}>{item.address}</Text>
                 </View>
@@ -106,8 +106,9 @@ export const CompanyProfile = observer(({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: '100%',
         height: '100%',
-        paddingHorizontal: 15,
+        paddingHorizontal: 4,
         paddingTop: 10,
         alignItems: 'flex-start',
         backgroundColor: 'black',
@@ -117,7 +118,10 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         gap: 20,
-        paddingLeft: 5
+        paddingHorizontal: 10,
+    },
+    listView: {
+        width: '100%',
     },
     image: {
         height: 100,
@@ -129,7 +133,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         flexDirection: 'column',
-        paddingRight: 10,
         gap: 5
     },
     description: {
@@ -137,6 +140,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         opacity: 1,
         textAlign: 'left',
+        paddingLeft: 10,
     },
     address: {
         fontSize: 14,
@@ -148,6 +152,11 @@ const styles = StyleSheet.create({
     stack: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    mapStack: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 18,
     },
     map: {
         width: 16,

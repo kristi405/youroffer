@@ -162,7 +162,7 @@ const MapComponent = observer(({ navigation }) => {
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.buttonAdditionalBlock}>
-                                    {
+                                    {/* {
                                         selectedBp.instagram?.trim()
                                         ?   <TouchableWithoutFeedback style={styles.instagramBtn} onPress={() => {openInstagram(selectedBp.instagram)}}>
                                                 <View  >
@@ -170,7 +170,7 @@ const MapComponent = observer(({ navigation }) => {
                                                 </View>
                                             </TouchableWithoutFeedback>
                                         : null
-                                    }
+                                    } */}
                                     {
                                         selectedBp.delivery_url?.trim()
                                         ?   <TouchableWithoutFeedback style={styles.instagramBtn} onPress={() => {openDelivery(selectedBp.delivery_url)}}>
@@ -210,6 +210,8 @@ const Filters = () => {
           backgroundColor='black'
           tintColor='#0EA47A'
           values={['Все компании', 'Мои компании']}
+          fontStyle={{ color:  '#0EA47A', fontSize: 14, fontWeight: '400' }}
+          activeFontStyle={{color: 'black', fontSize: 14, fontWeight: '600'}}
           selectedIndex={isFavoriteList}
           onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
         />
@@ -267,7 +269,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         flexDirection: "column",
         flex: 1,
-        flexDirection: 'column',
         justifyContent: 'center'
     },
     modalStack: {
@@ -281,7 +282,6 @@ const styles = StyleSheet.create({
         width: '70%',
         height: 80,
         flexDirection: 'column',
-        justifyContent: 'space-between'
     },
     filtersContainer: {
         paddingTop: 10,
@@ -309,13 +309,11 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 15,
         fontWeight: 'bold',
-        paddingTop: 7,
-        marginBottom: 10,
+        marginBottom: 6,
     },
     stackWithButton: {
         alignItems: 'center',
         flexDirection: 'column',
-        gap: 20
     },
     distans: {
         color: 'white',
@@ -334,18 +332,17 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 40,
-        opacity: 0.8
+        opacity: 0.8,
     },
     modal: {
         justifyContent: 'flex-end',
-        paddingBottom: 60,
-        paddingHorizontal: 10,
-        margin: 0,
+        paddingBottom: 80,
+        margin: 10,
     },
     modalContainer: {
         flexDirection: 'column',
         backgroundColor: 'black',
-        height: 200,
+        height: 180,
         borderRadius: 20,
         gap: 10
     },
@@ -373,8 +370,8 @@ const styles = StyleSheet.create({
     marker: {
     },
     showPromotionText: {
-        fontSize: 13,
-        color: '#CCC',
+        fontSize: 16,
+        color: 'black',
         fontWeight: '600'
     },
     buttonStyle: {
@@ -386,16 +383,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10
     },
-    instagramBtn: {
-        marginTop: 40,
-        marginLeft: 10,
-    },
-    instagramIcon: {
-        marginTop: 10,
-        width: 40,
-        height: 40,
-        opacity: 0.8
-    },
+    // instagramBtn: {
+    //     marginTop: 40,
+    //     marginLeft: 10,
+    // },
+    // instagramIcon: {
+    //     marginTop: 10,
+    //     width: 40,
+    //     height: 40,
+    //     opacity: 0.8
+    // },
     deliveryIcon: {
         width: 30,
         height: 30,
@@ -406,20 +403,13 @@ const styles = StyleSheet.create({
     actionsView: {
         width: '100%',
         height: 40,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        paddingRight: 10,
-        paddingLeft: 10
+        paddingHorizontal: 24,
     },
     buttonPromotionBlock: {
-        width: '60%',
+        width: '100%',
     },
     buttonAdditionalBlock: {
-        width: '40%',
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
     }
 })
 

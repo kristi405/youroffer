@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     height: 35,
     borderWidth: 1,
     borderColor: '#434343',
+    borderRadius: 10,
   },
   headerView: {
     flexDirection: 'row',
@@ -37,13 +38,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'black',
     paddingHorizontal: 10,
-    gap: 16
+    gap: 16,
   },
   app: {
     width: '100%',
     height: '100%',
     alignContent: 'center',
-    paddingBottom: 40
+    paddingBottom: 40,
+    paddingHorizontal: 4,
   },
   flatList: {
     width: '100%',
@@ -65,7 +67,6 @@ const styles = StyleSheet.create({
   icon: {
     height: '60%',
     width: '100%',
-    paddingRight: 10,
     borderRadius: 10,
   },
   title: {
@@ -186,7 +187,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   }, [])
 
   const Component = () => (
-    <View style={{ width: '100%', flex: 1, gap: 10, alignItems: 'center' }}>
+    <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center' }}>
       {!isCompanyPromotions ?
         <SegmentedControl
           enabled={!isLoading}
@@ -194,6 +195,8 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
           backgroundColor='black'
           tintColor='#0EA47A'
           values={['Все акции', 'Мои акции']}
+          fontStyle={{ color:  '#0EA47A', fontSize: 14, fontWeight: '400' }}
+          activeFontStyle={{color: 'black', fontSize: 14, fontWeight: '600'}}
           selectedIndex={isFavoriteList}
           onChange={(event) => {
             if (isLoading) return;

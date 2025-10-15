@@ -103,7 +103,7 @@ export const TabBar = () => {
                     headerShown: false
                 }}
             />
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Мои карты"
                 component={BonusCard}
                 options={{
@@ -115,7 +115,7 @@ export const TabBar = () => {
                     ),
                     headerShown: false
                 }}
-            />
+            /> */}
             <Tab.Screen
                 name="Карта"
                 component={Map}
