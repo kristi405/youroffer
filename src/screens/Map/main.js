@@ -1,8 +1,7 @@
 import React, {useEffect, useMemo} from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking, TextInput, Keyboard, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking, TextInput, Pressable, SafeAreaView } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import MapView from "react-native-map-clustering";
-import { Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { useState } from 'react';
 import Modal from 'react-native-modal';
 import BusinessPointsStore from "../../stores/businessPoints";
@@ -28,6 +27,13 @@ const MapComponent = observer(({ navigation }) => {
         latitude: 52.08943642679975,
         longitude: 23.72369655950971,
     });
+
+    const [tracksViewChanges, setTracksViewChanges] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setTracksViewChanges(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     useEffect(() => {
         init()
@@ -108,14 +114,13 @@ const MapComponent = observer(({ navigation }) => {
                 style={styles.map}
                 showsUserLocation={ CURRENT_COORD?.latitude ?  true : false }
                 customMapStyle={MAP_STYLE}
-                tracksViewChanges={false}
+                tracksViewChanges={tracksViewChanges}
                 region={{
                     latitude: CURRENT_COORD ? CURRENT_COORD?.latitude : regionCoord.latitude,
                     longitude: CURRENT_COORD ? CURRENT_COORD?.longitude : regionCoord.longitude,
                     latitudeDelta: 0.15,
                     longitudeDelta: 0.15,
                 }}
-                onPress={Keyboard.dismiss}
                 clusterColor="red"
                 clusterRadius={80}
                 minimumClusterSize={2}>
@@ -125,16 +130,18 @@ const MapComponent = observer(({ navigation }) => {
 
                         if (isNaN(lat) || isNaN(lng)) return null;
 
-                        return (<Marker
-                            key={`${bp.id}-${bp.lat}-${bp.lng}`}
-                            coordinate={{ latitude:lat, longitude: lng }}
-                            pinColor='red'
-                            onPress={() => {
-                                setSelectedBp(bp)
-                                setIsModalVisible(true)
-                            }}
-                            tracksViewChanges={true}
-                        />)
+                        return (
+                            <Marker
+                                key={String(bp.id)}
+                                identifier={String(bp.id)}
+                                coordinate={{ latitude:lat, longitude: lng }}
+                                pinColor='red'
+                                onPress={() => {
+                                    setSelectedBp(bp)
+                                    setIsModalVisible(true)
+                                }}
+                                tracksViewChanges={tracksViewChanges}
+                            />)
                         })}
                 </MapView>
             {selectedBp && <View style={styles.modal}>
