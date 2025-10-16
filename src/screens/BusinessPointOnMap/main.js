@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Linking, TouchableWithoutFeedback } from 'react-native';
-import MapView from "react-native-map-clustering";
-import { Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { useState } from 'react';
 import Modal from 'react-native-modal';
 import { MAP_STYLE, getLocation, distanceBetweenGeoPoints } from '../../services/geo'
