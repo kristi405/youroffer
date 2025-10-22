@@ -347,14 +347,14 @@ const Item = ({ navigation, item }) => {
                 <Image source={require('../../../../assets/time.png')} style={styles.clock} />
                 <Text style={styles.time}>{workTime}</Text>
               </View>
-              {
+              {/* {
                 company.instagram?.trim() ? <TouchableWithoutFeedback onPress={() => {openInstagram(company.instagram)}}>
                   <View style={styles.rowInst}>
                     <Image source={require('../../../../assets/instagram3.png')} style={styles.instagramIcon} />
                     <Text style={styles.instText}>Instagram</Text>
                   </View>
                 </TouchableWithoutFeedback> : null
-              }
+              } */}
             </View>
           </View>
             {

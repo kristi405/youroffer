@@ -123,7 +123,6 @@ export const ForBusiness = observer(({ navigation }) => {
                         <Text style={styles.titleLink}>Ознакомьтесь с нашей презентацией</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <OpenInstagramButton/>
                 <View style={styles.header}>
                     <Image source={require('../../../assets/phone.png')} style={styles.image} />
                     <Text style={styles.title}>mob: { phone }</Text>

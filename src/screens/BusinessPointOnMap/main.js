@@ -139,7 +139,7 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.buttonAdditionalBlock}>
-                                    {
+                                    {/* {
                                         selectedBp.instagram?.trim()
                                         ?   <TouchableWithoutFeedback style={styles.instagramBtn} onPress={() => {openInstagram(selectedBp.instagram)}}>
                                                 <View>
@@ -147,7 +147,7 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
                                                 </View>
                                             </TouchableWithoutFeedback>
                                         : null
-                                    }
+                                    } */}
                                     {
                                         selectedBp.delivery_url?.trim()
                                         ?   <TouchableWithoutFeedback style={styles.deliveryBtn} onPress={() => {openDelivery(selectedBp.delivery_url)}}>

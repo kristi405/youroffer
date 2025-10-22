@@ -68,7 +68,7 @@ export const OnboardingScreen = ({navigation}) => {
         setVisible(false);
         AuthStore.updateCoord()
         BusinessPointsStore.getAll()
-        BonusCardStore.getList() 
+        BonusCardStore.getList()
         const initialMessage = await messaging().getInitialNotification()
         if (initialMessage?.data?.id_offer) {
           navigation.replace(FIRST_PAGE, { screen: 'Акции' })
@@ -91,7 +91,7 @@ export const OnboardingScreen = ({navigation}) => {
         <AnimatedLoader
           visible={visible}
           animationStyle={styles.lottie}
-          source={require("../../../assets/loader.json")}
+          source={require("../../../assets/loader3.json")}
           speed={1}
         >
         </AnimatedLoader>
@@ -106,7 +106,7 @@ export const OnboardingScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   lottie: {
-    width: 200,
-    height: 200,
+    width: 500,
+    height: 500,
   },
 });

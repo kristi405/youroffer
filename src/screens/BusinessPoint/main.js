@@ -5,7 +5,7 @@ import { FILE_URL } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 
 export const CompanyProfile = observer(({ navigation, route }) => {
-    const item = route?.params?.data   
+    const item = route?.params?.data
 
     let workTime = '-'
     if (item.start_time && item.end_time) {
@@ -75,9 +75,9 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                         <Image source={require('../../../assets/time.png')} style={styles.clock} />
                         <Text style={styles.time}>{workTime}</Text>
                     </View>
-                    {item.instagram && <View style={styles.stack}>
+                    {/* {item.instagram && <View style={styles.stack}>
                         <OpenInstagramButton instagram={item.instagram} />
-                    </View>}
+                    </View>} */}
                     {item.dist && <View style={styles.stack}>
                         <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
                         <Text style={styles.time}> {item.dist / 1000} км </Text>

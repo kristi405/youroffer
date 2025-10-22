@@ -123,7 +123,6 @@ export const ContactUs = observer(({ navigation }) => {
                     <Image source={require('../../../assets/web.png')} style={styles.image} />
                     <Text style={styles.title}>web: {web}</Text>
                 </View>
-                <OpenInstagramButton/>
 
                 <View style={styles.requestBlock}>
                     <Text style={styles.requestTitle}>Оставить заявку: </Text>

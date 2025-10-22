@@ -21,6 +21,7 @@ export const Map = ({ navigation }) => {
 
 let CURRENT_COORD;
 const MapComponent = observer(({ navigation }) => {
+    const [mapRenderKey, setMapRenderKey] = useState(Date.now());
     const [selectedBp, setSelectedBp] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [regionCoord, setRegionCoord] = useState({
@@ -28,16 +29,13 @@ const MapComponent = observer(({ navigation }) => {
         longitude: 23.72369655950971,
     });
 
-    const [tracksViewChanges, setTracksViewChanges] = useState(true);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setTracksViewChanges(false), 1000);
-        return () => clearTimeout(timer);
-    }, []);
-
     useEffect(() => {
         init()
     }, []);
+
+    useFocusEffect((React.useCallback(() => {
+        setMapRenderKey(Date.now())
+    }, [])))
 
     const init = async () => {
         CURRENT_COORD = await getLocation()
@@ -101,29 +99,22 @@ const MapComponent = observer(({ navigation }) => {
             }) || [];
     }, [BusinessPointsStore.all]);
 
-    const mapKey = useMemo(() => {
-        return markers?.map(m => `${m.id}:${m.lat}:${m.lng}`)?.join("|") || 'empty';
-    }, [markers]);
-
     return (
         <View style={styles.mapContainer}>
             <MapView
-                key={mapKey}
+                key={mapRenderKey}
                 mapType="standard"
                 userInterfaceStyle="dark"
                 style={styles.map}
                 showsUserLocation={ CURRENT_COORD?.latitude ?  true : false }
                 customMapStyle={MAP_STYLE}
-                tracksViewChanges={tracksViewChanges}
+                tracksViewChanges={false}
                 region={{
                     latitude: CURRENT_COORD ? CURRENT_COORD?.latitude : regionCoord.latitude,
                     longitude: CURRENT_COORD ? CURRENT_COORD?.longitude : regionCoord.longitude,
                     latitudeDelta: 0.15,
                     longitudeDelta: 0.15,
-                }}
-                clusterColor="red"
-                clusterRadius={80}
-                minimumClusterSize={2}>
+                }}>
                     {markers?.map((bp) => {
                         const lat = parseFloat(bp.lat);
                         const lng = parseFloat(bp.lng);
@@ -140,7 +131,7 @@ const MapComponent = observer(({ navigation }) => {
                                     setSelectedBp(bp)
                                     setIsModalVisible(true)
                                 }}
-                                tracksViewChanges={tracksViewChanges}
+                                tracksViewChanges={false}
                             />)
                         })}
                 </MapView>
@@ -321,6 +312,7 @@ const styles = StyleSheet.create({
     stackWithButton: {
         alignItems: 'center',
         flexDirection: 'column',
+        position: 'absolute',
     },
     distans: {
         color: 'white',
@@ -349,6 +341,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         flexDirection: 'column',
         backgroundColor: 'black',
+        position: 'obsolute',
         height: 180,
         borderRadius: 20,
         gap: 10
@@ -406,6 +399,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginLeft: 10,
         marginRight: 10,
+        position: 'relative',
     },
     actionsView: {
         width: '100%',
@@ -417,6 +411,9 @@ const styles = StyleSheet.create({
     },
     buttonAdditionalBlock: {
         flexDirection: 'row',
+        position: 'absolute',
+        right: 0,
+        top: -110
     }
 })
 

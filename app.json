@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "myOffers",
+    "name": "Купон",
     "scheme": "youoffer",
     "slug": "youoffer",
-    "version": "1.0.81",
+    "version": "1.0.82",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "jsEngine": "hermes",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash4.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -94,7 +94,7 @@
       "appleTeamId": "CFTJPS6ZYY"
     },
     "android": {
-      "versionCode": 81,
+      "versionCode": 82,
       "googleServicesFile": "./google-services.json",
       "package": "com.offer.youoffer",
       "config": {
