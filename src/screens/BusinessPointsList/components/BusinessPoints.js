@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
 })
 
 
-export const BusinessPoints = ({ navigation }) => {
+export const BusinessPoints = observer(({ navigation }) => {
   const [isFavoriteList, setIsFavoriteList] = useState(BusinessPointsStore.isFavorite ? 1 : 0)
 
   const handleValueChange = async (isFavorite) => {
@@ -188,8 +188,7 @@ export const BusinessPoints = ({ navigation }) => {
     setIsFavoriteList(0)
   }, [])))
 
-
-  const Component = () => (
+  const Component = observer(() => (
     <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center' }}>
       <SegmentedControl
         style={styles.segment}
@@ -209,10 +208,10 @@ export const BusinessPoints = ({ navigation }) => {
         />
     }
     </View >
-  )
+  ))
 
   return <Component />
-}
+})
 
 
 const Loading = () => {

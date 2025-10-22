@@ -28,6 +28,8 @@ npx expo-doctor@latest
 
 npx expo prebuild
 
+Обновить билд без новой сборки (картики название)
+npx expo prebuild --clean
 
 билд
 eas login

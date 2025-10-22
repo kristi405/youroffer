@@ -34,7 +34,7 @@ export const OnboardingScreen = ({navigation}) => {
 
     const init = async () => {
       getMessage()
-      await getLocation()
+      getLocation()
       await requestUserPermission()
       const session = await getSession()
       if (!session) {

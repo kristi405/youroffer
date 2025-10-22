@@ -59,6 +59,12 @@ class BusinessPointsStore {
         })
     }
 
+    setIsLoading(isLoading) {
+        runInAction(() => {
+            this.isLoading = !!isLoading
+        })
+    }
+
     async getAll() {
         this.isLoading = true
         try {
@@ -75,7 +81,7 @@ class BusinessPointsStore {
             //     return scope;
             // });
         }
-        this.isLoading = false
+        setIsLoading(false)
     }
 
     async sortByDistance(businessPoints) {
