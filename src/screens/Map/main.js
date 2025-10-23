@@ -154,7 +154,7 @@ const MapComponent = observer(({ navigation }) => {
                                 </View>
                             </View>
                             <View style={styles.actionsView}>
-                                <View style={styles.buttonPromotionBlock}>
+                                <View style={{ width: selectedBp.delivery_url?.trim() ? '85%' : '100%' }}>
                                     <TouchableOpacity style={styles.buttonStyle} onPress={() => openDetail(selectedBp)}>
                                         <Text style={styles.showPromotionText}>Все акции</Text>
                                     </TouchableOpacity>
@@ -394,11 +394,11 @@ const styles = StyleSheet.create({
     //     opacity: 0.8
     // },
     deliveryIcon: {
-        width: 30,
-        height: 30,
-        marginTop: 10,
+        width: 40,
+        height: 40,
+        marginTop: 120,
         marginLeft: 10,
-        marginRight: 10,
+        marginRight: 24,
         position: 'relative',
     },
     actionsView: {
@@ -406,9 +406,9 @@ const styles = StyleSheet.create({
         height: 40,
         paddingHorizontal: 24,
     },
-    buttonPromotionBlock: {
-        width: '100%',
-    },
+    // buttonPromotionBlock: {
+    //     width: '100%',
+    // },
     buttonAdditionalBlock: {
         flexDirection: 'row',
         position: 'absolute',

@@ -98,13 +98,14 @@ const styles = StyleSheet.create({
     opacity: 1
   },
   map: {
-    width: 16,
+    width: 26,
     height: 24,
     tintColor: '#0EA47A',
   },
   save: {
     alignItems: 'flex-end',
     flex: 1,
+    paddingRight: 5,
   },
   instagramIcon: {
     width: 30,
@@ -157,10 +158,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   mainIconBlock: {
-    width: "35%"
+    width: "32%",
   },
   mainInfoBlock: {
-    width: "55%"
+    width: "58%"
   },
   deliveryBlock: {
     flex: 1,
@@ -168,9 +169,9 @@ const styles = StyleSheet.create({
     alignItems: 'end',
   },
   deliveryIcon: {
-    height: 27,
-    width: 27,
-    marginLeft: 5
+    height: 30,
+    width: 30,
+    marginLeft: 7
   }
 })
 
