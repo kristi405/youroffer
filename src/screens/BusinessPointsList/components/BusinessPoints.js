@@ -324,14 +324,6 @@ const Item = ({ navigation, item }) => {
     await Linking.openURL(url);
   }
 
-  const cutAddress = (address) => {
-    if (address?.length > 30) {
-      return `${address.slice(0, 30)} ..`
-    }
-
-    return address.slice(0, 30)
-  }
-
   return (
     <TouchableWithoutFeedback onPress={() => { openDetail(company) }}>
       <View style={styles.businessPoint}>
@@ -342,11 +334,11 @@ const Item = ({ navigation, item }) => {
           <View style={styles.mainInfoBlock}>
             <View style={styles.column}>
               <Text style={styles.title}>{company.name}</Text>
-              <Text style={styles.addressText}>{ cutAddress(company.address) }</Text>
               <View style={styles.row}>
                 <Image source={require('../../../../assets/time.png')} style={styles.clock} />
                 <Text style={styles.time}>{workTime}</Text>
               </View>
+              <Text style={styles.addressText}>{ company.address }</Text>
               {/* {
                 company.instagram?.trim() ? <TouchableWithoutFeedback onPress={() => {openInstagram(company.instagram)}}>
                   <View style={styles.rowInst}>
