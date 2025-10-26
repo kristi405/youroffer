@@ -115,9 +115,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     paddingTop: 0,
+    paddingRight: 0
   },
   addressText: {
-    fontSize: 10,
+    fontSize: 11,
     color: '#fff',
     opacity: 0.8
   },
@@ -171,7 +172,16 @@ const styles = StyleSheet.create({
   deliveryIcon: {
     height: 30,
     width: 30,
-    marginLeft: 7
+    marginLeft: 5,
+    marginTop: -5
+  },
+  deliveryText: {
+    width: 90,
+    color: '#FFF',
+    marginTop: 0,
+    marginLeft: -15,
+    fontSize: 12,
+    opacity: 0.7
   }
 })
 
@@ -350,9 +360,15 @@ const Item = ({ navigation, item }) => {
             </View>
           </View>
             {
-              company.delivery_url?.trim() ? <View style={styles.deliveryBlock}><TouchableWithoutFeedback onPress={() => {openDelivery(company.delivery_url)}}>
-              <Image source={require('../../../../assets/delivery.png')} style={styles.deliveryIcon} />
-            </TouchableWithoutFeedback></View> : null
+              company.delivery_url?.trim() ?
+                <View style={styles.deliveryBlock}>
+                  <TouchableWithoutFeedback onPress={() => {openDelivery(company.delivery_url)}}>
+                    <View>
+                      <Image source={require('../../../../assets/delivery.png')} style={styles.deliveryIcon} />
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+              : null
             }
 
         </View>

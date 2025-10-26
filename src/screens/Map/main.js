@@ -21,6 +21,7 @@ export const Map = ({ navigation }) => {
 
 let CURRENT_COORD;
 const MapComponent = observer(({ navigation }) => {
+    const [mapReady, setMapReady] = useState(false);
     const [mapRenderKey, setMapRenderKey] = useState(Date.now());
     const [selectedBp, setSelectedBp] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -102,6 +103,7 @@ const MapComponent = observer(({ navigation }) => {
     return (
         <View style={styles.mapContainer}>
             <MapView
+                onMapReady={() => setMapReady(true)}
                 key={mapRenderKey}
                 mapType="standard"
                 userInterfaceStyle="dark"
@@ -115,7 +117,7 @@ const MapComponent = observer(({ navigation }) => {
                     latitudeDelta: 0.15,
                     longitudeDelta: 0.15,
                 }}>
-                    {markers?.map((bp) => {
+                    {mapReady && markers?.map((bp) => {
                         const lat = parseFloat(bp.lat);
                         const lng = parseFloat(bp.lng);
 

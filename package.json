@@ -1,6 +1,6 @@
 {
   "name": "myoffer",
-  "version": "1.0.83",
+  "version": "1.0.84",
   "packageManager": "yarn@4.9.1+sha512.f95ce356460e05be48d66401c1ae64ef84d163dd689964962c6888a9810865e39097a5e9de748876c2e0bf89b232d583c33982773e9903ae7a76257270986538",
   "installConfig": {
     "pnp": false
@@ -63,7 +63,7 @@
     "react-native-barcode-svg": "^0.0.15",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-map-clustering": "^4.0.0",
-    "react-native-maps": "1.25.0",
+    "react-native-maps": "1.20.1",
     "react-native-mask-input": "^1.2.3",
     "react-native-mask-text": "^0.14.2",
     "react-native-modal": "^14.0.0-rc.1",
