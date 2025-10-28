@@ -34,8 +34,9 @@ export const OnboardingScreen = ({navigation}) => {
 
     const init = async () => {
       getMessage()
-      getLocation()
       await requestUserPermission()
+      getLocation()
+
       const session = await getSession()
       if (!session) {
         await AuthStore.createUser()
