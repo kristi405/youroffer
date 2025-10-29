@@ -2,7 +2,7 @@ import React, {useState, useEffect, Alert} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import AnimatedLoader from "react-native-animated-loader";
 import { getSession, getRegion, getUser } from '../../services/auth'
-import { getLocation } from '../../services/geo'
+import { requestGeoPermissions } from '../../services/geo'
 import { requestUserPermission } from '../../services/fcm'
 import AuthStore from '../../stores/auth'
 import BusinessPointsStore from '../../stores/businessPoints'
@@ -35,7 +35,7 @@ export const OnboardingScreen = ({navigation}) => {
     const init = async () => {
       getMessage()
       await requestUserPermission()
-      getLocation()
+      await requestGeoPermissions()
 
       const session = await getSession()
       if (!session) {
@@ -67,8 +67,8 @@ export const OnboardingScreen = ({navigation}) => {
 
       setTimeout(async () => {
         setVisible(false);
-        AuthStore.updateCoord()
         BusinessPointsStore.getAll()
+        AuthStore.updateCoord()
         BonusCardStore.getList()
         const initialMessage = await messaging().getInitialNotification()
         if (initialMessage?.data?.id_offer) {

@@ -6,24 +6,26 @@ let CAHCE = null
 const EARTH_RADIUS = 6371;  // Радиус Земли в километрах
 let SHOW_FORCE_ALERT = true
 let ALREADY_ASKED = false
+let STATUS = null
+
+export const requestGeoPermissions = async () => {
+  STATUS = await Location.requestForegroundPermissionsAsync();
+}
 
 export const getLocation = async (update) => {
     // так как мы пытаемся получить геолокацию на разных экранах нам нужно проверять не запросили ли мы уже геолокацию
-    if (ALREADY_ASKED && CAHCE) return CAHCE;
+    if (ALREADY_ASKED && CAHCE?.latitude && CAHCE?.longitude) return CAHCE;
     ALREADY_ASKED = true;
-    if (update) {
-      CAHCE = null
-    }
-    if (CAHCE?.latitude && CAHCE?.longitude) {
-      return CAHCE
-    }
-    const status = await Location.requestForegroundPermissionsAsync();
+    if (update) CAHCE = null
+    if (CAHCE?.latitude && CAHCE?.longitude) return CAHCE
+
+
 
     setTimeout(() => {
       ALREADY_ASKED = false
     }, 1000)
     // Если мы пытаемся обновить экра с компаниями и у нас нет доступа к голокации - мы спрашиваем доступ
-    if (status.canAskAgain === false && SHOW_FORCE_ALERT && update) {
+    if (STATUS.canAskAgain === false && SHOW_FORCE_ALERT && update) {
       Alert.alert('', "Чтобы мы могли показать вам ближайшие заведения, включите геолокацию",
       [
           {
@@ -37,7 +39,8 @@ export const getLocation = async (update) => {
           },
       ])
     }
-    if (status.status == 'granted') {
+
+    if (STATUS.status == 'granted') {
       return await getUserLocation()
     } else {
       return;
