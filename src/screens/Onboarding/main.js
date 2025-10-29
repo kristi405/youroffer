@@ -29,80 +29,82 @@ export const OnboardingScreen = ({navigation}) => {
   }
 
   useEffect(() => {
-    init()
+    setTimeout(async () => {
+      init()
+    }, 100);
   }, []);
 
-    const init = async () => {
-      getMessage()
-      await requestUserPermission()
-      await requestGeoPermissions()
+  const init = async () => {
+    getMessage()
+    await requestUserPermission()
+    await requestGeoPermissions()
 
-      const session = await getSession()
-      if (!session) {
-        await AuthStore.createUser()
-      }
-
-      const currentRegion = await getRegion()
-      if (!currentRegion) {
-        setFirstPage('Region')
-      } else {
-        setFirstPage('CouponScreen')
-      }
-      const stauts = await AuthStore.checkVersion({
-        os: Platform?.OS,
-        osVersion: Platform?.Version || Platform?.osVersion,
-        model: Platform?.constants?.Model,
-        pushAccess: PUSH_ACCESS
-      });
-
-      setVersionStatus(stauts);
-      if (NOT_WORKING_STATUSES.includes(stauts)) {
-        BusinessPointsStore.getAll()
-        setVisible(false);
-        setisVisibleModal(true)
-        return;
-      }
-
-      await PromotionStore.getList();
-
-      setTimeout(async () => {
-        setVisible(false);
-        BusinessPointsStore.getAll()
-        AuthStore.updateCoord()
-        BonusCardStore.getList()
-        const initialMessage = await messaging().getInitialNotification()
-        if (initialMessage?.data?.id_offer) {
-          navigation.replace(FIRST_PAGE, { screen: 'Акции' })
-          navigation.navigate('CouponDetailScreen', { data: { id: initialMessage?.data?.id_offer } })
-        } else {
-          navigation.replace(FIRST_PAGE, { screen: 'Акции' })
-        }
-      });
+    const session = await getSession()
+    if (!session) {
+      await AuthStore.createUser()
     }
 
-    const closeModal = () => {
-      setisVisibleModal(false)
-      setTimeout(async () => {
+    const currentRegion = await getRegion()
+    if (!currentRegion) {
+      setFirstPage('Region')
+    } else {
+      setFirstPage('CouponScreen')
+    }
+    const stauts = await AuthStore.checkVersion({
+      os: Platform?.OS,
+      osVersion: Platform?.Version || Platform?.osVersion,
+      model: Platform?.constants?.Model,
+      pushAccess: PUSH_ACCESS
+    });
+
+    setVersionStatus(stauts);
+    if (NOT_WORKING_STATUSES.includes(stauts)) {
+      BusinessPointsStore.getAll()
+      setVisible(false);
+      setisVisibleModal(true)
+      return;
+    }
+
+    await PromotionStore.getList();
+
+    setTimeout(async () => {
+      setVisible(false);
+      BusinessPointsStore.getAll()
+      AuthStore.updateCoord()
+      BonusCardStore.getList()
+      const initialMessage = await messaging().getInitialNotification()
+      if (initialMessage?.data?.id_offer) {
         navigation.replace(FIRST_PAGE, { screen: 'Акции' })
-      }, 500);
-    }
+        navigation.navigate('CouponDetailScreen', { data: { id: initialMessage?.data?.id_offer } })
+      } else {
+        navigation.replace(FIRST_PAGE, { screen: 'Акции' })
+      }
+    });
+  }
 
-    return (
-      <View style={{ flex: 1, paddingTop: 0, backgroundColor: 'black' }}>
-        <AnimatedLoader
-          visible={visible}
-          animationStyle={styles.lottie}
-          source={require("../../../assets/loader3.json")}
-          speed={1}
-        >
-        </AnimatedLoader>
-        <ModalUpdate
-          isVisible={isVisibleModal}
-          versionStatus={versionStatus}
-          cancelAction={closeModal}
-        />
-      </View>
-    );
+  const closeModal = () => {
+    setisVisibleModal(false)
+    setTimeout(async () => {
+      navigation.replace(FIRST_PAGE, { screen: 'Акции' })
+    }, 500);
+  }
+
+  return (
+    <View style={{ flex: 1, paddingTop: 0, backgroundColor: 'black' }}>
+      <AnimatedLoader
+        visible={visible}
+        animationStyle={styles.lottie}
+        source={require("../../../assets/loader3.json")}
+        speed={1}
+      >
+      </AnimatedLoader>
+      <ModalUpdate
+        isVisible={isVisibleModal}
+        versionStatus={versionStatus}
+        cancelAction={closeModal}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
