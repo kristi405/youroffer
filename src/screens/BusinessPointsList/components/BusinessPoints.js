@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { TouchableWithoutFeedback, StyleSheet, View, FlatList, RefreshControl, Image, Text, ActivityIndicator, Linking, TextInput } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View, FlatList, RefreshControl, Text, ActivityIndicator, Linking } from 'react-native';
 import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import { FILE_URL } from '../../../services/constants'
+import { FILE_URL, BLURHASH } from '../../../services/constants'
+import { Image } from "expo-image";
 import { getLocation } from '../../../services/geo'
 import { useFocusEffect } from '@react-navigation/native';
 import { SearchBlock } from '../../../components/searchBusinessPoint'
@@ -339,7 +340,14 @@ const Item = ({ navigation, item }) => {
       <View style={styles.businessPoint}>
         <View style={styles.marginWrapper}>
           <View style={styles.mainIconBlock}>
-            <Image source={{ uri: `${FILE_URL}${company.img}.${company.img_ext}` }} style={styles.icon} />
+            <Image
+              source={{ uri: `${FILE_URL}${company.img}.${company.img_ext}` }}
+              style={styles.icon}
+              cachePolicy="disk"
+              placeholder={{ blurhash: BLURHASH }}
+              transition={500}
+              contentFit="cover"
+            />
           </View>
           <View style={styles.mainInfoBlock}>
             <View style={styles.column}>

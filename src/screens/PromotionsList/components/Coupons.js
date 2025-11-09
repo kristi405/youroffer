@@ -1,10 +1,11 @@
 import React, { useState, useRef, useCallback } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Image, Text, RefreshControl, ActivityIndicator } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Text, RefreshControl, ActivityIndicator } from 'react-native';
+import { Image } from "expo-image";
 import PromotionStore from "../../../stores/promotion"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import { FILE_URL } from '../../../services/constants'
+import { FILE_URL, BLURHASH } from '../../../services/constants'
 import { FIRST_INIT, setFirstInit } from '../../../services/globals'
 
 const styles = StyleSheet.create({
@@ -143,15 +144,15 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   );
 
   const init = async (isFavorite) => {
-    // нужно проверить, если акции не принадлежат текущей компании то перезагужаем старницу с акциями 
-    const firstItem = PromotionStore.list && PromotionStore.list[0]; 
+    // нужно проверить, если акции не принадлежат текущей компании то перезагужаем старницу с акциями
+    const firstItem = PromotionStore.list && PromotionStore.list[0];
     const bpIds = [];
-    firstItem?.business_points?.forEach(bp => {       
+    firstItem?.business_points?.forEach(bp => {
       bpIds.push(bp.id)
     });
 
-    // Если мы на странице бизнес точки - то нужно проверить, 
-    // если это та-же бизнес точка - то не нужно перезагружать список 
+    // Если мы на странице бизнес точки - то нужно проверить,
+    // если это та-же бизнес точка - то не нужно перезагружать список
     if (businessPointId && !bpIds.includes(businessPointId)) {
       fromPromotionPage = false
     }
@@ -159,7 +160,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
     if (fromPromotionPage)  {
       fromPromotionPage = false;
       return;
-    } 
+    }
 
     if (FIRST_INIT) {
       setFirstInit()
@@ -227,7 +228,10 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
           <Text style={styles.emptyText}>Чтобы добавить в "Мои акции"</Text>
           <View style={styles.emptyRow}>
             <Text style={styles.emptyText}>нажмите на иконку</Text>
-            <Image source={require('../../../../assets/save.png')} />
+            <Image
+              source={require('../../../../assets/save.png')}
+              cachePolicy="disk"
+            />
           </View>
         </View >
       )
@@ -237,7 +241,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
           <Text style={styles.emptyText}>Нет доступных акций</Text>
           <Text style={styles.emptyText}>Для загрузки сделайте свайп вниз</Text>
           <Text></Text>
-          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.png')} />
+          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.png')} cachePolicy="disk" />
         </View>
       )
     }
@@ -277,7 +281,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
 const Item = ({ navigation, item, businessPointId }) => {
   const [offer, setOffer] = useState(item)
 
-  const openDetail = (item) => { 
+  const openDetail = (item) => {
     fromPromotionPage = true;
     navigation.navigate('CouponDetailScreen', { data: item })
   }
@@ -307,15 +311,29 @@ const Item = ({ navigation, item, businessPointId }) => {
         </View>
       </TouchableWithoutFeedback>
     )
-  } 
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => { openDetail(offer) }}>
       <View style={styles.coupon}>
         <View style={styles.item}>
-          <Image source={{ uri: `${FILE_URL}${offer.img}.${offer.img_ext}` }} style={styles.icon} />
+          <Image
+            source={{ uri: `${FILE_URL}${offer.img}.${offer.img_ext}` }}
+            style={styles.icon}
+            cachePolicy="disk"
+            placeholder={{ blurhash: BLURHASH }}
+            transition={500}
+            contentFit="cover"
+          />
           <View style={styles.headerView}>
-            <Image source={{ uri: `${FILE_URL}${offer.business_points[0].img}.${offer.business_points[0].img_ext}` }} style={styles.avatar} />
+            <Image
+              source={{ uri: `${FILE_URL}${offer.business_points[0].img}.${offer.business_points[0].img_ext}` }}
+              style={styles.avatar}
+              cachePolicy="disk"
+              placeholder={{ blurhash: BLURHASH }}
+              transition={500}
+              contentFit="cover"
+            />
             <Text style={styles.businessPointsName}>{offer.business_points[0].name}</Text>
           </View>
           <Text style={styles.title}>{offer.name}</Text>

@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, Alert } from 'react-native'; 
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import BonusCardStore from '../../../stores/bonusCard'
 import { BarcodeCreatorView, BarcodeFormat } from "react-native-barcode-creator";
 import { FILE_URL } from '../../../services/constants'
 import { setNeedToReloadBonusCardsLisr } from '../../../services/globals'
-import * as Brightness from 'expo-brightness';
+// import * as Brightness from 'expo-brightness';
 
 export const BonusCardView = ({ navigation, route }) => {
     const [item, setItem] = useState(route?.params?.data)
 
-    const setBrightness = async () => {
-        try {
-            await Brightness.setBrightnessAsync(1)
-        } catch(e) {
-            console.log(e)
-        }    
-    }
-    setBrightness();   
-    
+    // const setBrightness = async () => {
+    //     try {
+    //         await Brightness.setBrightnessAsync(1)
+    //     } catch(e) {
+    //         console.log(e)
+    //     }
+    // }
+    // setBrightness();
+
 
     const remove = async () => {
         Alert.alert('Удаление',
@@ -29,17 +29,17 @@ export const BonusCardView = ({ navigation, route }) => {
                     BonusCardStore.removeCard(item.id)
                     setNeedToReloadBonusCardsLisr(true)
                     navigation.goBack()
-                },                    
+                },
             },
             {
-                text: 'Отмена',                
+                text: 'Отмена',
                 style: 'cancel',
             },
         ]
-        )      
+        )
     }
 
-    const BarcodeView = () => {        
+    const BarcodeView = () => {
         // if (code.length == 0) return null
         return (
             <View style={styles.barcodeView}>
@@ -49,7 +49,7 @@ export const BonusCardView = ({ navigation, route }) => {
                         background={'#FFFFFF'}
                         style={styles.barcode}
                         foregroundColor={'#000000'}
-                        format={BarcodeFormat.CODE128}                   
+                        format={BarcodeFormat.CODE128}
                     />
                 </Text>
                 <Text style={styles.code}>{item.code}</Text>
@@ -60,10 +60,10 @@ export const BonusCardView = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <Image source={
-                item?.img 
+                item?.img
                 ? { uri: `${FILE_URL}${item?.img}.${item?.img_ext}`}
-                : require('../../../../assets/discontCard.png')} 
-                style={styles.imageContainer} 
+                : require('../../../../assets/discontCard.png')}
+                style={styles.imageContainer}
             />
             <BarcodeView/>
             <TouchableWithoutFeedback onPress={remove}>

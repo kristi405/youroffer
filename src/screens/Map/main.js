@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo} from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Linking, TextInput, Pressable, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TouchableWithoutFeedback, Linking, SafeAreaView } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import MapView, { Marker } from 'react-native-maps';
 import { useState } from 'react';
@@ -7,7 +7,8 @@ import Modal from 'react-native-modal';
 import BusinessPointsStore from "../../stores/businessPoints";
 import { MAP_STYLE, getLocation } from '../../services/geo'
 import { getRegion } from '../../services/auth'
-import { FILE_URL } from '../../services/constants'
+import { FILE_URL, BLURHASH } from '../../services/constants'
+import { Image } from "expo-image";
 import { observer } from "mobx-react-lite"
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -142,7 +143,14 @@ const MapComponent = observer(({ navigation }) => {
                     <View style={styles.modalContainer}>
                         <View style={styles.stackWithButton}>
                             <View style={styles.modalStack}>
-                                <Image source={{ uri: `${FILE_URL}${selectedBp.img}.${selectedBp.img_ext}` }} style={styles.image} />
+                                <Image
+                                    source={{ uri: `${FILE_URL}${selectedBp.img}.${selectedBp.img_ext}` }}
+                                    style={styles.image}
+                                    cachePolicy="disk"
+                                    placeholder={{ blurhash: BLURHASH }}
+                                    transition={500}
+                                    contentFit="cover"
+                                />
                                 <View style={styles.vetricalStack}>
                                     <Text style={styles.name}>{selectedBp.name}</Text>
                                     <View style={styles.stack}>

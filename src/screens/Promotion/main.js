@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Linking } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback, Linking } from 'react-native';
+import { Image } from "expo-image";
 import { PromotionView } from "./components/PromotionView";
 import { BonusView } from "./components/BonusView";
 import { getUser } from "../../services/auth"
 import OfferUsingStore from '../../stores/offerUsing'
-import { FILE_URL } from '../../services/constants'
+import { FILE_URL, BLURHASH } from '../../services/constants'
 import PromotionStore from "../../stores/promotion"
-import * as Brightness from 'expo-brightness';
+
+// import * as Brightness from 'expo-brightness';
 
 let fromQR = false;
 let timers = []
@@ -24,15 +26,15 @@ export const CouponDetailScreen = ({ navigation, route }) => {
         setIds(newIds)
     }, [item]);
 
-    const setBrightness = async () => {
-        try {
-            const brightness = await Brightness.getSystemBrightnessAsync()
-            await Brightness.setBrightnessAsync(brightness)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    setBrightness()
+    // const setBrightness = async () => {
+    //     try {
+    //         const brightness = await Brightness.getSystemBrightnessAsync()
+    //         await Brightness.setBrightnessAsync(brightness)
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // }
+    // setBrightness()
 
     const handler = React.useCallback(() => {
         setItem(route?.params?.data)
@@ -355,7 +357,11 @@ export const CouponDetailScreen = ({ navigation, route }) => {
 
     const ShowImg = () => {
         if (item?.business_points && item?.business_points[0] ) {
-            return <Image source={{ uri: `${FILE_URL}${item?.business_points[0]?.img}.${item?.business_points[0]?.img_ext}` }} style={styles.avatar} />
+            return <Image
+                source={{ uri: `${FILE_URL}${item?.business_points[0]?.img}.${item?.business_points[0]?.img_ext}` }}
+                style={styles.avatar}
+                cachePolicy="disk"
+            />
         }
         return null
     }
@@ -363,7 +369,14 @@ export const CouponDetailScreen = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <ScrollView>
-                <Image source={{ uri: `${FILE_URL}${item.img}.${item.img_ext}` }} style={styles.imageContainer} />
+                <Image
+                    source={{ uri: `${FILE_URL}${item.img}.${item.img_ext}` }}
+                    style={styles.imageContainer}
+                    cachePolicy="disk"
+                    placeholder={{ blurhash: BLURHASH }}
+                    transition={500}
+                    contentFit="cover"
+                />
                 <View style={styles.headerContainerView}>
                     <View style={styles.headerView}>
                         <ShowImg />
@@ -390,7 +403,9 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                     <SubscriptionPromotionView />
                 </View>
                 <Text style={styles.addressTitle}>Акция доступна по адресу:</Text>
-                {item.business_points?.map(bp => {
+                {item.business_points?.sort((a, b) => {
+                    return b?.address.localeCompare(a?.address)
+                }).map(bp => {
                     return (
                         <TouchableWithoutFeedback key={bp.id} style={styles.addressList} onPress={() => { openMap(bp) }}>
                             <View style={styles.addressList} key={bp.id}>

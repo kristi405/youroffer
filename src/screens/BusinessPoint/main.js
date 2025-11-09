@@ -1,7 +1,8 @@
 import React, { useCallback } from "react";
-import { StyleSheet, View, Image, Text, TouchableWithoutFeedback, Linking, Share, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableWithoutFeedback, Linking, Share, Alert } from 'react-native';
 import { Coupons } from "../PromotionsList/components/Coupons";
-import { FILE_URL } from '../../services/constants'
+import { Image } from "expo-image";
+import { FILE_URL, BLURHASH } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 
 export const CompanyProfile = observer(({ navigation, route }) => {
@@ -68,7 +69,14 @@ export const CompanyProfile = observer(({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <View style={styles.profile}>
-                <Image source={{ uri: `${FILE_URL}${item.img}.${item.img_ext}` }} style={styles.image} />
+                <Image
+                    source={{ uri: `${FILE_URL}${item.img}.${item.img_ext}` }}
+                    style={styles.image}
+                    cachePolicy="disk"
+                    placeholder={{ blurhash: BLURHASH }}
+                    transition={500}
+                    contentFit="cover"
+                />
                 <View style={styles.descriptionView}>
                     <Text style={styles.nameStyle}>{item.name} </Text>
                     <View style={styles.stack}>

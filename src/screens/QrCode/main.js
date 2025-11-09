@@ -1,21 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import SvgQRCode from 'react-native-qrcode-svg';
-import * as Brightness from 'expo-brightness';
+// import * as Brightness from 'expo-brightness';
 
 export const QrCodeScreen = ({navigation, route}) => {
     const data = route?.params?.data
 
-    const setBrightness = async () => {
-        try {
-            await Brightness.setBrightnessAsync(1)
-        } catch(e) {
-            console.log(e)
-        }    
-    }
-    setBrightness();   
-    
-     
+    // const setBrightness = async () => {
+    //     try {
+    //         await Brightness.setBrightnessAsync(1)
+    //     } catch(e) {
+    //         console.log(e)
+    //     }
+    // }
+    // setBrightness();
+
+
     // const json = JSON.stringify({
     //     id_offer: data.itemId,
     //     id_user: data.userId,

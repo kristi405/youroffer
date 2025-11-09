@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Linking, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Linking, TouchableWithoutFeedback } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useState } from 'react';
 import Modal from 'react-native-modal';
 import { MAP_STYLE, getLocation, distanceBetweenGeoPoints } from '../../services/geo'
 import { getRegion } from '../../services/auth'
-import { FILE_URL } from '../../services/constants'
+import { Image } from "expo-image";
+import { FILE_URL, BLURHASH } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 
 
@@ -119,7 +120,14 @@ export const BusinessPointOnMap = observer(({ navigation, route }) => {
                     <View style={styles.modalContainer}>
                         <View style={styles.stackWithButton}>
                             <View style={styles.modalStack}>
-                                <Image source={{ uri: `${FILE_URL}${selectedBp.img}.${selectedBp.img_ext}` }} style={styles.image} />
+                                <Image
+                                    source={{ uri: `${FILE_URL}${selectedBp.img}.${selectedBp.img_ext}` }}
+                                    style={styles.image}
+                                    cachePolicy="disk"
+                                    placeholder={{ blurhash: BLURHASH }}
+                                    transition={500}
+                                    contentFit="cover"
+                                />
                                 <View style={styles.vetricalStack}>
                                     <Text style={styles.name}>{selectedBp.name}</Text>
                                     <View style={styles.stack}>

@@ -1,12 +1,17 @@
 import React from "react";
-import { StyleSheet, View, FlatList, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Image } from "expo-image";
 
 export const PromotionView = (route) => {
     const item = route?.data
 
     const CircleView = ({source}) => {
         if (source) {
-            return (<Image source={source} style={styles.image} />)
+            return (<Image
+                source={source}
+                style={styles.image}
+                cachePolicy="disk"
+            />)
         }
         return (<View style={styles.image}></View>);
     }
@@ -14,7 +19,7 @@ export const PromotionView = (route) => {
     const Circle = ({ size, color, source }) => {
         return (
             <View style={[styles.circle, { width: size, height: size, backgroundColor: color }]}>
-                <CircleView  source={source}/>
+                <CircleView source={source}/>
             </View>
         )
     }

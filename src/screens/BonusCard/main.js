@@ -5,25 +5,25 @@ import { useFocusEffect } from '@react-navigation/native';
 import BonusCardStore from '../../stores/bonusCard'
 import { FILE_URL } from '../../services/constants'
 import { NEED_TO_RELOAD_BONUS_CARDS_LIST, setNeedToReloadBonusCardsLisr } from '../../services/globals'
-import * as Brightness from 'expo-brightness';
+// import * as Brightness from 'expo-brightness';
 
 let IS_NEED_UPDATE = true
 export const BonusCard = observer(({ navigation }) => {
     const [loading, setLoading] = useState(false);
 
-    const setBrightness = async () => {         
-        try {
-            const brightness = await Brightness.getSystemBrightnessAsync()            
-            await Brightness.setBrightnessAsync(brightness)            
-        } catch (e) {
-            console.log(e)
-        }        
-    }    
+    // const setBrightness = async () => {
+    //     try {
+    //         const brightness = await Brightness.getSystemBrightnessAsync()
+    //         await Brightness.setBrightnessAsync(brightness)
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // }
 
     const handler = useCallback(() => {
-        setBrightness()  
+        // setBrightness()
         if (!NEED_TO_RELOAD_BONUS_CARDS_LIST) return;
-        setLoading(true)      
+        setLoading(true)
         BonusCardStore.getUserList()
             .then(() => setLoading(false))
             .catch(() => setLoading(false))
@@ -31,11 +31,11 @@ export const BonusCard = observer(({ navigation }) => {
     }, [])
     useFocusEffect(handler);
 
-    const openNewCard = async () => {        
+    const openNewCard = async () => {
         navigation.navigate('NewCard')
-    } 
+    }
 
-    const List = () => {        
+    const List = () => {
         if (BonusCardStore.loading) {
             return <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
         } else if (BonusCardStore.userList?.length) {
@@ -49,7 +49,7 @@ export const BonusCard = observer(({ navigation }) => {
             >
             </FlatList>
         } else {
-            return <View style={styles.emptyBlock}> 
+            return <View style={styles.emptyBlock}>
                 <Text style={styles.emptyTextTitle}>У вас пока нет бонусных карт.</Text>
                 <Text style={styles.emptyTextTitle}>Вы можете добавить свои бонусные карты нажав на кноку с плюсом.</Text>
                 <Text style={styles.emptyText}>1. Выберите название карты из списка. Если такой карты нет в списке, выберите "Нет в списке".</Text>
@@ -58,7 +58,7 @@ export const BonusCard = observer(({ navigation }) => {
             </View>
         }
     }
- 
+
     return (
         <View style={styles.container}>
             <List />
@@ -72,20 +72,20 @@ export const BonusCard = observer(({ navigation }) => {
 })
 
 const Item = ({ navigation, item }) => {
-    const openBonusCardView = async () => {         
-        navigation.navigate('BonusCardView', { data: item, name: item.name })     
+    const openBonusCardView = async () => {
+        navigation.navigate('BonusCardView', { data: item, name: item.name })
     }
 
     return (
         <TouchableWithoutFeedback onPress={openBonusCardView}>
             <View style={styles.item}>
                 <Image source={
-                    item?.img 
+                    item?.img
                     ? { uri: `${FILE_URL}${item?.img}.${item?.img_ext}`}
-                    : require('../../../assets/discontCard.png')} 
-                    style={styles.imageContainer} 
+                    : require('../../../assets/discontCard.png')}
+                    style={styles.imageContainer}
                 />
-                
+
                 <Text style={styles.title}>{item.name || 'бонусная карта'}</Text>
             </View>
         </TouchableWithoutFeedback>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         opacity: 0.8,
         textAlign: "left",
-        marginBottom: 10 
+        marginBottom: 10
     },
     emptyTextTitle: {
         color: "#FFF",
@@ -164,13 +164,13 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     emptyBlock: {
-        backgroundColor: "#282928",         
-        borderRadius: 15,         
+        backgroundColor: "#282928",
+        borderRadius: 15,
         flat: 1,
         marginLeft: 10,
         marginRight: 10,
-        marginBottom: 100,  
+        marginBottom: 100,
         padding: 20
-        
+
     }
 })

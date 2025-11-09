@@ -34,7 +34,7 @@ class PromotionStore {
     }
 
     setLoading(isLoding) {
-        runInAction(() => {           
+        runInAction(() => {
             this.isLoding = isLoding
         })
     }
@@ -43,7 +43,7 @@ class PromotionStore {
         // Если мы уже получили все акции
         if (this.finishScroll) return
         // если у нас 1 старница - то не нужно пказывать лоадер
-        // и если страница 1 то нам не нужна задержка , иначе ставим задержку на 1 секунду         
+        // и если страница 1 то нам не нужна задержка , иначе ставим задержку на 1 секунду
         this.setLoading(true)
         let status = REQUEST_STATUS.success
         try {
@@ -60,7 +60,7 @@ class PromotionStore {
             this.addToList(resp.data || [])
             this.setLoading(false)
         } catch (error) {
-            this.setLoading(false)             
+            this.setLoading(false)
             console.error(error)
             status = REQUEST_STATUS.error
             // Sentry.Native.captureException(error, (scope) => {
