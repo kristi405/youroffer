@@ -3,7 +3,7 @@
     "name": "ТвойКупон",
     "scheme": "youoffer",
     "slug": "youoffer",
-    "version": "1.0.88",
+    "version": "1.0.89",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -94,7 +94,7 @@
       "appleTeamId": "CFTJPS6ZYY"
     },
     "android": {
-      "versionCode": 88,
+      "versionCode": 89,
       "googleServicesFile": "./google-services.json",
       "package": "com.offer.youoffer",
       "config": {

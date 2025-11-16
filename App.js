@@ -2,7 +2,6 @@ import { Platform, Alert } from 'react-native';
 import { useEffect } from 'react';
 import { Main } from './src/main'
 import * as NavigationBar from 'expo-navigation-bar';
-import 'expo-dev-client';
 // import * as Sentry from 'sentry-expo';
 import * as Updates from 'expo-updates';
 import messaging from '@react-native-firebase/messaging';

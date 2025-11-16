@@ -338,7 +338,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
             return (
                 <TouchableWithoutFeedback onPress={() => {openLinkHandler()}}>
                     <View style={styles.linkBody}>
-                        <Image source={require('../../../assets/web.png')} style={styles.imageLink} />
+                        <Image source={require('../../../assets/web.png')} style={styles.imageLink} cachePolicy="disk"/>
                         <Text style={styles.titleLink}>Перейти по сслыке</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -409,7 +409,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                     return (
                         <TouchableWithoutFeedback key={bp.id} style={styles.addressList} onPress={() => { openMap(bp) }}>
                             <View style={styles.addressList} key={bp.id}>
-                                <Image style={styles.mapIcon} source={require('../../../assets/mapIcon.png')} />
+                                <Image style={styles.mapIcon} source={require('../../../assets/mapIcon.png')} cachePolicy="disk"/>
                                 <Text style={styles.address}>{bp.name}: {bp.address}</Text>
                             </View>
                         </TouchableWithoutFeedback>
