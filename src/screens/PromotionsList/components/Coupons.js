@@ -24,6 +24,12 @@ const styles = StyleSheet.create({
     width: '95%',
     alignItems:'center'
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingRight: 20,
+    paddingBottom: 5,
+  },
   avatar: {
     width: 20,
     height: 20,
@@ -66,7 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   icon: {
-    height: '60%',
+    height: '50%',
     width: '100%',
     borderRadius: 10,
   },
@@ -84,11 +90,12 @@ const styles = StyleSheet.create({
     paddingRight: 15
   },
   save: {
-    alignItems: 'flex-end',
+    width: 18, 
+    height: 26,
+    justifyContent: 'flex-end',
   },
   touch: {
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    padding: 6,
   },
   hidden: {
     paddingHorizontal: 10,
@@ -299,7 +306,7 @@ const Item = ({ navigation, item, businessPointId }) => {
     if (offer.type === 'present') return (
       <TouchableWithoutFeedback >
         <View style={styles.hidden}>
-          <Image source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+          <Image style={styles.save} source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
         </View>
       </TouchableWithoutFeedback>
     )
@@ -307,7 +314,7 @@ const Item = ({ navigation, item, businessPointId }) => {
     return (
       <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>
         <View style={styles.touch}>
-          <Image source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+          <Image style={styles.save} source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
         </View>
       </TouchableWithoutFeedback>
     )
@@ -338,8 +345,10 @@ const Item = ({ navigation, item, businessPointId }) => {
           </View>
           <Text style={styles.title}>{offer.name}</Text>
         </View>
+        <View style={styles.row}>
         <View style={styles.save}>
           <AddToFavoriteView offer={offer} />
+        </View>
         </View>
       </View>
     </TouchableWithoutFeedback>

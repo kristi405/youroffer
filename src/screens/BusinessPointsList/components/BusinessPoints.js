@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableWithoutFeedback, StyleSheet, View, FlatList, RefreshControl, Text, ActivityIndicator, Linking } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View, FlatList, RefreshControl, TouchableOpacity, Text, ActivityIndicator, Linking } from 'react-native';
 import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   businessPoint: {
     flexDirection: 'column',
     width: '96%',
-    height: 136,
+    height: 140,
     margin: 7,
     backgroundColor: '#1A1A1A',
     borderRadius: 10,
@@ -104,6 +104,8 @@ const styles = StyleSheet.create({
     tintColor: '#0EA47A',
   },
   save: {
+    width: 18, 
+    height: 39,
     alignItems: 'flex-end',
     flex: 1,
     paddingRight: 5,
@@ -124,8 +126,7 @@ const styles = StyleSheet.create({
     opacity: 0.8
   },
   touch: {
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    padding: 6, 
   },
   emptyView: {
     flex: 1,
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     width: "32%",
   },
   mainInfoBlock: {
-    width: "58%"
+    width: "60%"
   },
   deliveryBlock: {
     flex: 1,
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
     marginLeft: 5,
-    marginTop: -5
+    marginTop: 5
   },
   deliveryText: {
     width: 90,
@@ -387,9 +388,9 @@ const Item = ({ navigation, item }) => {
             <Text style={styles.time}>{company.dist ? company.dist / 1000 + ' км' : 'нет доступа'}</Text>
           </View>
           <View style={styles.save}>
-            <TouchableWithoutFeedback style={styles.save} onPress={() => { addToFavorite(company) }}>
+            <TouchableWithoutFeedback onPress={() => { addToFavorite(company) }}>
               <View style={styles.touch}>
-                <Image source={company.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+                <Image style={styles.save} source={company.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
               </View>
             </TouchableWithoutFeedback>
           </View>
