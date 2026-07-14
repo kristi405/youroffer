@@ -20,6 +20,7 @@ export const CreateUserScreen = ({navigation}) => {
 
     const pressHandler = () => {
         setName('')
+        navigation.navigate('CouponScreen')
     }
 
       return (
