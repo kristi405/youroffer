@@ -90,8 +90,11 @@ export const ContactUs = observer(({ navigation }) => {
                 </View>
             </TouchableWithoutFeedback>
         )
-
     };
+
+    const openWeb = async() => {
+        await Linking.openURL(web)
+    } 
 
     const openInstagram = async () => {
         tempInstagram = instagram.trim();
@@ -112,18 +115,30 @@ export const ContactUs = observer(({ navigation }) => {
     return (
         <TouchableWithoutFeedback onPress={handleScreenPress}>
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Image source={require('../../../assets/phone.png')} style={styles.image} />
-                    <Text style={styles.title}>mob: {phone}</Text>
-                </View>
-                <View style={styles.header}>
-                    <Image source={require('../../../assets/mail.png')} style={styles.image} />
-                    <Text style={styles.title}>e-mail: {email}</Text>
-                </View>
-                <View style={styles.header}>
-                    <Image source={require('../../../assets/web.png')} style={styles.image} />
-                    <Text style={styles.title}>web: {web}</Text>
-                </View>
+                {phone && (
+                    <View style={styles.header}>
+                        <Image source={require('../../../assets/phone.png')} style={styles.image} />
+                        <Text style={styles.title}>mob: {phone}</Text>
+                    </View>
+                )}
+                {email && (
+                    <View style={styles.header}>
+                        <Image source={require('../../../assets/mail.png')} style={styles.image} />
+                        <Text style={styles.title}>e-mail: {email}</Text>
+                    </View>
+                )}
+ 
+                {web && (
+                    <TouchableWithoutFeedback onPress={() => {openWeb()}}>
+                        <View style={styles.header}>
+                            <Image
+                                source={require('../../../assets/web.png')}
+                                style={styles.image}
+                            />
+                            <Text style={styles.titleLink}>Сайт: {web}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                )}
 
                 <View style={styles.requestBlock}>
                     <Text style={styles.requestTitle}>Оставить заявку: </Text>
@@ -201,6 +216,12 @@ const styles = StyleSheet.create({
         height: 25,
         borderRadius: 5,
         marginLeft: -3,
+    },
+    titleLink: {
+        fontSize: 16,
+        color: COLORS.primaryDark,
+        opacity: 0.8,
+        textDecorationLine: 'underline'
     },
     codeInputStyle: {
         color: 'white',

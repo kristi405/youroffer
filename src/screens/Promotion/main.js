@@ -409,8 +409,8 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                     return (
                         <TouchableWithoutFeedback key={bp.id} style={styles.addressList} onPress={() => { openMap(bp) }}>
                             <View style={styles.addressList} key={bp.id}>
-                                <Image style={styles.mapIcon} source={require('../../../assets/mapIcon.png')} cachePolicy="disk"/>
-                                <Text style={styles.address}>{bp.name}: {bp.address}</Text>
+                                <Image style={styles.mapIcon} source={require('../../../assets/mapIcon.svg')} cachePolicy="disk"/>
+                                <Text style={styles.address}><Text style={styles.addressPoint}>{bp.name}:</Text>&nbsp;&nbsp;{bp.address}</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     )
@@ -503,9 +503,15 @@ const styles = StyleSheet.create({
         gap: 3,
         marginBottom: 15
     },
-    address: {
+    addressPoint: {
         fontSize: 14,
         color: COLORS.primaryDark,
+        fontWeight: '600',
+        marginRight: 15, 
+    },  
+    address: {
+        fontSize: 14,
+        color: COLORS.white,
         paddingHorizontal: 10,
         textDecorationLine: 'underline',
         opacity: 0.9,

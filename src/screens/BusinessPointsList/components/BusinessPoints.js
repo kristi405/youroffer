@@ -143,6 +143,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16
   },
+  emptyImg: {
+    height: 35,
+    width: 35,
+    tintColor: COLORS.primaryDark,
+  },
   emptyRow: {
     paddingVertical: 10,
     flexDirection: 'row',
@@ -256,7 +261,7 @@ const BusinessPointsList = observer(({ isFavoriteList, navigation }) => {
           <Text style={styles.emptyText}>Нет доступных компаний</Text>
           <Text style={styles.emptyText}>Для загрузки сделайте свайп вниз</Text>
           <Text></Text>
-          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.png')} />
+          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.svg')} />
         </View>
       )
     }

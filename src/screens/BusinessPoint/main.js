@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     },
     address: {
         fontSize: 14,
-        color: '#0EA47A',
+        color: COLORS.white,
         paddingHorizontal: 10,
         textDecorationLine: 'underline',
         opacity: 0.9,

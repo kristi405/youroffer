@@ -89,8 +89,7 @@ class BusinessPointsStore {
             if (Array.isArray(data)) {
                 data = await this.sortByDistance(resp.data)
             }
-            this.setList(data)
-            console.log('BusinessPointsStore:getAll', data.length)
+            this.setList(data)            
         } catch (e) {
             console.error(e)
             // Sentry.Native.captureException(e, (scope) => {

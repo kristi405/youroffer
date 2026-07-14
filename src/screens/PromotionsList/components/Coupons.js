@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   emptyImg: {
     height: 35,
     width: 35,
-    opacity: 0.6
+    tintColor: COLORS.primaryDark,
   },
   emptyText: {
     color: COLORS.white,
@@ -249,7 +249,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
           <Text style={styles.emptyText}>Нет доступных акций</Text>
           <Text style={styles.emptyText}>Для загрузки сделайте свайп вниз</Text>
           <Text></Text>
-          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.png')} cachePolicy="disk" />
+          <Image style={styles.emptyImg} source={require('../../../../assets/swipe-down.svg')} cachePolicy="disk" />
         </View>
       )
     }
