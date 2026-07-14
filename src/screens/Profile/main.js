@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image, Text, FlatList, TouchableWithoutFeedback, Linking } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableWithoutFeedback, Linking } from 'react-native';
+import { Image } from "expo-image";
 import { getUser } from '../../services/auth'
 import Constants from "expo-constants"
+import { COLORS } from '../../services/constants'
 
 export const Profile = ({ navigation }) => {
     const [id, setId] = useState('')
@@ -58,7 +60,7 @@ export const Profile = ({ navigation }) => {
                 <Text style={styles.navigationTitle}>Мой профиль</Text>
                 <TouchableWithoutFeedback>
                     <View style={styles.item}>
-                        <Text style={styles.idStyle}>Ваш ID: {id}</Text>
+                        <Text style={styles.idStyle}>Ваш ID: <Text style={styles.idValue}>{id}</Text></Text>
                         <Text style={styles.versionStyle}>Версия: {Constants.expoConfig.version}</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -97,19 +99,24 @@ const styles = StyleSheet.create({
     },
     idStyle: {
         fontSize: 20,
-        color: 'white',
-        opacity: 0.6,
+        color: COLORS.white,      
         fontWeight: '700',
     },
     versionStyle: {
         fontSize: 12,
-        color: 'white',
+        color: COLORS.white,
         opacity: 0.6,
         fontWeight: '700',
     },
+    idValue: {
+        fontSize: 20,
+        color: COLORS.primary,
+        fontWeight: '700',
+        paddingLeft: 10
+    },
     navigationTitle: {
         fontSize: 20,
-        color: '#0EA47A',
+        color: COLORS.white,
         fontWeight: '700',
         paddingLeft: 10,
         paddingBottom: 10
@@ -141,9 +148,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     image: {
-        width: 24,
-        height: 24,
-        borderRadius: 5,
+        width: 20,
+        height: 20,
+        borderRadius: 5, 
+        tintColor: COLORS.primaryDark       
+    },
+    icon: {
+        width: 8,
+        height: 15,
+        tintColor: COLORS.primary
     },
     logout: {
         width: 23,
@@ -158,22 +171,22 @@ const itemData = [
     {
         id: 0,
         title: (<Text style={styles.title}>Редактировать профиль</Text>),
-        image: (<Image source={require('../../../assets/editProfile.png')} style={styles.image} />),
+        image: (<Image source={require('../../../assets/editProfile.svg')} style={styles.image} />),
     },
     {
         id: 1,
         title: (<Text style={styles.title}>ДЛЯ БИЗНЕСА</Text>),
-        image: (<Image source={require('../../../assets/information.png')} style={styles.image} />),
+        image: (<Image source={require('../../../assets/information.svg')} style={styles.image} />),
     },
     {
         id: 2,
         title: (<Text style={styles.title}>Свяжитесь с нами</Text>),
-        image: (<Image source={require('../../../assets/contactUs.png')} style={styles.image} />),
+        image: (<Image source={require('../../../assets/contactUs.svg')}style={styles.image} />),
     },
     {
         id: 3,
         title: (<Text style={styles.title}>Изменить регион</Text>),
-        image: (<Image source={require('../../../assets/cell.png')} style={styles.image} />),
+        image: (<Image source={require('../../../assets/cell.svg')} style={styles.image} />),
     },
     // {
     //     id: 4,

@@ -6,6 +6,7 @@ import ValidateStore from '../../stores/validate'
 import { VALIDATE_RULES } from '../../services/validate'
 import { observer } from "mobx-react-lite"
 import { getUser } from '../../services/auth'
+import { COLORS } from '../../services/constants'
 
 const validateStroe = new ValidateStore({
     name: {
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
     },
     titleInstagram: {
         fontSize: 14,
-        color: '#0EA47A',
+        color: COLORS.primaryDark,
         opacity: 0.8,
         textDecorationLine: 'underline'
     },
@@ -188,13 +189,13 @@ const styles = StyleSheet.create({
         paddingBottom: 10
     },
     image: {
-        tintColor: '#0EA47A',
+        tintColor: COLORS.primaryDark,
         width: 20,
         height: 20,
         borderRadius: 5
     },
     instagramImg:  {
-        tintColor: '#0EA47A',
+        tintColor: COLORS.primaryDark,
         width: 25,
         opacity: 0.7,
         height: 25,
@@ -231,12 +232,12 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         margin: 20,
         borderRadius: 8,
-        backgroundColor: '#0EA47A',
+        backgroundColor: COLORS.primaryDark,
         alignItems: 'center'
     },
     buttonText: {
         fontSize: 20,
-        color: '#fff'
+        color: COLORS.white
     },
     validInput: {
         borderColor: 'gray',

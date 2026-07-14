@@ -6,6 +6,7 @@ import BusinessPointsStore from '../../stores/businessPoints'
 import { setRegion, getRegion } from "../../services/auth"
 import { setFirstInit } from '../../services/globals'
 import { subscribeToTopic } from '../../services/fcm'
+import { COLORS } from '../../services/constants'
 
 export const Region = observer(({ navigation }) => {
     const [selectedRegionId, setSelectedRegionId] = useState();
@@ -41,7 +42,7 @@ export const Region = observer(({ navigation }) => {
             }
             setCurregion(item)
             setLoading(false)
-            BusinessPointsStore.getAll()
+            BusinessPointsStore.getAll(true)
             subscribeToTopic()
         }, 500)
     }
@@ -52,7 +53,7 @@ export const Region = observer(({ navigation }) => {
                 {RegionStore.activeList.map((item) => {
                     return (
                         <TouchableWithoutFeedback key={item?.id} onPress={() => { selectRegion(item) }}>
-                            <View style={[styles.item, { backgroundColor: item?.id === selectedRegionId ? '#0EA47A' : '#1A1A1A' }]}>
+                            <View style={[styles.item, { backgroundColor: item?.id === selectedRegionId ? COLORS.primaryDark : '#1A1A1A' }]}>
                                 <View style={styles.header}>
                                     <Text style={styles.title}>{item.name}</Text>
                                 </View>

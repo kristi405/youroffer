@@ -3,7 +3,7 @@ import { TouchableWithoutFeedback, StyleSheet, View, FlatList, RefreshControl, T
 import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import { FILE_URL, BLURHASH } from '../../../services/constants'
+import { FILE_URL, BLURHASH, COLORS } from '../../../services/constants'
 import { Image } from "expo-image";
 import { getLocation } from '../../../services/geo'
 import { useFocusEffect } from '@react-navigation/native';
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     width: '95%',
     height: 35,
     borderWidth: 1,
-    borderColor: '#434343',
+    borderColor: COLORS.border,
     borderRadius: 10,
   },
   textStyle: {
@@ -66,12 +66,17 @@ const styles = StyleSheet.create({
   clock: {
     width: 14,
     height: 14,
+    tintColor: COLORS.primary,
   },
   time: {
-    color: 'white',
+    color: COLORS.primary,
     paddingLeft: 5,
-    paddingTop: 2,
-    opacity: 0.5
+    paddingTop: 2, 
+  },
+  dist: {
+    color: COLORS.white,
+    paddingLeft: 5,
+    paddingTop: 2, 
   },
   instText: {
     color: '#E1306C',
@@ -99,9 +104,9 @@ const styles = StyleSheet.create({
     opacity: 1
   },
   map: {
-    width: 26,
-    height: 24,
-    tintColor: '#0EA47A',
+    width: 20,
+    height: 20,
+    tintColor: COLORS.primary,
   },
   save: {
     width: 18, 
@@ -116,13 +121,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
-    color: '#fff',
+    color: COLORS.white,
     paddingTop: 0,
     paddingRight: 0
   },
   addressText: {
     fontSize: 11,
-    color: '#fff',
+    color: COLORS.white,
     opacity: 0.8
   },
   touch: {
@@ -205,11 +210,11 @@ export const BusinessPoints = observer(({ navigation }) => {
     <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center' }}>
       <SegmentedControl
         style={styles.segment}
-        backgroundColor='black'
-        tintColor='#0EA47A'
+        backgroundColor={COLORS.black}
+        tintColor={COLORS.primary}
         values={['Все компании', 'Мои компании']}
-        fontStyle={{ color:  '#0EA47A', fontSize: 14, fontWeight: '400' }}
-        activeFontStyle={{color: 'black', fontSize: 14, fontWeight: '600'}}
+        fontStyle={{ color:   COLORS.white, fontSize: 14, fontWeight: '400' }}
+        activeFontStyle={{color:  COLORS.white, fontSize: 14, fontWeight: '600'}}
         selectedIndex={isFavoriteList}
         onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
       />
@@ -228,7 +233,7 @@ export const BusinessPoints = observer(({ navigation }) => {
 
 
 const Loading = () => {
-  return <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
+  return <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color={COLORS.primary} />
 }
 
 const BusinessPointsList = observer(({ isFavoriteList, navigation }) => {
@@ -241,7 +246,7 @@ const BusinessPointsList = observer(({ isFavoriteList, navigation }) => {
           <Text style={styles.emptyText}>Чтобы добавить в "Мои компании"</Text>
           <View style={styles.emptyRow}>
             <Text style={styles.emptyText}>нажмите на иконку</Text>
-            <Image source={require('../../../../assets/save.png')} />
+            <Image style={{width: 20, height: 22}}  source={require('../../../../assets/save.svg')} />
           </View>
         </View>
       )
@@ -260,7 +265,7 @@ const BusinessPointsList = observer(({ isFavoriteList, navigation }) => {
   const handleRefresh = async () => {
     setRefreshing(true);
     await getLocation(true)
-    await BusinessPointsStore.getAll()
+    await BusinessPointsStore.getAll(true)
     setRefreshing(false);
   }
 
@@ -278,7 +283,7 @@ const BusinessPointsList = observer(({ isFavoriteList, navigation }) => {
           <RefreshControl
             onRefresh={handleRefresh}
             refreshing={refreshing}
-            colors={['#0EA47A']}
+            colors={[COLORS.primary]}
             tintColor={'white'}
             progressViewOffset={5}
           />
@@ -300,7 +305,7 @@ const Item = ({ navigation, item }) => {
     workTime = `${start_h}:${start_m} - ${end_h}:${end_m}`
   }
 
-  const openDetail = (item) => {
+  const openDetail = (item) => {    
     navigation.navigate('CompanyProfile', { data: item })
   }
 
@@ -354,7 +359,7 @@ const Item = ({ navigation, item }) => {
             <View style={styles.column}>
               <Text style={styles.title}>{company.name}</Text>
               <View style={styles.row}>
-                <Image source={require('../../../../assets/time.png')} style={styles.clock} />
+                <Image source={require('../../../../assets/time.svg')} style={styles.clock} />
                 <Text style={styles.time}>{workTime}</Text>
               </View>
               <Text style={styles.addressText}>{ company.address }</Text>
@@ -384,13 +389,13 @@ const Item = ({ navigation, item }) => {
 
         <View style={styles.header}>
           <View style={styles.row}>
-            <Image source={require('../../../../assets/mapIcon.png')} style={styles.map} />
-            <Text style={styles.time}>{company.dist ? company.dist / 1000 + ' км' : 'нет доступа'}</Text>
+            <Image source={require('../../../../assets/mapIcon.svg')} style={styles.map} />
+            <Text style={styles.dist}>{company.dist ? company.dist / 1000 + ' км' : 'нет доступа'}</Text>
           </View>
           <View style={styles.save}>
             <TouchableWithoutFeedback onPress={() => { addToFavorite(company) }}>
               <View style={styles.touch}>
-                <Image style={styles.save} source={company.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+                <Image style={{width: 20, height: 22}} source={company.favorite ? require('../../../../assets/saveSelected.svg') : require('../../../../assets/save.svg')} />
               </View>
             </TouchableWithoutFeedback>
           </View>

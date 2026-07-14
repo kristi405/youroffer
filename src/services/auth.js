@@ -155,6 +155,48 @@ export const setTopic = async (topic) => {
     }
 }
 
+export const setBp = async (listBp) => {
+    try {
+        const key = keyPrefix + 'BP'
+        CAHCE[key] = listBp
+        await AsyncStorage.setItem(key, JSON.stringify(listBp));
+    } catch (error) {
+        // Sentry.Native.captureException(error, (scope) => {
+        //     scope.setTransactionName('service:auth:getTopic');
+        //     return scope;
+        // });
+    }
+}
+
+export const cleanBp = async () => {
+    try {
+        const key = keyPrefix + 'BP'
+        CAHCE[key] = null
+        await AsyncStorage.removeItem(key);
+    } catch (error) {
+        // Sentry.Native.captureException(error, (scope) => {
+        //     scope.setTransactionName('service:auth:getTopic');
+        //     return scope;
+        // });
+    }   
+}
+
+export const getBp = async () => {
+    try {
+        const key = keyPrefix + 'BP'
+        if (CAHCE[key]) return CAHCE[key];
+        const bpList = await AsyncStorage.getItem(key);
+        CAHCE[key] = JSON.parse(bpList)
+        return CAHCE[key]
+    } catch (error) {
+        // Sentry.Native.captureException(error, (scope) => {
+        //     scope.setTransactionName('service:auth:getTopic');
+        //     return scope;
+        // });
+    }
+}
+
+
 
 export const cleanAuthData = async () => {
     try {

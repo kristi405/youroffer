@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Alert} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import AnimatedLoader from "react-native-animated-loader";
+import LottieView from 'lottie-react-native';
 import { getSession, getRegion, getUser } from '../../services/auth'
 import { requestGeoPermissions } from '../../services/geo'
 import { requestUserPermission } from '../../services/fcm'
@@ -90,14 +90,14 @@ export const OnboardingScreen = ({navigation}) => {
   }
 
   return (
-    <View style={{ flex: 1, paddingTop: 0, backgroundColor: 'black' }}>
-      <AnimatedLoader
-        visible={visible}
-        animationStyle={styles.lottie}
-        source={require("../../../assets/loader3.json")}
-        speed={1}
+    <View style={styles.container}>
+      <LottieView
+        autoPlay
+        loop
+        source={require("../../../assets/newlogo.json")}  
+        style={styles.logo}
       >
-      </AnimatedLoader>
+      </LottieView>
       <ModalUpdate
         isVisible={isVisibleModal}
         versionStatus={versionStatus}
@@ -108,8 +108,16 @@ export const OnboardingScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  lottie: {
-    width: 500,
-    height: 500,
+
+  container:{
+    flex:1,
+    backgroundColor:'black',
+    justifyContent:'center',
+    alignItems:'center',
   },
+
+  logo:{
+    width:'100%',
+    height:'100%',
+  }
 });

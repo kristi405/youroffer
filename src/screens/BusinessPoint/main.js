@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { StyleSheet, View, Text, TouchableWithoutFeedback, Linking, Share, Alert } from 'react-native';
 import { Coupons } from "../PromotionsList/components/Coupons";
 import { Image } from "expo-image";
-import { FILE_URL, BLURHASH } from '../../services/constants'
+import { FILE_URL, BLURHASH, COLORS } from '../../services/constants'
 import { observer } from "mobx-react-lite"
 
 export const CompanyProfile = observer(({ navigation, route }) => {
@@ -80,15 +80,15 @@ export const CompanyProfile = observer(({ navigation, route }) => {
                 <View style={styles.descriptionView}>
                     <Text style={styles.nameStyle}>{item.name} </Text>
                     <View style={styles.stack}>
-                        <Image source={require('../../../assets/time.png')} style={styles.clock} />
+                        <Image source={require('../../../assets/time.svg')} style={styles.clock} />
                         <Text style={styles.time}>{workTime}</Text>
                     </View>
                     {/* {item.instagram && <View style={styles.stack}>
                         <OpenInstagramButton instagram={item.instagram} />
                     </View>} */}
                     {item.dist && <View style={styles.stack}>
-                        <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
-                        <Text style={styles.time}> {item.dist / 1000} км </Text>
+                        <Image source={require('../../../assets/mapIcon.svg')} style={styles.map} />
+                        <Text style={styles.dist}> {item.dist / 1000} км </Text>
                     </View>}
                     {item.delivery_url && <View style={styles.stack}>
                         <OpenURLButton text="Заказать доставку" website={item.delivery_url}  delivery={true}/>
@@ -100,7 +100,7 @@ export const CompanyProfile = observer(({ navigation, route }) => {
             </View>
             <TouchableWithoutFeedback onPress={() => { openMap() }}>
                 <View style={styles.mapStack}>
-                    <Image source={require('../../../assets/mapIcon.png')} style={styles.map} />
+                    <Image source={require('../../../assets/mapIcon.svg')} style={styles.map} />
                     <Text style={styles.address}>{item.address}</Text>
                 </View>
             </TouchableWithoutFeedback>
@@ -167,29 +167,35 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
     },
     map: {
-        width: 16,
-        height: 24,
-        tintColor: '#0EA47A',
+        width: 18,
+        height: 18,
+        tintColor: COLORS.primaryDark,
     },
     nameStyle: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#0EA47A',
+        color: COLORS.white,
     },
     clock: {
         width: 14,
-        height: 14,
+        height: 14,        
+        tintColor: COLORS.primaryDark,
     },
     time: {
-        color: 'white',
+        color: COLORS.white,
         paddingLeft: 5,
         paddingTop: 3,
-        opacity: 0.5
+        paddingLeft: 10,    
+    },
+    dist: {
+        color: COLORS.white,
+        paddingLeft: 5,
+        paddingTop: 3        
     },
     link: {
         color: '#FFF',
         textDecorationLine: 'underline',
-        paddingLeft: 5,
+        paddingLeft: 10,
         paddingTop: 3,
         opacity: 0.6
     },
@@ -213,6 +219,6 @@ const styles = StyleSheet.create({
     websiteIcon: {
         width: 20,
         height: 20,
-        opacity: 0.5
+        opacity: 0.8  
     }
 })

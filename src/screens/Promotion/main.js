@@ -6,7 +6,7 @@ import { PromotionView } from "./components/PromotionView";
 import { BonusView } from "./components/BonusView";
 import { getUser } from "../../services/auth"
 import OfferUsingStore from '../../stores/offerUsing'
-import { FILE_URL, BLURHASH } from '../../services/constants'
+import { FILE_URL, BLURHASH, COLORS } from '../../services/constants'
 import PromotionStore from "../../stores/promotion"
 
 // import * as Brightness from 'expo-brightness';
@@ -384,7 +384,7 @@ export const CouponDetailScreen = ({ navigation, route }) => {
                     </View>
                     {/* <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>
                         <View style={styles.touch}>
-                            <Image source={offer.favorite ? require('../../../assets/saveSelected.png') : require('../../../assets/save.png')} />
+                            <Image source={offer.favorite ? require('../../../assets/saveSelected.svg') : require('../../../assets/save.svg')} />
                         </View>
                     </TouchableWithoutFeedback> */}
                 </View>
@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
     },
     address: {
         fontSize: 14,
-        color: '#0EA47A',
+        color: COLORS.primaryDark,
         paddingHorizontal: 10,
         textDecorationLine: 'underline',
         opacity: 0.9,
@@ -513,7 +513,7 @@ const styles = StyleSheet.create({
     mapIcon: {
         height: 27,
         width: 27,
-        tintColor: '#0EA47A',
+        tintColor: COLORS.primaryDark,
     },
     descriptionText: {
         fontSize: 16,
@@ -530,7 +530,7 @@ const styles = StyleSheet.create({
     buttonStyle: {
         height: 45,
         borderRadius: 8,
-        backgroundColor: '#0EA47A',
+        backgroundColor: COLORS.primaryDark,
         opacity: 0.8,
         justifyContent: 'center',
         alignItems: 'center',
@@ -555,12 +555,12 @@ const styles = StyleSheet.create({
     },
     titleLink: {
         fontSize: 16,
-        color: '#0EA47A',
+        color: COLORS.primaryDark,
         opacity: 0.8,
         textDecorationLine: 'underline'
     },
     imageLink: {
-        tintColor: '#0EA47A',
+        tintColor: COLORS.primaryDark,
         width: 20,
         height: 20,
         borderRadius: 5

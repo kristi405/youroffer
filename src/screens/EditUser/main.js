@@ -6,7 +6,7 @@ import { Keyboard } from 'react-native';
 import ValidateStore from '../../stores/validate'
 import { VALIDATE_RULES } from '../../services/validate'
 import AuthStore from '../../stores/auth'
-import { REQUEST_STATUS } from '../../services/constants'
+import { REQUEST_STATUS, COLORS } from '../../services/constants'
 import UserStore from '../../stores/user'
 import { observer } from "mobx-react-lite"
 import dayjs from 'dayjs'
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         width: '40%',
         paddingVertical: 10,
         borderRadius: 8,
-        backgroundColor: '#0EA47A',
+        backgroundColor: COLORS.primaryDark,
         alignItems: 'center'
     },
     buttonText: {
@@ -241,14 +241,14 @@ const styles = StyleSheet.create({
     changePasswordText: {
         textAlign: 'center',
         fontSize: 16,
-        color: '#0EA47A',
+        color: COLORS.white,
         paddingTop: 30,
         paddingBottom: 5
     },
     changePasswordTextInfo: {
         textAlign: 'center',
         fontSize: 12,
-        color: '#0EA47A',
+        color: COLORS.white
     },
     validInput: {
         borderColor: 'gray',

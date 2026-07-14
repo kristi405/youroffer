@@ -2,6 +2,8 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import api from '../services/api'
 import { REQUEST_STATUS } from '../services/constants'
 import { getLocation, distanceBetweenGeoPoints } from '../services/geo'
+import { setBp, getBp, cleanBp } from '../services/auth'
+ 
 // import * as Sentry from 'sentry-expo';
 
 // максимальное количесвто акций получаемых при одном запросе
@@ -56,6 +58,15 @@ class BusinessPointsStore {
         runInAction(() => {
             this.list = list ? [...list] : []
             this.isLoading = false
+            setBp(list)
+        })
+    }
+
+    getListFromCache() {
+        runInAction(async () => {           
+            const list = await getBp()
+            this.list = list ? [...list] : []
+            this.isLoading = false          
         })
     }
 
@@ -65,8 +76,13 @@ class BusinessPointsStore {
         })
     }
 
-    async getAll() {
+    async getAll(force) {
         this.isLoading = true
+        if (force)  {
+            await cleanBp()
+        } else { 
+            this.getListFromCache() 
+        }      
         try {
             const resp = await api.get('/api/v1/business_point/all')
             let data = resp.data
@@ -74,6 +90,7 @@ class BusinessPointsStore {
                 data = await this.sortByDistance(resp.data)
             }
             this.setList(data)
+            console.log('BusinessPointsStore:getAll', data.length)
         } catch (e) {
             console.error(e)
             // Sentry.Native.captureException(e, (scope) => {

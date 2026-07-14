@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from 'react-native';
 import { Image } from "expo-image";
+import { COLORS } from '../../../services/constants'
 
 export const PromotionView = (route) => {
     const item = route?.data
@@ -40,7 +41,7 @@ export const PromotionView = (route) => {
                         key={index}
                         source={index == item.max_count && item.type == 'accumulative' ? require('../../../../assets/bonus1.png') : null}
                         size={25}
-                        color={index < item.use_count ? '#0EA47A' : 'white' && index == item.max_count ? 'clear' : 'white'}
+                        color={index < item.use_count ? COLORS.primaryDark : 'white' && index == item.max_count ? 'clear' : 'white'}
                     />
                 ))
             }

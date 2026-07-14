@@ -5,11 +5,11 @@
     "slug": "youoffer",
     "version": "1.0.89",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon8.png",
     "userInterfaceStyle": "light",
     "jsEngine": "hermes",
     "splash": {
-      "image": "./assets/splash4.png",
+      "image": "./assets/icon3.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -103,7 +103,8 @@
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png"
+        "foregroundImage": "./assets/icon8.png",
+        "backgroundColor": "#000000"
       },
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",

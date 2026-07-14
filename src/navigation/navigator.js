@@ -16,6 +16,7 @@ import { Region } from '../screens/Region/main';
 import { BusinessPointOnMap } from '../screens/BusinessPointOnMap/main';
 import { NewCard } from '../screens/BonusCard/components/NewCard';
 import { BonusCardView } from '../screens/BonusCard/components/BonusCardView';
+import { COLORS } from '../services/constants'
 
 const Stack = createNativeStackNavigator();
 
@@ -48,7 +49,7 @@ export const Navigator = () => {
                 component={BusinessPointOnMap}
                 options={({ route }) => ({
                     title: route.params.name,
-                    headerTintColor: '#0EA47A',
+                    headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
                     headerBackTitleVisible: false
                 })}
@@ -71,19 +72,21 @@ export const Navigator = () => {
             <Stack.Screen
                 name="CouponDetailScreen"
                 component={CouponDetailScreen}
-                options={{
-                    title: 'Акция',
-                    headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
-                }}
+                 options={({ route }) => {  
+                    return { 
+                        title: route.params?.data?.name || 'Акция',
+                        headerTintColor: COLORS.white,
+                        headerStyle: { backgroundColor: 'black' },
+                        headerBackTitleVisible: false
+                    }
+                }}               
             />
             <Stack.Screen
                 name="QrCodeScreen"
                 component={QrCodeScreen}
                 options={{
                     title: 'QR code',
-                    headerTintColor: '#0EA47A',
+                    headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
                     headerBackTitleVisible: false
                 }}
@@ -93,7 +96,7 @@ export const Navigator = () => {
                 component={NewCard}
                 options={{
                     title: 'Добавьте новую карту',
-                    headerTintColor: '#0EA47A',
+                    headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
                     headerBackTitleVisible: false
                 }}
@@ -103,7 +106,7 @@ export const Navigator = () => {
                 component={BonusCardView}
                 options={({ route }) => ({
                     title: route.params.name || 'Бонусная карта',
-                    headerTintColor: '#0EA47A',
+                    headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
                     headerBackTitleVisible: false
                 })}
@@ -116,11 +119,13 @@ export const Navigator = () => {
             <Stack.Screen
                 name="CompanyProfile"
                 component={CompanyProfile}
-                options={{
-                    title: 'Профиль',
-                    headerTintColor: '#0EA47A',
-                    headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
+                options={({ route }) => {  
+                    return { 
+                        title: route.params?.data?.name || 'Профиль компании',
+                        headerTintColor: COLORS.white,
+                        headerStyle: { backgroundColor: 'black' },
+                        headerBackTitleVisible: false
+                    }
                 }}
             />
             <Stack.Screen
@@ -133,7 +138,7 @@ export const Navigator = () => {
                 component={EditScreen}
                 options={{
                     title: 'Редактировать',
-                    headerTintColor: '#0EA47A',
+                    headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
                     headerBackTitleVisible: false
                 }}
@@ -143,7 +148,7 @@ export const Navigator = () => {
                 component={ContactUs}
                 options={{
                     title: 'Контакты',
-                    headerTintColor: '#0EA47A',
+                    headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
                     headerBackTitleVisible: false
                 }}
@@ -153,7 +158,7 @@ export const Navigator = () => {
                 component={ForBusiness}
                 options={{
                     title: 'Для бизнеса',
-                    headerTintColor: '#0EA47A',
+                    headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
                     headerBackTitleVisible: false
                 }}
@@ -163,7 +168,7 @@ export const Navigator = () => {
                 component={Region}
                 options={{
                     title: 'Выберите регион',
-                    headerTintColor: '#0EA47A',
+                    headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
                     headerBackTitleVisible: false
                 }}

@@ -9,6 +9,7 @@ import { Scan } from "../screens/QrCodeScan/main";
 import { BonusCard } from "../screens/BonusCard/main";
 import UserStore from '../stores/user'
 import { ManagerScreen } from '../screens/Manager/main';
+import { COLORS } from '../services/constants'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Tab = createBottomTabNavigator();
@@ -54,7 +55,7 @@ const TabBarImage = ({ focused, imgName }) => {
             <Image
                 source={images[imgName]}
                 resizeMode="contain"
-                tintColor={focused ? '#0EA47A' : '#939393'}
+                tintColor={focused ? COLORS.primaryDark : COLORS.textSecondary}
                 style={{ width: 25 }}
             />
         </View>
@@ -75,7 +76,7 @@ export const TabBar = () => {
         <Tab.Navigator
             screenOptions={{
                 tabBarStyle: styles.tabBar,
-                tabBarActiveTintColor: '#0EA47A'
+                tabBarActiveTintColor: COLORS.primaryDark
             }}>
             <Tab.Screen
                 name="Акции"

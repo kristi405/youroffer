@@ -7,7 +7,7 @@ import Modal from 'react-native-modal';
 import BusinessPointsStore from "../../stores/businessPoints";
 import { MAP_STYLE, getLocation } from '../../services/geo'
 import { getRegion } from '../../services/auth'
-import { FILE_URL, BLURHASH } from '../../services/constants'
+import { FILE_URL, BLURHASH, COLORS } from '../../services/constants'
 import { Image } from "expo-image";
 import { observer } from "mobx-react-lite"
 import { useFocusEffect } from '@react-navigation/native';
@@ -154,11 +154,11 @@ const MapComponent = observer(({ navigation }) => {
                                 <View style={styles.vetricalStack}>
                                     <Text style={styles.name}>{selectedBp.name}</Text>
                                     <View style={styles.stack}>
-                                        <Image source={require('../../../assets/mapIcon.png')} style={styles.mapIcon} />
+                                        <Image source={require('../../../assets/mapIcon.svg')} style={styles.mapIcon} />
                                         <Text style={styles.distans}>{selectedBp.dist ? selectedBp.dist / 1000 : 'нет доступа'} {selectedBp.dist ? 'км' : ''}</Text>
                                     </View>
                                     <View style={styles.stack}>
-                                        <Image source={require('../../../assets/time.png')} style={styles.timeIcon} />
+                                        <Image source={require('../../../assets/time.svg')} style={styles.timeIcon} />
                                         <Text style={styles.distans}>{workTime(selectedBp)}</Text>
                                     </View>
                                 </View>
@@ -367,27 +367,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     mapIcon: {
-        width: 17,
-        height: 25,
-        tintColor: '#0EA47A',
+        width: 20,
+        height: 20,
+        tintColor: COLORS.primaryDark,
     },
     timeIcon: {
         marginTop: 5,
         width: 15,
         height: 15,
-        tintColor: '#0EA47A',
+        marginRight: 5,
+        tintColor: COLORS.primaryDark,
     },
     marker: {
     },
     showPromotionText: {
         fontSize: 16,
-        color: 'black',
+        color: COLORS.white,
         fontWeight: '600'
     },
     buttonStyle: {
         height: 40,
         borderRadius: 10,
-        backgroundColor: '#0EA47A',
+        backgroundColor: COLORS.primaryDark,
         opacity: 0.8,
         justifyContent: 'center',
         alignItems: 'center',

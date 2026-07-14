@@ -5,7 +5,7 @@ import { Image } from "expo-image";
 import PromotionStore from "../../../stores/promotion"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import { FILE_URL, BLURHASH } from '../../../services/constants'
+import { FILE_URL, BLURHASH, COLORS } from '../../../services/constants'
 import { FIRST_INIT, setFirstInit } from '../../../services/globals'
 
 const styles = StyleSheet.create({
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     width: '96%',
     height: 35,
     borderWidth: 1,
-    borderColor: '#434343',
+    borderColor: COLORS.border,
     borderRadius: 10,
   },
   headerView: {
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'black',
+    backgroundColor: COLORS.background,
     paddingHorizontal: 10,
     gap: 16,
   },
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 13,
-    color: '#fff',
+    color: COLORS.white,
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 4,
@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
   businessPointsName: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#0EA47A',
+    color: COLORS.primary,
     paddingRight: 15
   },
   save: {
-    width: 18, 
+    width: 24, 
     height: 26,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end',    
   },
   touch: {
     padding: 6,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     opacity: 0.6
   },
   emptyText: {
-    color: '#fff',
+    color: COLORS.white,
     fontSize: 16
   },
   emptyRow: {
@@ -200,11 +200,11 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
         <SegmentedControl
           enabled={!isLoading}
           style={styles.segment}
-          backgroundColor='black'
-          tintColor='#0EA47A'
+          backgroundColor={COLORS.black}
+          tintColor={COLORS.primary}
           values={['Все акции', 'Мои акции']}
-          fontStyle={{ color:  '#0EA47A', fontSize: 14, fontWeight: '400' }}
-          activeFontStyle={{color: 'black', fontSize: 14, fontWeight: '600'}}
+          fontStyle={{ color:  COLORS.white, fontSize: 14, fontWeight: '600' }}
+          activeFontStyle={{color: COLORS.white, fontSize: 14, fontWeight: '600'}}
           selectedIndex={isFavoriteList}
           onChange={(event) => {
             if (isLoading) return;
@@ -219,13 +219,13 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
 
   const renderFooter = observer(() => {
     if (PromotionStore.isLoding) {
-      return <ActivityIndicator style={{ marginVertical: 20 }} size="large" color="white" />;
+      return <ActivityIndicator style={{ marginVertical: 20 }} size="large" color={COLORS.white} />;
     }
     return null
   });
 
   const Loading = () => (
-    <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color="#0EA47A" />
+    <ActivityIndicator style={{ marginVertical: '80%' }} size="large" color={COLORS.primary} />
   )
 
   const EmptyComponent = () => {
@@ -236,7 +236,8 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
           <View style={styles.emptyRow}>
             <Text style={styles.emptyText}>нажмите на иконку</Text>
             <Image
-              source={require('../../../../assets/save.png')}
+              style={styles.save}
+              source={require('../../../../assets/save.svg')}
               cachePolicy="disk"
             />
           </View>
@@ -267,8 +268,8 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
         refreshControl={
           <RefreshControl
             onRefresh={handleRefresh}
-            colors={['#0EA47A']}
-            tintColor={'white'}
+            colors={[COLORS.primary]}
+            tintColor={COLORS.white}
             progressViewOffset={5}
           />
         }
@@ -306,7 +307,7 @@ const Item = ({ navigation, item, businessPointId }) => {
     if (offer.type === 'present') return (
       <TouchableWithoutFeedback >
         <View style={styles.hidden}>
-          <Image style={styles.save} source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+          <Image style={styles.save} source={offer.favorite ? require('../../../../assets/saveSelected.svg') : require('../../../../assets/save.svg')} />
         </View>
       </TouchableWithoutFeedback>
     )
@@ -314,7 +315,7 @@ const Item = ({ navigation, item, businessPointId }) => {
     return (
       <TouchableWithoutFeedback onPress={() => { addToFavorite(offer) }}>
         <View style={styles.touch}>
-          <Image style={styles.save} source={offer.favorite ? require('../../../../assets/saveSelected.png') : require('../../../../assets/save.png')} />
+          <Image style={styles.save} source={offer.favorite ? require('../../../../assets/saveSelected.svg') : require('../../../../assets/save.svg')} />
         </View>
       </TouchableWithoutFeedback>
     )
