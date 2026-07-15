@@ -1,14 +1,12 @@
 import React, { useState, useRef, useCallback } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Text, RefreshControl, ActivityIndicator } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View, FlatList, Text, RefreshControl, ActivityIndicator, Platform } from 'react-native';
 import { Image } from "expo-image";
 import PromotionStore from "../../../stores/promotion"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import { FILE_URL, BLURHASH, COLORS } from '../../../services/constants'
-import { FIRST_INIT, setFirstInit } from '../../../services/globals'
-
-const SEGMENT_BORDER_RADIUS = 18;
+import { FILE_URL, BLURHASH, COLORS, SEGMENT_BORDER_RADIUS } from '../../../services/constants'
+import { FIRST_INIT, setFirstInit } from '../../../services/globals' 
 
 const styles = StyleSheet.create({
   segmentWrapper: {
@@ -274,7 +272,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
         data={PromotionStore.list}
         ListEmptyComponent={EmptyComponent}
         contentContainerStyle={{ paddingBottom: 20 }}
-        columnWrapperStyle={{ justifyContent: 'center' }}
+        // columnWrapperStyle={{ justifyContent: 'center' }}
         numColumns={2}
         refreshControl={
           <RefreshControl

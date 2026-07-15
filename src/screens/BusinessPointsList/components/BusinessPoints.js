@@ -3,13 +3,11 @@ import { TouchableWithoutFeedback, StyleSheet, View, FlatList, RefreshControl, T
 import BusinessPointsStore from "../../../stores/businessPoints"
 import { observer } from "mobx-react-lite"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import { FILE_URL, BLURHASH, COLORS } from '../../../services/constants'
+import { FILE_URL, BLURHASH, COLORS, SEGMENT_BORDER_RADIUS } from '../../../services/constants'
 import { Image } from "expo-image";
 import { getLocation } from '../../../services/geo'
 import { useFocusEffect } from '@react-navigation/native';
 import { SearchBlock } from '../../../components/searchBusinessPoint'
-
-const SEGMENT_BORDER_RADIUS = 18;
 
 const styles = StyleSheet.create({
   segmentWrapper: {

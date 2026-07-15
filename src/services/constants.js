@@ -2,8 +2,10 @@ export const REQUEST_STATUS = {
     success: 'success',
     error: 'error'
 }
-
+import { Platform } from 'react-native';
 export const BLURHASH = 'L16*dhIU00xuxuayWBj[00xu~qRj'
+
+export const SEGMENT_BORDER_RADIUS = Platform.OS === 'ios' ? 18 : 10;
 
 export const FILE_URL = `https://myoffer.life/api/v1/file/`;
 export const API_URL = 'https://myoffer.life/';

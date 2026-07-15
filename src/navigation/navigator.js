@@ -84,7 +84,7 @@ export const Navigator = () => {
                 component={CouponDetailScreen}
                  options={({ route }) => {  
                     return { 
-                        title: route.params?.data?.name || 'Акция',
+                        title: 'Твой купон',
                         headerTintColor: COLORS.white,
                         headerStyle: { backgroundColor: 'black' },
                         headerBackTitleVisible: false,
@@ -135,7 +135,7 @@ export const Navigator = () => {
                 component={CompanyProfile}
                 options={({ route }) => {  
                     return { 
-                        title: route.params?.data?.name || 'Профиль компании',
+                        title:'Профиль компании',
                         headerTintColor: COLORS.white,
                         headerStyle: { backgroundColor: 'black' },
                         headerBackTitleVisible: false,
