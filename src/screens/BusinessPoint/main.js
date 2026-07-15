@@ -130,6 +130,8 @@ const styles = StyleSheet.create({
     },
     listView: {
         width: '100%',
+        alignItems: 'center',
+        // justifyContent: 'center',
     },
     image: {
         height: 100,

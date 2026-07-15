@@ -1,7 +1,7 @@
 import { LoginScreen } from '../screens/Login/main';
 import { Registration } from '../screens/Registration/main';
 import { CodeScreen } from '../screens/Pin/main';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CreateUserScreen } from '../screens/CreateUser/main'
 import { TabBar } from './tabBar';
@@ -20,10 +20,19 @@ import { COLORS } from '../services/constants'
 
 const Stack = createNativeStackNavigator();
 
+const navigationTheme = {
+    ...DarkTheme,
+    colors: {
+        ...DarkTheme.colors,
+        background: COLORS.black,
+        card: COLORS.black,
+    },
+};
+
 export const Navigator = () => {
   return (
-    <NavigationContainer>
-        <Stack.Navigator>
+    <NavigationContainer theme={navigationTheme}>
+        <Stack.Navigator screenOptions={{ contentStyle: { backgroundColor: COLORS.black } }}>
             <Stack.Screen
                 name="OnboardingScreen"
                 component={OnboardingScreen}
@@ -51,7 +60,8 @@ export const Navigator = () => {
                     title: route.params.name,
                     headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
+                    headerBackTitleVisible: false,
+                    animation: 'none'
                 })}
             />
             <Stack.Screen
@@ -77,7 +87,8 @@ export const Navigator = () => {
                         title: route.params?.data?.name || 'Акция',
                         headerTintColor: COLORS.white,
                         headerStyle: { backgroundColor: 'black' },
-                        headerBackTitleVisible: false
+                        headerBackTitleVisible: false,
+                        animation: 'none',
                     }
                 }}               
             />
@@ -88,7 +99,8 @@ export const Navigator = () => {
                     title: 'QR code',
                     headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
+                    headerBackTitleVisible: false,
+                    animation: 'none',
                 }}
             />
             <Stack.Screen
@@ -98,7 +110,8 @@ export const Navigator = () => {
                     title: 'Добавьте новую карту',
                     headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
+                    headerBackTitleVisible: false,
+                    animation: 'none',
                 }}
             />
             <Stack.Screen
@@ -108,7 +121,8 @@ export const Navigator = () => {
                     title: route.params.name || 'Бонусная карта',
                     headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
+                    headerBackTitleVisible: false,
+                    animation: 'none',
                 })}
             />
             <Stack.Screen
@@ -124,7 +138,8 @@ export const Navigator = () => {
                         title: route.params?.data?.name || 'Профиль компании',
                         headerTintColor: COLORS.white,
                         headerStyle: { backgroundColor: 'black' },
-                        headerBackTitleVisible: false
+                        headerBackTitleVisible: false,
+                        animation: 'none',
                     }
                 }}
             />
@@ -140,7 +155,8 @@ export const Navigator = () => {
                     title: 'Редактировать',
                     headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
+                    headerBackTitleVisible: false,
+                    animation: 'none',
                 }}
             />
             <Stack.Screen
@@ -150,7 +166,8 @@ export const Navigator = () => {
                     title: 'Контакты',
                     headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
+                    headerBackTitleVisible: false,
+                    animation: 'none',
                 }}
             />
             <Stack.Screen
@@ -160,7 +177,8 @@ export const Navigator = () => {
                     title: 'Для бизнеса',
                     headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
+                    headerBackTitleVisible: false,
+                    animation: 'none',
                 }}
             />
             <Stack.Screen
@@ -170,7 +188,8 @@ export const Navigator = () => {
                     title: 'Выберите регион',
                     headerTintColor: COLORS.white,
                     headerStyle: { backgroundColor: 'black' },
-                    headerBackTitleVisible: false
+                    headerBackTitleVisible: false,
+                    animation: 'none',
                 }}
             />
         </Stack.Navigator>

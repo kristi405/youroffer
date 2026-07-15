@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image } from 'react-native';
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, StyleSheet, View, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useIsFocused } from '@react-navigation/native';
 import { CouponScreen } from "../screens/PromotionsList/main";
 import { CompanyScreen } from "../screens/BusinessPointsList/main";
 import { Map } from "../screens/Map/main";
@@ -11,6 +12,39 @@ import UserStore from '../stores/user'
 import { ManagerScreen } from '../screens/Manager/main';
 import { COLORS } from '../services/constants'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { enableScreens } from 'react-native-screens';
+
+// На iOS 26 нативный контейнер react-native-screens добавляет анимацию
+// при переключении табов. createNativeStackNavigator от этого флага
+// не зависит, поэтому здесь можно отключить screens только для таб-бара.
+enableScreens(false);
+
+const TAB_FADE_DURATION = 200;
+
+const withFadeTransition = (ScreenComponent) => (props) => {
+    const isFocused = useIsFocused();
+    const opacity = useRef(new Animated.Value(isFocused ? 1 : 0)).current;
+
+    useEffect(() => {
+        Animated.timing(opacity, {
+            toValue: isFocused ? 1 : 0,
+            duration: TAB_FADE_DURATION,
+            useNativeDriver: true,
+        }).start();
+    }, [isFocused]);
+
+    return (
+        <Animated.View style={{ flex: 1, opacity }}>
+            <ScreenComponent {...props} />
+        </Animated.View>
+    );
+};
+
+const FadeCouponScreen = withFadeTransition(CouponScreen);
+const FadeCompanyScreen = withFadeTransition(CompanyScreen);
+const FadeMap = withFadeTransition(Map);
+const FadeProfile = withFadeTransition(Profile);
+const FadeScan = withFadeTransition(Scan);
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator()
@@ -80,7 +114,7 @@ export const TabBar = () => {
             }}>
             <Tab.Screen
                 name="Акции"
-                component={CouponScreen}
+                component={FadeCouponScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarImage
@@ -93,7 +127,7 @@ export const TabBar = () => {
             />
             <Tab.Screen
                 name="Компании"
-                component={CompanyScreen}
+                component={FadeCompanyScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarImage
@@ -119,7 +153,7 @@ export const TabBar = () => {
             /> */}
             <Tab.Screen
                 name="Карта"
-                component={Map}
+                component={FadeMap}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarImage
@@ -132,7 +166,7 @@ export const TabBar = () => {
             />
             <Tab.Screen
                 name="Профиль"
-                component={Profile}
+                component={FadeProfile}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarImage
@@ -146,7 +180,7 @@ export const TabBar = () => {
             {isShowScan && (
                 <Tab.Screen
                     name="Скан"
-                    component={Scan}
+                    component={FadeScan}
                     visible={isShowScan}
                     options={{
                         tabBarIcon: ({ focused }) => (

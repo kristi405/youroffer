@@ -9,13 +9,21 @@ import { getLocation } from '../../../services/geo'
 import { useFocusEffect } from '@react-navigation/native';
 import { SearchBlock } from '../../../components/searchBusinessPoint'
 
+const SEGMENT_BORDER_RADIUS = 18;
+
 const styles = StyleSheet.create({
-  segment: {
-    width: '95%',
+  segmentWrapper: {
+    width: '96%',
     height: 35,
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: 10,
+    borderRadius: SEGMENT_BORDER_RADIUS,
+    overflow: 'hidden',
+  },
+  segment: {
+    width: '100%',
+    height: '100%',
+    borderRadius: SEGMENT_BORDER_RADIUS,
   },
   textStyle: {
     fontSize: 24,
@@ -213,16 +221,18 @@ export const BusinessPoints = observer(({ navigation }) => {
 
   const Component = observer(() => (
     <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center' }}>
-      <SegmentedControl
-        style={styles.segment}
-        backgroundColor={COLORS.black}
-        tintColor={COLORS.primary}
-        values={['Все компании', 'Мои компании']}
-        fontStyle={{ color:   COLORS.white, fontSize: 14, fontWeight: '400' }}
-        activeFontStyle={{color:  COLORS.white, fontSize: 14, fontWeight: '600'}}
-        selectedIndex={isFavoriteList}
-        onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
-      />
+      <View style={styles.segmentWrapper}>
+        <SegmentedControl
+          style={styles.segment}
+          backgroundColor={COLORS.black}
+          tintColor={COLORS.primary}
+          values={['Все компании', 'Мои компании']}
+          fontStyle={{ color:   COLORS.white, fontSize: 14, fontWeight: '400' }}
+          activeFontStyle={{color:  COLORS.white, fontSize: 14, fontWeight: '600'}}
+          selectedIndex={isFavoriteList}
+          onChange={(event) => handleValueChange(event.nativeEvent.selectedSegmentIndex)}
+        />
+      </View>
       {BusinessPointsStore.isLoading
         ? <Loading />
         : <BusinessPointsList

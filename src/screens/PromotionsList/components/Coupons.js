@@ -8,13 +8,21 @@ import SegmentedControl from '@react-native-segmented-control/segmented-control'
 import { FILE_URL, BLURHASH, COLORS } from '../../../services/constants'
 import { FIRST_INIT, setFirstInit } from '../../../services/globals'
 
+const SEGMENT_BORDER_RADIUS = 18;
+
 const styles = StyleSheet.create({
-  segment: {
+  segmentWrapper: {
     width: '96%',
     height: 35,
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: 10,
+    borderRadius: SEGMENT_BORDER_RADIUS,
+    overflow: 'hidden',
+  },
+  segment: {
+    width: '100%',
+    height: '100%',
+    borderRadius: SEGMENT_BORDER_RADIUS,
   },
   headerView: {
     flexDirection: 'row',
@@ -64,7 +72,7 @@ const styles = StyleSheet.create({
   },
   coupon: {
     flexDirection: 'column',
-    width: '47%',
+    width: '48%',
     height: 230,
     margin: 5,
     backgroundColor: '#1A1A1A',
@@ -195,24 +203,26 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
   }, [])
 
   const Component = () => (
-    <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center' }}>
+    <View style={{ width: '96%', flex: 1, gap: 10, alignItems: 'center', alignSelf: 'center'}}>
       {!isCompanyPromotions ?
-        <SegmentedControl
-          enabled={!isLoading}
-          style={styles.segment}
-          backgroundColor={COLORS.black}
-          tintColor={COLORS.primary}
-          values={['Все акции', 'Мои акции']}
-          fontStyle={{ color:  COLORS.white, fontSize: 14, fontWeight: '600' }}
-          activeFontStyle={{color: COLORS.white, fontSize: 14, fontWeight: '600'}}
-          selectedIndex={isFavoriteList}
-          onChange={(event) => {
-            if (isLoading) return;
-            setIsLoading(true)
-            handleValueChange(event.nativeEvent.selectedSegmentIndex)
-          }
-          }
-        /> : null}
+        <View style={styles.segmentWrapper}>
+          <SegmentedControl
+            enabled={!isLoading}
+            style={styles.segment}
+            backgroundColor={COLORS.black}
+            tintColor={COLORS.primary}
+            values={['Все акции', 'Мои акции']}
+            fontStyle={{ color:  COLORS.white, fontSize: 14, fontWeight: '600' }}
+            activeFontStyle={{color: COLORS.white, fontSize: 14, fontWeight: '600'}}
+            selectedIndex={isFavoriteList}
+            onChange={(event) => {
+              if (isLoading) return;
+              setIsLoading(true)
+              handleValueChange(event.nativeEvent.selectedSegmentIndex)
+            }
+            }
+          />
+        </View> : null}
       {isLoading ? <Loading /> : <Coupons />}
     </View >
   )
@@ -264,6 +274,7 @@ export const Coupons = ({ navigation, isCompanyPromotions, businessPointId }) =>
         data={PromotionStore.list}
         ListEmptyComponent={EmptyComponent}
         contentContainerStyle={{ paddingBottom: 20 }}
+        columnWrapperStyle={{ justifyContent: 'center' }}
         numColumns={2}
         refreshControl={
           <RefreshControl
