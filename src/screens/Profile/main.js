@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, TouchableWithoutFeedback, Linking } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableWithoutFeedback, Linking, Alert } from 'react-native';
 import { Image } from "expo-image";
 import { getUser } from '../../services/auth'
+import UserStore from '../../stores/user'
 import Constants from "expo-constants"
 import { COLORS } from '../../services/constants'
 
@@ -26,8 +27,30 @@ export const Profile = ({ navigation }) => {
         } else if (item.id == 3) {
             navigation.navigate('Region')
         }  else if (item.id == 4) {
-            openInstagram()
+            removeUser()
         }
+    }
+
+    const removeUser = async() => {        
+        Alert.alert('Востановить данные после удаления невозможно', 'Вы уверены, что хотите удалить свой аккаунт?', [
+            {
+                text: 'Нет'                              
+            },
+            {
+                text: 'Да', 
+                onPress: async () => { 
+                    await UserStore.removeUser()
+                    navigation.reset({
+                        index: 0,
+                        routes: [
+                            {
+                                name: 'OnboardingScreen',
+                            },
+                        ],
+                    });
+                }                 
+            },
+        ]); 
     }
 
     const openInstagram = async () => {
@@ -163,7 +186,12 @@ const styles = StyleSheet.create({
         height: 23,
         borderRadius: 5,
         tintColor: 'white',
-        backgroundColor: '#0EA47A'
+        backgroundColor: COLORS.primary,
+    },
+    cancel: {
+        color: COLORS.primary,
+        fontSize: 16,
+        fontWeight: '700',  
     }
 })
 
@@ -187,6 +215,11 @@ const itemData = [
         id: 3,
         title: (<Text style={styles.title}>Изменить регион</Text>),
         image: (<Image source={require('../../../assets/cell.svg')} style={styles.image} />),
+    },
+    {
+        id: 4,
+        title: (<Text style={styles.title}>Удалить аккаунт</Text>),
+        image: (<Image source={require('../../../assets/remove-user.svg')} style={styles.image} />),
     },
     // {
     //     id: 4,

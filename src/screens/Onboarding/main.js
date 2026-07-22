@@ -40,6 +40,7 @@ export const OnboardingScreen = ({navigation}) => {
     await requestGeoPermissions()
 
     const session = await getSession()
+    console.log('session', session)
     if (!session) {
       await AuthStore.createUser()
     }

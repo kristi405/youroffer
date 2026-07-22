@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import * as Sentry from 'sentry-expo';
 
-const CAHCE = {}
+let CAHCE = {}
 const keyPrefix = '$$MYOFFER$$:'
 
 export const setCamerAccess = async (status) => {
@@ -75,9 +75,9 @@ export const setSession = async (session) => {
 
 export const getSession = async () => {
     try {
-        const key = keyPrefix + 'SESSION'
+        const key = keyPrefix + 'SESSION'        
         if (CAHCE[key]) return CAHCE[key];
-        const session = await AsyncStorage.getItem(key);
+        const session = await AsyncStorage.getItem(key);       
         CAHCE[key] = JSON.parse(session)
         return CAHCE[key]
     } catch (error) {
@@ -199,10 +199,12 @@ export const getBp = async () => {
 
 
 export const cleanAuthData = async () => {
-    try {
-        await AsyncStorage.clear();
+    try { 
+        CAHCE = {}
+        await AsyncStorage.clear();         
         console.log('Cache cleared successfully');
     } catch (error) {
+        console.log('Error clearing cache:', error);
         // Sentry.Native.captureException(error, (scope) => {
         //     scope.setTransactionName('service:auth:cleanAuthData');
         //     return scope;
